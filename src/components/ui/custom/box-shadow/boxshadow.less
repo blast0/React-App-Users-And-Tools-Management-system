@@ -1,0 +1,156 @@
+.BoxShadow {
+  display: flex;
+  gap: 120px;
+  .Control-items {
+    width: 270px;
+    padding: 10px;
+    .Type {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      .type {
+        display: flex;
+        align-items: center;
+      }
+      .type-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        .btn-contained {
+          button {
+            font-size: small;
+          }
+        }
+      }
+    }
+    .x-offset {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      .x-offset-input {
+        display: flex;
+        input {
+          height: 25px;
+          width: 45px;
+        }
+      }
+    }
+    .x-offset-slider {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .y-offset {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      .y-offset-input {
+        display: flex;
+        input {
+          height: 25px;
+          width: 45px;
+        }
+      }
+    }
+    .y-offset-slider {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .blur {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      .blur-input {
+        display: flex;
+        input {
+          height: 25px;
+          width: 45px;
+        }
+      }
+    }
+    .blur-slider {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .spread {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      .spread-input {
+        display: flex;
+        justify-content: flex-end;
+        gap: 2px;
+        input {
+          height: 25px;
+          width: 45px;
+        }
+      }
+    }
+    .spread-slider {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .label {
+      font-size: small;
+      border-radius: 5px;
+    }
+  }
+  .code {
+    background: #f7f8f9;
+    .code-block {
+      white-space: pre-wrap;
+      padding: 5px;
+      font-size: medium;
+    }
+    .copy-container {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .css-property {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .previewBox {
+      height: 50px;
+      width: 50px;
+      background-color: #20868e;
+    }
+  }
+  .Color {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.BoxShadowWithInput {
+  border: 1px solid #f1f1f1;
+  // display: flex;
+  // align-items: center;
+  .shadow-cross-icon {
+    font-size: 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      background-color: #dadada;
+      border-radius: 50px;
+    }
+  }
+}
