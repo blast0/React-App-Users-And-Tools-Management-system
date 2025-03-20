@@ -8,6 +8,7 @@ const ColorInput = ({
   label,
   description,
   opt,
+  containerClassName = "",
   className = "",
   onChange,
   ...restProps
@@ -29,10 +30,10 @@ const ColorInput = ({
   };
 
   return (
-    <div className={className}>
+    <div className={containerClassName}>
       <Label className="mb-1">{label}</Label>
       {description ? <p className="Title" ref={descriptionRef}></p> : null}
-      <div className="relative border rounded-sm shadow-sm">
+      <div className={`relative rounded-sm shadow-sm ${className}`}>
         <Input
           value={restProps.color}
           className="border-none shadow-none"
@@ -40,7 +41,7 @@ const ColorInput = ({
             colorChangeHandler(e.target.value);
           }}
         />
-        <div className="absolute right-2 top-2 bg-white">
+        <div className="absolute right-2 top-1.5 bg-white ">
           <ColorSelector
             {...restProps}
             optData={opt}

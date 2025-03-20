@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import "../styles/Dashboard.css";
-import { Link, useNavigate } from "react-router-dom";
-import FabricEditorPage from "./ImageEditor/canvasPage";
-
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import axios from "axios";
 import Navbar from "../components/ui/custom/nav-bar/Navbar";
+import Designer from "./designer/designer";
 
 const Dashboard = () => {
   const [token, setToken] = useState(
@@ -28,9 +27,8 @@ const Dashboard = () => {
         axiosConfig
       );
       setData({ msg: response.data.msg, luckyNumber: response.data.secret });
-      // console.log(response);
     } catch (error) {
-      toast.error(error.message);
+      toast(error.message);
     }
   };
 
@@ -38,14 +36,14 @@ const Dashboard = () => {
     fetchLuckyNumber();
     if (token === "") {
       navigate("/login");
-      toast.warn("Please login first to access dashboard");
+      toast("Please login first to access dashboard");
     }
   }, [token]);
 
   return (
     <>
       <Navbar data={data} theme={theme} setTheme={setTheme} />
-      <FabricEditorPage theme={theme} />
+      <Designer theme={theme} />
     </>
   );
 };

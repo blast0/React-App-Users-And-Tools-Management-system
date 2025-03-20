@@ -1,0 +1,39 @@
+.copy-container {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  .copied-toaster {
+    background: linear-gradient(
+      var(--tintLight),
+      var(--tint) 90%,
+      var(--tintDark)
+    );
+    color: white;
+    height: 26px;
+    width: 74px;
+    position: absolute;
+    border-radius: 4px;
+    text-align: center;
+    right: 0;
+    z-index: 1;
+    span {
+      margin: 0 !important;
+    }
+  }
+  .top {
+    bottom: 100%;
+    transform: translate(0, -2px);
+  }
+  .bottom {
+    top: 100%;
+    transform: translate(0, 2px);
+  }
+  .left {
+    right: 100%;
+    transform: translate(0, 2px);
+  }
+  .right {
+    left: 100%;
+    transform: translate(0, 2px);
+  }
+}

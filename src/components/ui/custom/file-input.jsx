@@ -4,14 +4,15 @@ import { noop } from "lodash";
 
 import { Input } from "../input";
 import { Label } from "../label";
-import { isImageUrlValid } from "@/helper";
-import FileDialog from "@/components/file-dialog";
+import { isImageUrlValid } from "../../../helper";
+// import FileDialog from "@/components/file-dialog";
 
 const FileInput = ({
   label = "",
   value = "",
   placeholder = "",
   showImagePreview = false,
+  containerClassName = "",
   className = "",
   mimeTypeExclusions = [],
   onFileIconClick = null,
@@ -38,40 +39,10 @@ const FileInput = ({
     checkImageUrl();
   }, [checkImageUrl]);
 
-  const openFileDialog = () => {
-    const openDialogConfig = {
-      zIndex: 1,
-      fileType: "i",
-      returnType: "i",
-      rootFolderType: "i",
-      exclusionList: mimeTypeExclusions,
-      fileDialogResponseFun: (res) => fileDialogResponseFun(res),
-      createFolder: (data) => FileDialog.createFolder(data),
-      search: (data) => FileDialog.search(data),
-      updateLocalFileSystem: (data) => FileDialog.updateLocalFileSystem(data),
-      redirectToFileLocation: (lastSelectedFile) =>
-        FileDialog.redirectToFileLocation(lastSelectedFile),
-    };
-
-    FileDialog.show(openDialogConfig);
-  };
-
-  const fileDialogResponseFun = (res) => {
-    if (res.type === "btnClick" && res.btnType === "ok") {
-      fileDialogOkBtn(res);
-    }
-  };
-
-  const fileDialogOkBtn = (res) => {
-    const fileObj = res.data;
-    let url = fileObj?.meta?.imageVariations?.[0]?.url;
-    onChange(url, res);
-  };
-
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1 ${containerClassName}`}>
       <Label>{label}</Label>
-      <div className="relative border rounded-sm shadow-sm">
+      <div className={`relative border rounded-sm shadow-sm ${className}`}>
         <Input
           containerClassName="pr-5"
           className="border-none shadow-none"
@@ -83,12 +54,12 @@ const FileInput = ({
         <Image
           size={22}
           className="absolute right-0 top-2.5 mr-2 cursor-pointer bg-white"
-          onClick={onFileIconClick || openFileDialog}
+          onClick={onFileIconClick}
         />
         {showImagePreview && value && (
           <div
             className="h-[142px] flex items-center justify-center cursor-pointer bg-slate-100"
-            onClick={onFileIconClick || openFileDialog}
+            onClick={onFileIconClick}
           >
             {isLoading ? (
               <div className="animate-spin">
@@ -97,16 +68,13 @@ const FileInput = ({
             ) : isUrlValid ? (
               <div className="h-full w-auto p-1">
                 <img
-                  className="w-full h-full object-contain"
+                  className="w-auto h-full object-contain"
                   src={value}
                   alt="preview"
                 />
               </div>
             ) : (
-              <div
-                className="icon-only"
-                onClick={onFileIconClick || openFileDialog}
-              >
+              <div className="icon-only" onClick={onFileIconClick}>
                 <i className="icon-image"></i>
               </div>
             )}

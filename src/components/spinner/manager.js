@@ -6,12 +6,12 @@ function Manager() {
   this.refSpinners = {};
   this.defaultSpinnerId = "root";
 
-  this.showSpinner = (spinnerId = this.defaultSpinnerId) => {
+  this.showSpinner = (msg, spinnerId = this.defaultSpinnerId) => {
     // find the reference of spinner having id = spinnerId
     const _ref = find(this.refSpinners, (spinner) => spinner.id === spinnerId);
     // if ref to spinner exists
     if (_ref) {
-      return _ref.fn.show();
+      return _ref.fn.show(msg);
     }
   };
 

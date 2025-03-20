@@ -6,7 +6,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 import "../styles/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
@@ -32,14 +32,14 @@ const Login = () => {
           formData
         );
         localStorage.setItem("auth", JSON.stringify(response.data.token));
-        toast.success("Login successfull");
+        toast("Login successfull");
         navigate("/dashboard");
       } catch (err) {
         console.log(err);
-        toast.error(err.message);
+        toast(err.message);
       }
     } else {
-      toast.error("Please fill all inputs");
+      toast("Please fill all inputs");
     }
   };
 
@@ -53,17 +53,17 @@ const Login = () => {
     console.log(response);
     if (response.status === 200) {
       localStorage.setItem("auth", JSON.stringify(response.data.token));
-      toast.success("Login successfull");
+      toast("Login successfull");
       navigate("/dashboard");
     } else {
       localStorage.removeItem("auth");
-      toast.success("Login Failed");
+      toast("Login Failed");
     }
   };
 
   useEffect(() => {
     if (token !== "") {
-      toast.success("You already logged in");
+      toast("You already logged in");
       navigate("/dashboard");
     }
   }, []);

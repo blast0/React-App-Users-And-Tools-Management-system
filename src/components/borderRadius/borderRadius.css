@@ -1,0 +1,49 @@
+.Slider-With-Input-Controls {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  position: relative;
+  color: #3b4351;
+  font-size: 14px ;
+}
+.Slider-With-Input-Controls .range-slider-main {
+  margin-top: 3px;
+}
+.Slider-With-Input-Controls .Toggle-icon-container {
+  display: flex;
+  position: absolute;
+  cursor: pointer;
+  flex-direction: column;
+  right: 0;
+  top: 52px;
+}
+.Slider-With-Input-Controls .toggle-lock-icon {
+  height: 25px;
+  width: 25px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  position: relative;
+}
+.Slider-With-Input-Controls .icon-link,
+.Slider-With-Input-Controls .icon-unlink {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.Slider-With-Input-Controls .inputAndSlider {
+  width: 100%;
+  display: flex;
+  margin-bottom: 5px;
+}
+.Slider-With-Input-Controls .TextInput {
+  flex-basis: 90px;
+}
+.Slider-With-Input-Controls input {
+  height: 30px;
+  width: 60px;
+  border: 1px solid #f1f1f1;
+  border-radius: 4px;
+  text-align: center;
+}

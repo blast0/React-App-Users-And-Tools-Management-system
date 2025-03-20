@@ -9,7 +9,7 @@ import ChromePointerCircle from "./chrome-pointer-circle";
 import ChromePointer from "./chrome-pointer";
 import ChromeFields from "./chrome-fields";
 import { SketchPresetColors } from "./sketch-preset-colors.jsx";
-import { createColorText } from "../utilities.js";
+import { createColorText } from "@/helper";
 
 const PRESET_COLORS = [
   "#ffadad",
@@ -46,10 +46,8 @@ class SubPopup extends React.Component {
       label,
       onChange,
       disableAlpha,
-      swatches,
+      swatches = PRESET_COLORS,
       opt,
-      optData,
-      onOpenSiteSettings,
       elemRef,
     } = this.props;
     // component styles
@@ -135,19 +133,6 @@ class SubPopup extends React.Component {
               onClick={onChange}
               onSwatchHover={noop}
             />
-            {optData?.showSiteSettings ? (
-              <span
-                className="siteSettingsBtn"
-                onClick={() => {
-                  this.setState({
-                    showSiteColor: true,
-                  });
-                  if (onOpenSiteSettings) onOpenSiteSettings();
-                }}
-              >
-                <a>Use Site Colors</a>
-              </span>
-            ) : null}
           </div>
         </div>
       </div>
@@ -169,10 +154,6 @@ const ColorSelector = ({ onChange, ...restProps }) => {
   }, []);
 
   return <CustomColorPicker onChange={handleChange} {...restProps} />;
-};
-
-ColorSelector.defaultProps = {
-  swatches: PRESET_COLORS,
 };
 
 export default ColorSelector;

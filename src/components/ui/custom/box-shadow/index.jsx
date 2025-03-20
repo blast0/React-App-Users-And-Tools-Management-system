@@ -13,6 +13,7 @@ const BoxShadowWithInput = ({
   description,
   containerClass,
   configKey,
+  theme,
   ...restProps
 }) => {
   const [inputShadow, setInputShadow] = useState(restProps.value);
@@ -31,9 +32,13 @@ const BoxShadowWithInput = ({
       className={`${containerClass ?? ""}`}
       title={tooltip ? tooltip : label}
     >
-      {label ? <Label>{label}</Label> : null}
+      {label ? (
+        <Label className={`mb-1 ${theme === "dark" ? "text-white" : ""}`}>
+          {label}
+        </Label>
+      ) : null}
       {description ? <label className="Title">{description}</label> : null}
-      <div className="rounded-sm flex items-center border shadow-sm">
+      <div className="rounded-sm flex items-center justify-between border shadow-sm bg-white w-[100%]">
         <Input
           className="border-none shadow-none"
           value={inputShadow}

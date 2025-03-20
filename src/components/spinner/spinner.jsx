@@ -7,6 +7,7 @@ class Spinner extends React.Component {
     super(props);
     this.state = {
       active: false,
+      msg: "",
     };
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
@@ -17,8 +18,8 @@ class Spinner extends React.Component {
       hideSpinner: this.hide,
     });
   }
-  show() {
-    this.setState({ active: "active" });
+  show(msg) {
+    this.setState({ active: "active", msg });
   }
 
   hide() {
@@ -31,10 +32,13 @@ class Spinner extends React.Component {
       <React.Fragment>
         {this.state.active ? (
           <div
-            className="absolute inset-0 z-[999] flex items-center justify-center bg-black/30"
+            className="absolute inset-0 z-[999] flex flex-col items-center justify-center bg-black/30"
             style={overlayProps}
           >
             <div className="loading loading-lg"></div>
+            <div className="bg-[rgba(244,140,6,0.25)] px-2 text-white">
+              {this.state.msg}
+            </div>
           </div>
         ) : null}
       </React.Fragment>

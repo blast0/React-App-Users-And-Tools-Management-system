@@ -7,8 +7,9 @@ import {
   Logout,
   Register,
 } from "./pages";
-import { ToastContainer, toast } from "react-toastify";
-import Spin from "./components/ui/custom/spinner/spinner";
+import { Toaster } from "@/components/ui/sonner";
+import Spin from "./components/spinner";
+import "./App.css";
 
 const router = createBrowserRouter([
   {
@@ -41,11 +42,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <div id="popmenu-container" className="w-[100%] h-[100%]">
+      <Toaster position="top-center" />
       <Spin id="root" overlayProps={{ position: "fixed" }} />
       <RouterProvider router={router} />
-      <ToastContainer position="top-center" />
-    </>
+    </div>
   );
 }
 
