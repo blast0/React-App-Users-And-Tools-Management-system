@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import "../styles/Dashboard.css";
+import "../../styles/Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
-import Navbar from "../components/ui/custom/nav-bar/Navbar";
-import Designer from "./designer/designer";
+import Navbar from "../../components/ui/custom/nav-bar/Navbar";
+import Designer from "../FabricEditor/designer";
 
 const Dashboard = () => {
   const [token, setToken] = useState(

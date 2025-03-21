@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Image from "../assets/image.png";
-import Logo from "../assets/logo.png";
-import GoogleSvg from "../assets/icons8-google.svg";
+import Image from "../../assets/image.png";
+import Logo from "../../assets/logo.png";
+import GoogleSvg from "../../assets/icons8-google.svg";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
-import "../styles/Register.css";
+import "../../styles/Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
