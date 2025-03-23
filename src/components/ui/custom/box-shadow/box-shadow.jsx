@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import propTypes from "prop-types";
-
 import { Slider } from "../../slider";
 import ColorInput from "../color-input";
 import { Button } from "../../button";
@@ -54,18 +52,18 @@ const convertToConfig = (val) => {
   };
 };
 
-const BoxShadow = (props) => {
-  const {
-    onChange,
-    showPreview,
-    configKey,
-    showCopyClipboard,
-    showSpread,
-    showTypeButton,
-  } = props;
-  const [boxShadow, setBoxShadow] = useState(props.value);
-  const [config, setConfig] = useState(convertToConfig(props.value));
-  const [showInput, setShowInput] = useState(props.showInput);
+const BoxShadow = ({
+  onChange = () => {},
+  showPreview = true,
+  configKey,
+  showCopyClipboard,
+  showSpread,
+  showTypeButton,
+  value,
+}) => {
+  const [boxShadow, setBoxShadow] = useState(value);
+  const [config, setConfig] = useState(convertToConfig(value));
+  const [showInput, setShowInput] = useState(false);
   const { type, shadowColor, xoffset, yoffset, blur, spread } = config;
   useEffect(() => {
     let shadow = "";
@@ -356,19 +354,6 @@ const BoxShadow = (props) => {
       </div>
     </div>
   );
-};
-
-BoxShadow.defaultProps = {
-  onChange: () => {},
-  showPreview: true,
-  showInput: false,
-};
-
-BoxShadow.propTypes = {
-  onChange: propTypes.func,
-  showPreview: propTypes.bool,
-  showInput: propTypes.bool,
-  config: propTypes.object,
 };
 
 export default BoxShadow;

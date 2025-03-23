@@ -14,14 +14,16 @@ const BoxShadowWithInput = ({
   containerClass,
   configKey,
   theme,
+  value = "",
+  onChange = () => {},
   ...restProps
 }) => {
-  const [inputShadow, setInputShadow] = useState(restProps.value);
+  const [inputShadow, setInputShadow] = useState(value);
 
   const boxShadowChangeHandler = (value) => {
     try {
       setInputShadow(value);
-      restProps.onChange(value, configKey);
+      onChange(value, configKey);
     } catch (error) {
       console.log(error);
     }
@@ -61,9 +63,6 @@ const BoxShadowWithInput = ({
       </div>
     </div>
   );
-};
-BoxShadowWithInput.defaultProps = {
-  value: "",
 };
 BoxShadowWithInput.propTypes = {
   value: PropTypes.string,
