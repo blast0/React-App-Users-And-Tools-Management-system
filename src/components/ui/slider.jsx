@@ -20,9 +20,9 @@ const Slider = React.forwardRef(
         <SliderPrimitive.Thumb className="block h-4 w-4 cursor-pointer rounded-full border border-slate-200 border-slate-900/50 bg-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 dark:border-slate-800 dark:border-slate-50/50 dark:bg-slate-950 dark:focus-visible:ring-slate-300" />
       </SliderPrimitive.Root>
       {valueVisible ? (
-        <p className="mt-1">
+        <div className="mt-1">
           {props.value} {unit}
-        </p>
+        </div>
       ) : null}
     </>
   )

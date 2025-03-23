@@ -98,7 +98,6 @@ class ActiveElementControls extends Component {
       theme,
     } = this.props;
     const activeElement = canvas.getActiveObject();
-    console.log(activeElement.left, activeElement.top);
 
     const ELEMENT_POSITION_OPTIONS = [
       {
@@ -246,7 +245,7 @@ class ActiveElementControls extends Component {
     );
 
     const boxShadow = (
-      <div className="shadow-control w-[48%]">
+      <div className="shadow-control">
         <Label className={`${theme === "dark" ? "text-white" : ""}`}>
           Box Shadow:
         </Label>
@@ -394,7 +393,7 @@ class ActiveElementControls extends Component {
     );
 
     const activeBgColor = (
-      <div className="color-control w-[48%]">
+      <div>
         <Label className={`${theme === "dark" ? "text-white" : ""}`}>
           {activeElement instanceof fabric.IText
             ? "Text Background:"
@@ -412,7 +411,7 @@ class ActiveElementControls extends Component {
     const activePattern = (
       <>
         <div className="pattern-controls w-[100%] flex flex-wrap gap-2">
-          <div className="w-[48%]">
+          <div>
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Width:
             </Label>
@@ -428,7 +427,7 @@ class ActiveElementControls extends Component {
               }
             />
           </div>
-          <div className="w-[48%]">
+          <div>
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Height:
             </Label>
@@ -444,7 +443,7 @@ class ActiveElementControls extends Component {
               }}
             />
           </div>
-          <div className="w-[48%]">
+          <div>
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Left:
             </Label>
@@ -461,7 +460,7 @@ class ActiveElementControls extends Component {
               }
             />
           </div>
-          <div className="w-[48%]">
+          <div>
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Top:
             </Label>
@@ -499,7 +498,7 @@ class ActiveElementControls extends Component {
     );
 
     const activeElementColor = (
-      <div className="w-[48%]">
+      <div>
         <Label className={`${theme === "dark" ? "text-white" : ""}`}>
           {activeElement instanceof fabric.IText
             ? "Text Color:"
@@ -656,7 +655,7 @@ class ActiveElementControls extends Component {
     );
 
     const AlignElement = (
-      <div className="w-[48%]">
+      <div>
         <Label className={`${theme === "dark" ? "text-white" : ""}`}>
           Alignment:
         </Label>
@@ -920,21 +919,19 @@ class ActiveElementControls extends Component {
 
     const TextControls =
       activeElement?.type === "text" || activeElement?.type === "i-text" ? (
-        <div className="font-controls flex flex-wrap">
-          {AlignElement}
-          <div className="flex-col gap-2">
+        <div className="font-controls flex flex-wrap gap-2">
+          <div className="w-[48%] flex flex-col gap-3">{AlignElement}</div>
+          <div className="w-[48%] flex flex-col gap-8">
             {!activeElement?.patternActive ? activeElementColor : null}
             {activeBgColor}
           </div>
-          <div className="flex gap-1">
-            {TextStyles}
-            {FlipElement}
-          </div>
-          {AlignText}
+          <div className="w-[48%]">{activeBorderThickness}</div>
           {!activeElement?.patternActive ? boxShadow : null}
+          <div className="w-[48%]">{activeBorderColor}</div>
+          {AlignText}
+          {TextStyles}
+          {FlipElement}
           {activeFontFamily}
-          {activeBorderThickness}
-          {activeBorderColor}
           {patternImgController}
           {activeElement?.patternActive ? activePattern : null}
           {activeElementProps?.patternActive ? imageFit : null}
@@ -1176,36 +1173,38 @@ class ActiveElementControls extends Component {
     const RectangleControls =
       activeElement?.type === "rect" ? (
         <div className="rect-controls flex-wrap flex gap-2">
-          {AlignElement}
-          <div className="flex flex-col justify-between mb-1 w-[48%]">
-            {activeBorderThickness}
+          <div className="w-[48%] flex flex-col gap-3">{AlignElement}</div>
+          <div className="w-[48%] flex flex-col gap-8">
+            {!activeElement?.patternActive ? activeElementColor : null}
             {activeBorderColor}
           </div>
-          {!activeElement?.patternActive ? activeElementColor : null}
+          <div className="w-[48%]">{activeBorderThickness}</div>
           {!activeElement?.patternActive ? boxShadow : null}
           {rectBorderRadius}
           {patternImgController}
           {activeElementProps?.patternActive ? activePattern : null}
           {activeElementProps?.patternActive ? imageFit : null}
-          {/* {FlipElement} */}
+          {FlipElement}
         </div>
       ) : null;
 
     const TriangleControls =
       activeElement?.type === "triangle" ? (
-        <div className="triangle-controls">
-          {AlignElement}
-          <div className="flex flex-col gap-3">
+        <div className="triangle-controls flex-wrap flex gap-2">
+          <div className="w-[48%] flex flex-col gap-3">{AlignElement}</div>
+          <div className="w-[48%] flex flex-col gap-8">
             {!activeElement?.patternActive ? activeElementColor : null}
-            {activeBorderColor}
+            {activeBgColor}
           </div>
-          {activeBgColor}
-          {activeBorderThickness}
-          {!activeElement?.patternActive ? boxShadow : null}
-          {FlipElement}
+          <div className="w-[48%]">
+            {activeBorderThickness}
+            {activeBorderColor}
+            {!activeElement?.patternActive ? boxShadow : null}
+          </div>
           {patternImgController}
           {activeElement?.patternActive ? activePattern : null}
           {activeElementProps?.patternActive ? imageFit : null}
+          {FlipElement}
         </div>
       ) : null;
 

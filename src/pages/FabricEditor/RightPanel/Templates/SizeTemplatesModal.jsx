@@ -2,7 +2,7 @@ import { useState } from "react";
 import { pageSizes } from "../../Constants/designer-constants";
 import "./templatesmodal.css";
 import { Button } from "@/components/ui/button";
-import DropdownWithSearch from "@/components/ui/custom/dropdown-with-search";
+// import DropdownWithSearch from "@/components/ui/custom/dropdown-with-search";
 const SizeTemplatesModal = ({
   resetPage,
   dimensionChangeHandler,
@@ -17,7 +17,7 @@ const SizeTemplatesModal = ({
       <div style={{ position: "relative" }} className="px-5">
         <>
           <lable>Select a Format:</lable>
-          <DropdownWithSearch
+          {/* <DropdownWithSearch
             value={selectedSize.name}
             selectPlaceholder={"Select option"}
             popoverClassName={"w-full"}
@@ -30,7 +30,7 @@ const SizeTemplatesModal = ({
               let find_selected_item =  pageSizes.find((item)=>item.name === name);
               setSelectedSize(find_selected_item);
             }}
-          />
+          /> */}
         </>
         <div className="size-table mt-5 slim-scroll">
           <table id="sizes" style={{ width: "100%" }}>

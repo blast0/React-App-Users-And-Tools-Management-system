@@ -127,7 +127,7 @@ class Designer extends Component {
           theme={theme}
           headerChildren={<></>}
           bodyChildren={
-            <>
+            <div>
               <input
                 ref={this.imagetoLibInputRef}
                 className="hidden"
@@ -182,14 +182,14 @@ class Designer extends Component {
                 selectedElementName={selectedElementName}
                 selectedElementId={selectedElementId}
                 activeElementProps={activeElementProps}
-                onChange={(action, data) =>
-                  handleRightPanelUpdates(action, data, this)
-                }
+                onChange={(action, data) => {
+                  handleRightPanelUpdates(action, data, this);
+                }}
                 handleJsonData={(e) => handleJsonData(e, this)}
                 jsonRef={this.jsonRef}
                 siteColorsSettings={this.props.siteColorsSettings}
               />
-            </>
+            </div>
           }
         />
         <div

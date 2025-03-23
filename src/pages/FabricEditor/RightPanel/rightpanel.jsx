@@ -23,6 +23,8 @@ import { Title } from "@/components/ui/title";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/ui/custom/dropdown";
 import { Label } from "@/components/ui/label";
+import { DialogDemo } from "../../../components/DialogBox";
+import SaveModalJsx from "./Templates/saveModal";
 
 class Rightpanel extends Component {
   constructor(props) {
@@ -96,7 +98,7 @@ class Rightpanel extends Component {
             accept="application/json"
             onChange={this.handleJsonData}
           />
-
+          {/* 
           <MenuButton
             title="Save to cloud"
             options={SAVE_OPTIONS}
@@ -110,8 +112,33 @@ class Rightpanel extends Component {
               <Save />
               <ChevronDown />
             </Button>
-          </MenuButton>
-
+          </MenuButton> */}
+          <DialogDemo
+            theme={theme}
+            trigger={
+              <Button
+                size="icon-xs"
+                variant="outline"
+                className="flex items-center gap-0"
+              >
+                <Save />
+              </Button>
+            }
+            modalJsx={
+              <>
+                <SaveModalJsx
+                  self={this}
+                  thumbnailUrl={null}
+                  canvas={canvas}
+                  // theme={theme}
+                  defaultFileName={"canvas"}
+                  defaultFileType={"jpg"}
+                  imageWidth={canvas?.width}
+                  ratio={canvas?.width / canvas?.height}
+                />
+              </>
+            }
+          />
           <MenuButton
             title="Add shapes"
             options={ADD_SHAPE_OPTIONS}

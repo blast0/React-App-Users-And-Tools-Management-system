@@ -5,9 +5,7 @@ import { sha256 } from "crypto-hash";
 import { inRange } from "lodash";
 import { saveAs } from "file-saver";
 import { cloneDeep, uniqueId } from "lodash";
-import queryString from "query-string";
 
-// import { getNewID, loadGoogleFont, validateString } from "../../helper";
 // CONSTANTS
 import {
   ACTIONS,
@@ -22,15 +20,6 @@ import {
   SPEECH_BUBBLE_DEFAULT_PROPS,
 } from "./Constants/designer-constants";
 // LOCAL COMPONENTS / METHODS
-// import AppRoutes from "../../config/routes";
-// import Navigation from "../../navigation-helper";
-import Modal from "../../components/dynamic-modal";
-// import { BLOB_TYPES } from "../blob-maker/blob.constants";
-// import TemplatesModal from "./RightPanel/Templates/templatesModal";
-// import SizeTemplatesModal from "./RightPanel/Templates/SizeTemplatesModal";
-// import SaveTemplateModal from "./RightPanel/Templates/saveTemplateModal";
-import { MODAL_INTERFACE, REQ_CONFIG } from "../../config/common.constants";
-// import RandomBlobModal from "./blobModal";
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
@@ -441,9 +430,9 @@ export const getCanvasElementNames = (canvas) => {
           return {
             name: (
               <p style={{ margin: 0 }}>
-                <i
+                {/* <i
                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-                ></i>{" "}
+                ></i> */}
                 {elem.name === undefined || elem.name === ""
                   ? elem.text
                   : elem.name}
@@ -459,9 +448,9 @@ export const getCanvasElementNames = (canvas) => {
           return {
             name: (
               <p style={{ margin: 0 }}>
-                <i
+                {/* <i
                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-                ></i>{" "}
+                ></i> */}
                 {elem.text.length > 20 ? elem.text.slice(0, 20) : elem.name}
               </p>
             ),
@@ -2598,12 +2587,13 @@ export const openSizeTemplates = async (self) => {
     // />
     <></>
   );
-  Modal.show(modalConfig, true);
+  // Modal.show(modalConfig, true);
   self.setState({ modalActive: true });
 };
 
 // HANDLE EVENTS ON RIGHT PANEL AND PERFORM ACTIONS ACCORDINGLY
 export const handleRightPanelUpdates = (action, data, self) => {
+  console.log(action, data, self);
   const canvasRef = Object.values(self.state.canvases)[0];
   const alignment = data;
   const { pageHeight, pageWidth, loadingImage } = self.state;
@@ -2616,7 +2606,7 @@ export const handleRightPanelUpdates = (action, data, self) => {
       showGlobalTemplates(self);
       break;
     case ACTIONS.OTHERS:
-      openSizeTemplates(self);
+      // openSizeTemplates(self);
       break;
     case ACTIONS.ADD_FROM_LIBRARY:
       openImageLibrary(self);
