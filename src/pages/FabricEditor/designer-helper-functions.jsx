@@ -25,6 +25,65 @@ import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
 // import FileDialog from "@/components/file-dialog";
 
+export const handleDrop = (images, self) => {
+  console.log(images);
+  const { pages, activePageID, pageHeight, pageWidth } = self.state;
+  const elements = cloneDeep(pages[0].elements);
+  if (!activePageID) return;
+  let imagesCount = countElementTypes("Image", self);
+  let svgCount = countElementTypes("Image", self);
+  images.forEach(async (image, index) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      if (reader.result.includes("svg+xml")) {
+        if (!activePageID) return;
+        let zoomX = getSVGSize("300px", pageWidth, pageHeight);
+        let zoomY = getSVGSize("300px", pageWidth, pageHeight);
+        let zoom = zoomX > zoomY ? zoomY : zoomX;
+        const svgElementSchema = {
+          id: getNewID(),
+          type: "Svg",
+          url: reader.result,
+          center: true,
+          scaleX: zoom,
+          scaleY: zoom,
+          name: "Svg " + svgCount,
+          imageFit: "Show full Svg", //contain= Show full Svg, cover=Fit Svg to boundary
+        };
+        svgCount++;
+        elements.push(svgElementSchema);
+        if (index + 1 === images.length) {
+          self.setState({ pages: [{ ...pages[0], elements }] });
+        }
+      } else if (reader.result.includes("data:image")) {
+        let img = new Image();
+        img.src = reader.result;
+        img.onload = function () {
+          const imgElementSchema = {
+            id: getNewID(),
+            type: "Image",
+            name: "Image " + imagesCount,
+            left: 0,
+            top: 0,
+            preselected: true,
+            sendtoback: false,
+            url: reader.result,
+            imageFit: "Show full Image", //contain= Show full Image, cover=Fit Image to boundary
+            BorderX: 5,
+            BorderY: 5,
+          };
+          imagesCount++;
+          elements.push(imgElementSchema);
+          if (index + 1 === images.length) {
+            self.setState({ pages: [{ ...pages[0], elements }] });
+          }
+        };
+      }
+    });
+    reader.readAsDataURL(image);
+  });
+};
+
 /**
  * round a number upto given decimal point
  * https://stackoverflow.com/questions/6134039/format-number-to-always-show-2-decimal-places
@@ -2638,7 +2697,10 @@ export const handleRightPanelUpdates = (action, data, self) => {
       dimensionChangeHandler(data.name, data.val, self);
       break;
     case ACTIONS.CLEAR_PAGE:
-      showPageResetWarning(ACTIONS.CLEAR_PAGE, self);
+      resetPage(self);
+      break;
+    case ACTIONS.CLEAR_SELECTED_ITEM:
+      deleteSelection(self);
       break;
     case ACTIONS.DOWNLOAD_PAGE:
       downloadPage(self);

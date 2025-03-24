@@ -1,18 +1,32 @@
 import { Component } from "react";
 import {
   ChevronDown,
+  Circle,
+  FileCode,
   Image,
+  Images,
+  ImageUp,
+  MessageCircle,
+  MessageSquareQuote,
   Plus,
+  Proportions,
   Redo,
   Save,
+  Shapes,
+  Slash,
+  Spline,
+  Square,
   Trash,
+  Triangle,
+  TypeOutline,
   Undo,
+  Download,
 } from "lucide-react";
 import {
   ACTIONS,
-  OPEN_OPTIONS,
+  // OPEN_OPTIONS,
   ADD_SHAPE_OPTIONS,
-  SAVE_OPTIONS,
+  // SAVE_OPTIONS,
   DELETE_OPTIONS,
 } from "../Constants/designer-constants";
 import ActiveElementControls from "./ActiveElementControls/activeElementControls";
@@ -25,6 +39,7 @@ import Dropdown from "@/components/ui/custom/dropdown";
 import { Label } from "@/components/ui/label";
 import { DialogDemo } from "../../../components/DialogBox";
 import SaveModalJsx from "./Templates/saveModal";
+import { DialogDropDown } from "../../../components/ui/custom/dialogDropDown";
 
 class Rightpanel extends Component {
   constructor(props) {
@@ -56,6 +71,168 @@ class Rightpanel extends Component {
       selectedElementId,
       theme,
     } = this.props;
+    const OPEN_OPTIONS = [
+      {
+        name: "Open Image",
+        icon: <ImageUp />,
+        value: ACTIONS.IMAGE_DATA,
+      },
+      {
+        name: "Open Template From File",
+        icon: <FileCode />,
+        value: ACTIONS.RAW_DATA,
+      },
+      {
+        name: "Custom Size",
+        icon: <Proportions />,
+        value: ACTIONS.OTHERS,
+      },
+    ];
+    const ADD_SHAPE_OPTIONS = [
+      {
+        name: "Add Image from library",
+        icon: <Images />,
+        value: ACTIONS.ADD_FROM_LIBRARY,
+      },
+      {
+        name: "Add Image",
+        tooltip: "Upload Image from Desktop",
+        icon: <ImageUp />,
+        value: ACTIONS.UPLOAD_SVG,
+      },
+      {
+        name: "Add Triangle",
+        icon: <Triangle />,
+        value: ACTIONS.ADD_TRIANGLE,
+      },
+      {
+        name: "Add Text",
+        icon: <TypeOutline />,
+        value: ACTIONS.ADD_TEXT,
+      },
+      {
+        name: "Add Rectangle",
+        icon: <Square />,
+        value: ACTIONS.ADD_RECTANGLE,
+      },
+      {
+        name: "Add Circle",
+        icon: <Circle />,
+        value: ACTIONS.ADD_CIRCLE,
+      },
+      {
+        name: "Add Solid Line",
+        icon: <Slash />,
+        value: ACTIONS.ADD_LINE,
+      },
+      {
+        name: "Add Arrow",
+        icon: <Spline />,
+        value: ACTIONS.ADD_QUADRATIC_CURVE,
+      },
+      {
+        name: "Add Speech Bubble",
+        icon: <MessageSquareQuote />,
+        value: ACTIONS.ADD_SPEECH_BUBBLE,
+      },
+      {
+        name: "Add Label",
+        icon: <MessageCircle />,
+        value: ACTIONS.ADD_SPEECH_LABEL,
+      },
+    ];
+
+    const SAVE_OPTIONS = [
+      {
+        name: "Save Image",
+        tooltip: "Save design as an image in Image Library",
+        icon: "icon-image",
+        value: ACTIONS.SAVE_PAGE_TO_LIBRARY,
+        modalJsx: (
+          <DialogDemo
+            title="Download Image"
+            theme={theme}
+            trigger={
+              <div className="flex items-center cursor-pointer gap-2">
+                <Download />
+                Download Image
+              </div>
+            }
+            modalJsx={
+              <>
+                <SaveModalJsx
+                  self={this}
+                  thumbnailUrl={null}
+                  canvas={canvas}
+                  theme={theme}
+                  defaultFileName={"canvas"}
+                  defaultFileType={"jpeg"}
+                  imageWidth={canvas?.width}
+                  ratio={canvas?.width / canvas?.height}
+                />
+              </>
+            }
+          />
+        ),
+      },
+      {
+        name: "Save My Template",
+        tooltip: "Save Template design in my Library",
+        icon: "icon-image-library",
+        value: ACTIONS.UPLOAD_JSON,
+        modalJsx: (
+          <DialogDemo
+            title="Image"
+            theme={theme}
+            trigger={
+              <div className="flex items-center cursor-pointer gap-2">
+                <Download />
+                else
+              </div>
+            }
+            modalJsx={<>Something Else here</>}
+          />
+        ),
+      },
+      {
+        name: "Download Template",
+        tooltip: "Download Template file",
+        icon: "icon-fs-file",
+        value: ACTIONS.DOWNLOAD_JSON,
+        modalJsx: (
+          <DialogDemo
+            title="Image"
+            theme={theme}
+            trigger={
+              <div className="flex items-center cursor-pointer gap-2">
+                <Download />
+                Download Template
+              </div>
+            }
+            modalJsx={
+              <>
+                <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+                  Element Name:
+                </Label>
+                <Input
+                  placeholder="Element Name"
+                  value={selectedElementName ? selectedElementName : ""}
+                  onChange={(e) => {
+                    // const elem = canvas.getActiveObject();
+                    // if (elem) {
+                    //   elem.customName = true;
+                    //   elem.changeName = e.target.value;
+                    //   onChange(ACTIONS.ELEMENT_NAME, e);
+                    // }
+                  }}
+                />
+              </>
+            }
+          />
+        ),
+      },
+    ];
+
     const activeElementType = canvas?.getActiveObject()?.type;
     return (
       <div
@@ -98,8 +275,8 @@ class Rightpanel extends Component {
             accept="application/json"
             onChange={this.handleJsonData}
           />
-          {/* 
-          <MenuButton
+
+          <DialogDropDown
             title="Save to cloud"
             options={SAVE_OPTIONS}
             onSelect={(option) => onChange(option.value)}
@@ -112,8 +289,9 @@ class Rightpanel extends Component {
               <Save />
               <ChevronDown />
             </Button>
-          </MenuButton> */}
-          <DialogDemo
+          </DialogDropDown>
+          {/* <DialogDemo
+            title="Download Image"
             theme={theme}
             trigger={
               <Button
@@ -132,13 +310,13 @@ class Rightpanel extends Component {
                   canvas={canvas}
                   // theme={theme}
                   defaultFileName={"canvas"}
-                  defaultFileType={"jpg"}
+                  defaultFileType={"jpeg"}
                   imageWidth={canvas?.width}
                   ratio={canvas?.width / canvas?.height}
                 />
               </>
             }
-          />
+          /> */}
           <MenuButton
             title="Add shapes"
             options={ADD_SHAPE_OPTIONS}
@@ -149,13 +327,14 @@ class Rightpanel extends Component {
               variant="outline"
               className="flex items-center gap-0"
             >
-              <Plus />
+              <Shapes />
               <ChevronDown />
             </Button>
           </MenuButton>
 
           <Title title={"Undo last action"}>
             <Button
+              className="cursor-pointer"
               size="icon-xs"
               variant="outline"
               onClick={() => onChange(ACTIONS.UNDO_ACTION)}
@@ -166,6 +345,7 @@ class Rightpanel extends Component {
 
           <Title title={"Redo last action"}>
             <Button
+              className="cursor-pointer"
               size="icon-xs"
               variant="outline"
               onClick={() => onChange(ACTIONS.REDO_ACTION)}

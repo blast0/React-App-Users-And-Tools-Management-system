@@ -25,7 +25,7 @@ export default function Dropdown({
       value={value}
       disabled={disabled}
     >
-      <SelectTrigger className={className}>
+      <SelectTrigger className={`${className} focus: none`}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent

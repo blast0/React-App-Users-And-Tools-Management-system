@@ -7,8 +7,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Title } from "@/components/ui/title";
 import { Check } from "lucide-react";
+import { DialogDemo } from "../../DialogBox";
 
-export function MenuButton({
+export function DialogDropDown({
   title,
   options = [],
   onSelect,
@@ -44,21 +45,25 @@ export function MenuButton({
                 );
               }
               return (
-                <DropdownMenuItem
-                  key={i}
-                  onClick={() => onSelect(item)}
-                  className={`flex text-xs justify-between items-center cursor-pointer ${
-                    item?.value === value ? "bg-slate-100" : ""
-                  }`}
-                >
-                  <div className="flex items-center h-[15px] gap-2">
-                    {item?.icon}
-                    {item.name}
-                  </div>
-                  {/* {item?.value === value ? (
-                    <Check size={20} className="text-slate-500" />
-                  ) : null} */}
-                </DropdownMenuItem>
+                <DialogDemo
+                  title="Download Image"
+                  //   theme={theme}
+                  //   trigger={
+                  //     <DropdownMenuItem
+                  //       key={i}
+                  //       onClick={() => onSelect(item)}
+                  //       className={`flex text-xs justify-between items-center cursor-pointer ${
+                  //         item?.value === value ? "bg-slate-100" : ""
+                  //       }`}
+                  //     >
+                  //       <div className="flex items-center h-[15px] gap-2">
+                  //         {item?.icon}
+                  //         {item.name}
+                  //       </div>
+                  //     </DropdownMenuItem>
+                  //   }
+                  trigger={item.modalJsx}
+                />
               );
             })}
         </DropdownMenuGroup>

@@ -40,7 +40,7 @@ const BoxShadowWithInput = ({
         </Label>
       ) : null}
       {description ? <label className="Title">{description}</label> : null}
-      <div className="rounded-sm flex items-center justify-between border shadow-sm bg-white w-[100%]">
+      <div className="rounded-sm flex items-center justify-between border shadow-sm focus: bg-white w-[100%]">
         <Input
           className="border-none shadow-none"
           value={inputShadow}

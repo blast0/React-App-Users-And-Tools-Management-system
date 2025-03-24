@@ -530,39 +530,6 @@ export const SAVE_OPTIONS = [
   },
 ];
 
-export const OPEN_OPTIONS = [
-  {
-    name: "Blank Template",
-    icon: "icon-laptop",
-    value: ACTIONS.MAKE_BLANK,
-  },
-  // {
-  //   name: "Select a Template",
-  //   icon: "icon-manage-files",
-  //   value: ACTIONS.SHOW_GLOBAL_TEMPLATES,
-  // },
-  {
-    name: "Open Image",
-    icon: "icon-fs-image",
-    value: ACTIONS.IMAGE_DATA,
-  },
-  // {
-  //   name: "Open My Templates",
-  //   icon: "icon-file-library",
-  //   value: ACTIONS.SHOW_SAVED_TEMPLATES,
-  // },
-  {
-    name: "Open Template From File",
-    icon: "icon-fs-file",
-    value: ACTIONS.RAW_DATA,
-  },
-  {
-    name: "Custom Size",
-    icon: "icon-fs-file",
-    value: ACTIONS.OTHERS,
-  },
-];
-
 export const DELETE_OPTIONS = [
   {
     name: "Clear Page",

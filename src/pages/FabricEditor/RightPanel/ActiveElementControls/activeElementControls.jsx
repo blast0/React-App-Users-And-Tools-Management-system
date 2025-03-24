@@ -231,7 +231,13 @@ class ActiveElementControls extends Component {
         </Label>
         <FileInput
           containerClassName="w-full"
-          value={!activeElementProps?.URL ? "" : activeElement?.URL}
+          value={
+            !activeElementProps?.URL
+              ? ""
+              : activeElement?.URL.length > 1000
+              ? "pageurl"
+              : ""
+          }
           mimeTypeExclusions={["image/svg+xml"]}
           onChange={(url) => {
             onChange(ACTIONS.ADD_PATTERN, url);
@@ -269,6 +275,7 @@ class ActiveElementControls extends Component {
 
     const rectBorderRadius = (
       <BorderRadius
+        valueVisible={false}
         onChange={(x, y, lock) => {
           if (lock !== activeElementProps?.BorderLock) {
             activeElement.BorderLock = lock;

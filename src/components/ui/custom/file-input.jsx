@@ -44,7 +44,7 @@ const FileInput = ({
       <Label>{label}</Label>
       <div className={`relative border rounded-sm shadow-sm ${className}`}>
         <Input
-          containerClassName="pr-5"
+          containerClassName="pr-5 bg-white"
           className="border-none shadow-none"
           value={value}
           placeholder={placeholder}
@@ -53,7 +53,7 @@ const FileInput = ({
         />
         <Image
           size={22}
-          className="absolute right-0 top-2.5 mr-2 cursor-pointer bg-white"
+          className="absolute right-0 top-2 mr-2 cursor-pointer bg-white"
           onClick={onFileIconClick}
         />
         {showImagePreview && value && (

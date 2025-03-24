@@ -14,6 +14,8 @@ const BorderRadius = ({
     { label: "BorderX", min: 0, max: 100, value: 5 },
     { label: "BorderY", min: 0, max: 100, value: 5 },
   ],
+  theme = "dark",
+  valueVisible = false,
 }) => {
   const initialValues = [];
   const showLockButton = showLockBtn && defaultValues.length === 2;
@@ -57,7 +59,9 @@ const BorderRadius = ({
       {showLockButton ? (
         <div className="Toggle-icon-container">
           <span
-            className={`toggle-lock-icon ${!locked ? "off" : ""}`}
+            className={`toggle-lock-icon ${!locked ? "off" : ""} ${
+              theme === "dark" ? "bg-white" : ""
+            }`}
             onClick={() => {
               toggleLock();
             }}
@@ -74,20 +78,20 @@ const BorderRadius = ({
               width: "100%",
             }}
           >
-            <label>{item.label}</label>
+            <label className={`${theme === "dark" ? "text-white" : ""}`}>
+              {item.label}
+            </label>
             <div className="inputAndSlider">
               {showInputBoxes ? (
                 <div className="TextInput">
                   <input
+                    className="bg-white"
                     type="number"
                     min={item?.min}
                     max={item?.max ? item.max : 100}
                     value={item?.value}
                     onChange={(e) => {
                       let value = parseInt(e.target.value);
-                      // if (value > 100) {
-                      //   value = 100;
-                      // }
                       let newValues = [];
                       if (locked) {
                         if (controlIndex === 0 || controlIndex === 1) {
@@ -111,6 +115,7 @@ const BorderRadius = ({
                 </div>
               ) : null}
               <Slider
+                valueVisible={valueVisible}
                 min={item?.min}
                 max={item?.max ? item.max : 100}
                 step={1}

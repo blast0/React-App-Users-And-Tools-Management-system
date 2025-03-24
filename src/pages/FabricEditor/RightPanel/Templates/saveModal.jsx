@@ -20,20 +20,18 @@ import { ACTIONS } from "../../Constants/designer-constants";
 const SaveModalJsx = ({
   defaultFileName,
   defaultFileType,
-  onBtnClick,
   imageWidth,
   ratio,
   canvas,
   theme,
-  self,
 }) => {
   const [fileName, set_fileName] = useState(defaultFileName);
   const [chosenFileType, set_chosenFileType] = useState(defaultFileType);
   const [ImageWidth, set_ImageWidth] = useState(imageWidth);
   const [ImageHeight, set_ImageHeight] = useState(parseInt(imageWidth / ratio));
-  const [jpegQuality, set_jpegQuality] = useState(0.9);
+  const [imgQuality, set_jpegQuality] = useState(90);
   const [selection, setSelection] = useState("page");
-  console.log(jpegQuality);
+  console.log(chosenFileType);
   const btns = [
     {
       btnText: "PNG",
@@ -53,7 +51,7 @@ const SaveModalJsx = ({
     },
   ];
   return (
-    <div className="SaveDownloadModal modal-body">
+    <div className="SaveDownloadModal p-2 modal-body">
       <Input
         theme={theme}
         autoFocus={true}
@@ -96,36 +94,53 @@ const SaveModalJsx = ({
               border: "1px solid #eee",
             }}
           ></div>
-          <RadioInput
-            options={[
-              { name: "Full Page", value: "page" },
-              { name: "Selected Element", value: "selected" },
-            ]}
-            onValueChange={(value) => setSelection(value)}
-            theme={theme}
-            value={"page"}
-            label={" Full Page"}
-            checked={selection === "page"}
-            defaultValue={selection}
-          />
+          <div className="flex flex-col gap-2">
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => {
+                setSelection("page");
+              }}
+            >
+              <input type="radio" checked={selection === "page"} />
+              <Label
+                className={`cursor-pointer ${
+                  theme === "dark" ? "text-white" : ""
+                }`}
+              >
+                Full Page
+              </Label>
+            </div>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => {
+                setSelection("selected");
+              }}
+            >
+              <input type="radio" checked={selection === "selected"} />
+              <Label
+                className={`cursor-pointer ${
+                  theme === "dark" ? "text-white" : ""
+                }`}
+              >
+                Selected Element
+              </Label>
+            </div>
+          </div>
         </div>
 
-        <div
-          className="text-alignment"
-          style={{
-            marginTop: "10px",
-          }}
-        >
+        <div className="text-alignment">
           <Label className={`${theme === "dark" ? "text-white" : ""}`}>
-            Text Alignment:
+            Type:
           </Label>
-          <div className="flex gap-0.5">
+          <div className="flex gap-0.5 mb-2">
             {btns.map((item) => (
               <Title key={item.value} title={item.value}>
                 <Button
                   type="button"
                   variant="outline"
-                  size="icon-xs"
+                  className={`cursor-pointer ${
+                    chosenFileType === item.value ? "border-emerald-600" : ""
+                  }`}
                   onClick={() => {
                     set_chosenFileType(item.value);
                   }}
@@ -136,7 +151,7 @@ const SaveModalJsx = ({
             ))}
           </div>
         </div>
-        {chosenFileType === "jpeg" ? (
+        {chosenFileType === "jpeg" || chosenFileType === "webp" ? (
           <div
             style={{
               marginTop: "10px",
@@ -144,9 +159,9 @@ const SaveModalJsx = ({
           >
             <Slider
               min={0}
-              max={1}
-              step={0.1}
-              value={[jpegQuality]}
+              max={100}
+              step={1}
+              value={[imgQuality]}
               unit={"%"}
               onValueChange={(value) => {
                 console.log(value);
@@ -164,28 +179,32 @@ const SaveModalJsx = ({
             flexWrap: "wrap",
           }}
         >
-          <Input
-            theme={theme}
-            autoFocus={true}
-            type="number"
-            value={ImageWidth}
-            onChange={(e) => {
-              set_ImageWidth(parseInt(e.target.value));
-              set_ImageHeight(parseInt(e.target.value / ratio));
-            }}
-            label="Width:"
-          />
-          <Input
-            theme={theme}
-            autoFocus={true}
-            type="number"
-            value={ImageHeight}
-            onChange={(e) => {
-              set_ImageWidth(parseInt(e.target.value * ratio));
-              set_ImageHeight(parseInt(e.target.value));
-            }}
-            label="Height:"
-          />
+          <div className="w-[48%]">
+            <Input
+              theme={theme}
+              autoFocus={true}
+              type="number"
+              value={ImageWidth}
+              onChange={(e) => {
+                set_ImageWidth(parseInt(e.target.value));
+                set_ImageHeight(parseInt(e.target.value / ratio));
+              }}
+              label="Width:"
+            />
+          </div>
+          <div className="w-[48%]">
+            <Input
+              theme={theme}
+              autoFocus={true}
+              type="number"
+              value={ImageHeight}
+              onChange={(e) => {
+                set_ImageWidth(parseInt(e.target.value * ratio));
+                set_ImageHeight(parseInt(e.target.value));
+              }}
+              label="Height:"
+            />
+          </div>
 
           {/* <IconButton
             btnClick={() => {
@@ -196,7 +215,7 @@ const SaveModalJsx = ({
                   chosenFileType,
                   ImageWidth,
                   ImageHeight,
-                  jpegQuality,
+                  imgQuality,
                   selection,
                 },
                 self
@@ -214,30 +233,31 @@ const SaveModalJsx = ({
           /> */}
         </div>
       </div>
-      <Button
-        variant="outline"
-        className="flex mt-10 items-center gap-2"
-        onClick={() => {
-          if (selection === "page") {
-            const fileSVGData = canvas.toDataURL({
-              format: chosenFileType,
-              quality: jpegQuality,
-            });
-            saveAs(fileSVGData, fileName + "." + chosenFileType);
-          } else {
-            const fileSVGData = canvas.getActiveObject().toDataURL({
-              format: chosenFileType,
-              quality: jpegQuality,
-            });
-            saveAs(fileSVGData, fileName + "." + chosenFileType);
-          }
-        }}
-      >
-        <span>
-          <Download />
-        </span>
-        Download
-      </Button>
+      <div className="flex mt-8 justify-center mb-5 items-center gap-2">
+        <Button
+          variant="outline"
+          onClick={() => {
+            if (selection === "page") {
+              const fileSVGData = canvas.toDataURL({
+                format: chosenFileType,
+                quality: imgQuality / 100,
+              });
+              saveAs(fileSVGData, fileName + "." + chosenFileType);
+            } else {
+              const fileSVGData = canvas.getActiveObject().toDataURL({
+                format: chosenFileType,
+                quality: imgQuality / 100,
+              });
+              saveAs(fileSVGData, fileName + "." + chosenFileType);
+            }
+          }}
+        >
+          <span>
+            <Download />
+          </span>
+          Download
+        </Button>
+      </div>
     </div>
   );
 };
