@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../../styles/Dashboard.css";
+import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 // import { toast } from "sonner";
 import { toast } from "react-toastify";

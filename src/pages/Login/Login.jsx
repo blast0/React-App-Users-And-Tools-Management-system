@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Image from "../../assets/image.png";
-import Logo from "../../assets/logo.png";
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa6";
-import "../../styles/Login.css";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { toast } from "sonner";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
+import { Link, useNavigate } from "react-router-dom";
+import { FaEyeSlash } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa6";
+import Image from "../../assets/image.png";
+import Logo from "../../assets/logo.png";
+import "./Login.css";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
