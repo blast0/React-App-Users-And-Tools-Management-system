@@ -44,7 +44,7 @@
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.21.1",
     "react-dropzone": "11.2.0",
-    "sonner": "^2.0.1",
+    "react-toastify": "^9.1.3",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.9",
     "tailwindcss-animate": "^1.0.7",

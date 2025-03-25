@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../styles/Dashboard.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { toast } from "react-toastify";
 import axios from "axios";
 import Navbar from "../../components/ui/custom/nav-bar/Navbar";
 import Designer from "../FabricEditor/designer";
@@ -28,7 +29,7 @@ const Dashboard = () => {
       );
       setData({ msg: response.data.msg, luckyNumber: response.data.secret });
     } catch (error) {
-      toast(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -36,7 +37,7 @@ const Dashboard = () => {
     fetchLuckyNumber();
     if (token === "") {
       navigate("/login");
-      toast("Please login first to access dashboard");
+      toast.warn("Please login first to access dashboard");
     }
   }, [token]);
 

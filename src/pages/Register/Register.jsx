@@ -7,7 +7,8 @@ import { FaEyeSlash } from "react-icons/fa6";
 import "../../styles/Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,16 +43,16 @@ const Login = () => {
             "http://localhost:3000/api/v1/register",
             formData
           );
-          toast("Registration successfull");
+          toast.success("Registration successfull");
           navigate("/login");
         } catch (err) {
-          toast(err.message);
+          toast.error(err.message);
         }
       } else {
-        toast("Passwords don't match");
+        toast.error("Passwords don't match");
       }
     } else {
-      toast("Please fill all inputs");
+      toast.error("Please fill all inputs");
     }
   };
 
