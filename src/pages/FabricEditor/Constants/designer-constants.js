@@ -646,26 +646,24 @@ export const DefaultTemplate = {
   name: "Default Template",
   value: "default",
   pageStyles: {
-    // width: 888,
-    // height: 500,
-    width: 100,
-    height: 100,
+    width: 888,
+    height: 500,
   },
   elements: [
-    // {
-    //   type: "Pattern",
-    //   name: "Background Image",
-    //   width: 888,
-    //   height: 500,
-    //   containerType: "rect", //triangle. circle, rect
-    //   url: "https://www.everwallpaper.co.uk/cdn/shop/collections/3D_Wallpaper.jpg?v=1660209305",
-    //   imageFit: "Fit Image",
-    //   BorderX: 5,
-    //   BorderY: 5,
-    //   BorderLock: true,
-    //   preselected: true,
-    //   stopContainerResize: true,
-    // },
+    {
+      type: "Pattern",
+      name: "Background Image",
+      width: 888,
+      height: 500,
+      containerType: "rect", //triangle. circle, rect
+      url: "https://www.everwallpaper.co.uk/cdn/shop/collections/3D_Wallpaper.jpg?v=1660209305",
+      imageFit: "Fit Image",
+      BorderX: 5,
+      BorderY: 5,
+      BorderLock: true,
+      preselected: true,
+      stopContainerResize: true,
+    },
     {
       type: "rect",
       name: "Overlay Bottom",
