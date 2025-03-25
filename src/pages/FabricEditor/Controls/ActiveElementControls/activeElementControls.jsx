@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { fabric } from "fabric";
 import { noop } from "lodash";
-
 import {
   ACTIONS,
   ARROW_DIRECTION,
@@ -601,11 +600,9 @@ class ActiveElementControls extends Component {
           {ELEMENT_POSITION_OPTIONS.map((item) => (
             <div className="mb-1 flex-1 basis-[30%]" key={item.title}>
               <Title key={item.bId} title={item.title}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon-xs"
-                  className="cursor-pointer w-[45px] h-[40px]"
+                <div
+                  className="cursor-pointer gap-2 flex bg-white justify-center items-center m-0 p-0 w-[42px] h-[40px]"
+                  style={{ borderRadius: "4px" }}
                   onClick={() => {
                     if (item.bId === "Top-Left") {
                       onChange(ACTIONS.ALIGN_ELEMENT_VERTICALLY, "top");
@@ -638,7 +635,7 @@ class ActiveElementControls extends Component {
                   }}
                 >
                   {item.icon}
-                </Button>
+                </div>
               </Title>
             </div>
           ))}

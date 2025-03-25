@@ -122,47 +122,47 @@ export const ADD_SHAPE_OPTIONS = [
 export const ELEMENT_POSITION_OPTIONS = [
   {
     title: "Align Top Left",
-    icon: <SquareArrowUpLeft />,
+    icon: <SquareArrowUpLeft size={30} />,
     bId: "Top-Left",
   },
   {
     title: "Align Top Center",
-    icon: <SquareArrowUp />,
+    icon: <SquareArrowUp size={30} />,
     bId: "Top-Center",
   },
   {
     title: "Align Top Right",
-    icon: <SquareArrowUpRight />,
+    icon: <SquareArrowUpRight size={30} />,
     bId: "Top-Right",
   },
   {
     title: "Align Center Left",
-    icon: <SquareArrowLeft />,
+    icon: <SquareArrowLeft size={30} />,
     bId: "Center-Left",
   },
   {
     title: "Align Center Middle",
-    icon: <SquareSquare />,
+    icon: <SquareSquare size={30} />,
     bId: "Center",
   },
   {
     title: "Align Center Right",
-    icon: <SquareArrowRight />,
+    icon: <SquareArrowRight size={30} />,
     bId: "Center-Right",
   },
   {
     title: "Align Bottom Left",
-    icon: <SquareArrowDownLeft />,
+    icon: <SquareArrowDownLeft size={30} />,
     bId: "Bottom-Left",
   },
   {
     title: "Align Bottom Center",
-    icon: <SquareArrowDown />,
+    icon: <SquareArrowDown size={30} />,
     bId: "Bottom-Center",
   },
   {
     title: "Align Bottom Right",
-    icon: <SquareArrowDownRight />,
+    icon: <SquareArrowDownRight size={30} />,
     bId: "Bottom-Right",
   },
 ];
