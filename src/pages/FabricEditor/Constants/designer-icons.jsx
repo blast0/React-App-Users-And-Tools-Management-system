@@ -1,7 +1,7 @@
 import {
+  Wand,
   Bold,
   Circle,
-  FileCode,
   FlipHorizontal2,
   FlipVertical2,
   Images,
@@ -24,8 +24,10 @@ import {
   SquareSquare,
   Strikethrough,
   Triangle,
+  FileUp,
   TypeOutline,
   Underline,
+  LaptopMinimal,
 } from "lucide-react";
 import { ACTIONS } from "./designer-constants";
 
@@ -47,6 +49,19 @@ export const TEXT_ALIGNMENT = [
   },
 ];
 
+export const DELETE_OPTIONS = [
+  {
+    name: "Clear Page",
+    icon: <LaptopMinimal />,
+    value: ACTIONS.CLEAR_PAGE,
+  },
+  {
+    name: "Selected Item",
+    icon: <Wand />,
+    value: ACTIONS.CLEAR_SELECTED_ITEM,
+  },
+];
+
 export const OPEN_OPTIONS = [
   {
     name: "Open Image",
@@ -55,7 +70,7 @@ export const OPEN_OPTIONS = [
   },
   {
     name: "Open Template From File",
-    icon: <FileCode />,
+    icon: <FileUp />,
     value: ACTIONS.RAW_DATA,
   },
   {

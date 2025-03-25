@@ -476,19 +476,6 @@ export const SAVE_OPTIONS = [
   },
 ];
 
-export const DELETE_OPTIONS = [
-  {
-    name: "Clear Page",
-    icon: "icon-laptop",
-    value: ACTIONS.CLEAR_PAGE,
-  },
-  {
-    name: "Selected Item",
-    icon: "icon-cancel-circle",
-    value: ACTIONS.CLEAR_SELECTED_ITEM,
-  },
-];
-
 export const CANVAS_ACTION_HISTORY = {
   id: null,
   left: 0,

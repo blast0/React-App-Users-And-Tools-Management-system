@@ -1,19 +1,19 @@
 import { useState } from "react";
-import Checkbox from "../../../../components/checkbox/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Save } from "lucide-react";
 
 const SaveTemplateModal = ({
+  currImgDataUrl,
   JsonNodes,
   imgNodes,
   allNames,
   onCancel,
   onSave,
   onOverWrite,
-  onFileNameChange,
-  currImgDataUrl,
 }) => {
   const [nameExists, setNameExists] = useState(false);
+  const [fileName, setFileName] = useState("");
   const [imageNode, setImageNode] = useState({});
   const [JsonNode, setJsonNode] = useState(null);
   const [checkReplace, setCheckReplace] = useState(nameExists ? true : false);
@@ -42,23 +42,18 @@ const SaveTemplateModal = ({
     if (JsnNode) {
       setJsonNode(JsnNode);
     }
-
-    onFileNameChange(e.target.value, exists);
+    setFileName(e.target.value);
   };
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          gap: "10px",
-          justifyContent: "space-between",
-        }}
-        className="modal-body"
-      >
-        <Input type="text" label="File Name:" onChange={handleInputChange} />
+      <div className="modal-body w-[100%] justify-center flex">
+        <Input
+          type="text"
+          containerClassName="w-[90%]"
+          label="File Name:"
+          onChange={handleInputChange}
+        />
         {nameExists ? (
           <>
             <div
@@ -104,43 +99,32 @@ const SaveTemplateModal = ({
                 </div>
               </div>
             </div>
-            <Checkbox
+            {/* <Checkbox
               onChange={() => {
                 setCheckReplace(!checkReplace);
               }}
               checked={checkReplace}
               label="File name already exists (overwrite existing file?)"
-            />
+            /> */}
           </>
         ) : null}
       </div>
-      <div className="modal-footer align-center">
-        <Button
-          type="button"
-          className="mr-2"
-          onClick={() => {
-            if (checkReplace) {
-              onOverWrite(imageNode, JsonNode);
-            } else if (!nameExists) {
-              onSave();
-            }
-          }}
-          disabled={!checkReplace && nameExists}
-          size="sm"
-        >
-          {!checkReplace ? "Save" : "Overwrite"}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            onCancel();
-          }}
-          size="sm"
-        >
-          Cancel
-        </Button>
-      </div>
+      <Button
+        // className="mr-2"
+        variant="outline"
+        className="w-[100px]"
+        onClick={() => {
+          // if (checkReplace) {
+          // onOverWrite(imageNode, JsonNode, fileName);
+          // } else if (!nameExists) {
+          onSave(fileName);
+          // }
+        }}
+        disabled={!checkReplace && nameExists}
+        size="sm"
+      >
+        {!checkReplace ? "Save" : "Overwrite"}
+      </Button>
     </>
   );
 };

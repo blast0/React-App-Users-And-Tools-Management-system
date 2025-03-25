@@ -14,6 +14,7 @@ const SaveModalJsx = ({
   ratio,
   canvas,
   theme,
+  onSave,
 }) => {
   const [fileName, set_fileName] = useState(defaultFileName);
   const [chosenFileType, set_chosenFileType] = useState(defaultFileType);
@@ -41,188 +42,190 @@ const SaveModalJsx = ({
     },
   ];
   return (
-    <div className="SaveDownloadModal p-2 modal-body">
-      <Input
-        theme={theme}
-        autoFocus={true}
-        value={fileName}
-        onChange={(e) => {
-          set_fileName(e.target.value);
-        }}
-        label="File Name:"
-      />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "column",
-          marginTop: "10px",
-        }}
-      >
-        <span
-          className="fileName"
-          style={{
-            color: theme !== "dark" ? "black" : "white",
+    <>
+      <div className="SaveDownloadModal p-2 modal-body">
+        <Input
+          theme={theme}
+          autoFocus={true}
+          value={fileName}
+          onChange={(e) => {
+            set_fileName(e.target.value);
           }}
-        >
-          {fileName}.{chosenFileType}
-        </span>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <div
-            style={{
-              height: "120px",
-              width: "200px",
-              backgroundImage: `url(${
-                selection === "page"
-                  ? canvas.toDataURL()
-                  : canvas.getActiveObject().toDataURL()
-              })`,
-              backgroundColor: "#fff",
-              backgroundSize: "contain",
-              backgroundPosition: "50%",
-              backgroundRepeat: "no-repeat",
-              border: "1px solid #eee",
-            }}
-          ></div>
-          <div className="flex flex-col gap-2">
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => {
-                setSelection("page");
-              }}
-            >
-              <input type="radio" checked={selection === "page"} />
-              <Label
-                className={`cursor-pointer ${
-                  theme === "dark" ? "text-white" : ""
-                }`}
-              >
-                Full Page
-              </Label>
-            </div>
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => {
-                setSelection("selected");
-              }}
-            >
-              <input type="radio" checked={selection === "selected"} />
-              <Label
-                className={`cursor-pointer ${
-                  theme === "dark" ? "text-white" : ""
-                }`}
-              >
-                Selected Element
-              </Label>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-alignment">
-          <Label className={`${theme === "dark" ? "text-white" : ""}`}>
-            Type:
-          </Label>
-          <div className="flex gap-0.5 mb-2">
-            {btns.map((item) => (
-              <Title key={item.value} title={item.value}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={`cursor-pointer ${
-                    chosenFileType === item.value ? "border-emerald-600" : ""
-                  }`}
-                  onClick={() => {
-                    set_chosenFileType(item.value);
-                  }}
-                >
-                  {item.btnText}
-                </Button>
-              </Title>
-            ))}
-          </div>
-        </div>
-        {chosenFileType === "jpeg" || chosenFileType === "webp" ? (
-          <div
-            style={{
-              marginTop: "10px",
-            }}
-          >
-            <Slider
-              min={0}
-              max={100}
-              step={1}
-              value={[imgQuality]}
-              unit={"%"}
-              onValueChange={(value) => {
-                console.log(value);
-                set_jpegQuality(value[0]);
-              }}
-              theme={theme}
-              label={"Image Quality:"}
-            />
-          </div>
-        ) : null}
+          label="File Name:"
+        />
         <div
           style={{
             display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
+            justifyContent: "space-between",
+            flexDirection: "column",
+            marginTop: "10px",
           }}
         >
-          <div className="w-[48%]">
-            <Input
-              theme={theme}
-              autoFocus={true}
-              type="number"
-              value={ImageWidth}
-              onChange={(e) => {
-                set_ImageWidth(parseInt(e.target.value));
-                set_ImageHeight(parseInt(e.target.value / ratio));
+          <span
+            className="fileName"
+            style={{
+              color: theme !== "dark" ? "black" : "white",
+            }}
+          >
+            {fileName}.{chosenFileType}
+          </span>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <div
+              style={{
+                height: "120px",
+                width: "200px",
+                backgroundImage: `url(${
+                  selection === "page"
+                    ? canvas.toDataURL()
+                    : canvas.getActiveObject().toDataURL()
+                })`,
+                backgroundColor: "#fff",
+                backgroundSize: "contain",
+                backgroundPosition: "50%",
+                backgroundRepeat: "no-repeat",
+                border: "1px solid #eee",
               }}
-              label="Width:"
-            />
+            ></div>
+            <div className="flex flex-col gap-2">
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  setSelection("page");
+                }}
+              >
+                <input type="radio" checked={selection === "page"} />
+                <Label
+                  className={`cursor-pointer ${
+                    theme === "dark" ? "text-white" : ""
+                  }`}
+                >
+                  Full Page
+                </Label>
+              </div>
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  setSelection("selected");
+                }}
+              >
+                <input type="radio" checked={selection === "selected"} />
+                <Label
+                  className={`cursor-pointer ${
+                    theme === "dark" ? "text-white" : ""
+                  }`}
+                >
+                  Selected Element
+                </Label>
+              </div>
+            </div>
           </div>
-          <div className="w-[48%]">
-            <Input
-              theme={theme}
-              autoFocus={true}
-              type="number"
-              value={ImageHeight}
-              onChange={(e) => {
-                set_ImageWidth(parseInt(e.target.value * ratio));
-                set_ImageHeight(parseInt(e.target.value));
+
+          <div className="text-alignment">
+            <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+              Type:
+            </Label>
+            <div className="flex gap-0.5 mb-2">
+              {btns.map((item) => (
+                <Title key={item.value} title={item.value}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={`cursor-pointer ${
+                      chosenFileType === item.value ? "border-emerald-600" : ""
+                    }`}
+                    onClick={() => {
+                      set_chosenFileType(item.value);
+                    }}
+                  >
+                    {item.btnText}
+                  </Button>
+                </Title>
+              ))}
+            </div>
+          </div>
+          {chosenFileType === "jpeg" || chosenFileType === "webp" ? (
+            <div
+              style={{
+                marginTop: "10px",
               }}
-              label="Height:"
-            />
+            >
+              <Slider
+                min={0}
+                max={100}
+                step={1}
+                value={[imgQuality]}
+                unit={"%"}
+                onValueChange={(value) => {
+                  console.log(value);
+                  set_jpegQuality(value[0]);
+                }}
+                theme={theme}
+                label={"Image Quality:"}
+              />
+            </div>
+          ) : null}
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div className="w-[48%]">
+              <Input
+                theme={theme}
+                autoFocus={true}
+                type="number"
+                value={ImageWidth}
+                onChange={(e) => {
+                  set_ImageWidth(parseInt(e.target.value));
+                  set_ImageHeight(parseInt(e.target.value / ratio));
+                }}
+                label="Width:"
+              />
+            </div>
+            <div className="w-[48%]">
+              <Input
+                theme={theme}
+                autoFocus={true}
+                type="number"
+                value={ImageHeight}
+                onChange={(e) => {
+                  set_ImageWidth(parseInt(e.target.value * ratio));
+                  set_ImageHeight(parseInt(e.target.value));
+                }}
+                label="Height:"
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex mt-8 justify-center mb-5 items-center gap-2">
-        <Button
-          variant="outline"
-          onClick={() => {
-            if (selection === "page") {
-              const fileSVGData = canvas?.toDataURL({
-                format: chosenFileType,
-                quality: imgQuality / 100,
-              });
-              saveAs(fileSVGData, fileName + "." + chosenFileType);
-            } else {
-              const fileSVGData = canvas.getActiveObject()?.toDataURL({
-                format: chosenFileType,
-                quality: imgQuality / 100,
-              });
-              saveAs(fileSVGData, fileName + "." + chosenFileType);
-            }
-          }}
-        >
-          <span>
-            <Download />
-          </span>
-          Download
-        </Button>
-      </div>
-    </div>
+      <Button
+        variant="outline"
+        className="w-[100px]"
+        onClick={() => {
+          onSave();
+          if (selection === "page") {
+            const fileSVGData = canvas?.toDataURL({
+              format: chosenFileType,
+              quality: imgQuality / 100,
+            });
+            saveAs(fileSVGData, fileName + "." + chosenFileType);
+          } else {
+            const fileSVGData = canvas.getActiveObject()?.toDataURL({
+              format: chosenFileType,
+              quality: imgQuality / 100,
+            });
+            saveAs(fileSVGData, fileName + "." + chosenFileType);
+          }
+        }}
+      >
+        <span>
+          <Download />
+        </span>
+        Download
+      </Button>
+    </>
   );
 };
 

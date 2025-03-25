@@ -23,6 +23,7 @@ import {
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
+import { toast } from "react-toastify";
 
 export const handleDrop = (images, self) => {
   console.log(images);
@@ -1625,14 +1626,13 @@ export const downloadJSON = (self) => {
   self.setState({ modalActive: true });
 };
 
-export const createJSON = (self) => {
-  const canvasRef = Object.values(self.state.canvases)[0];
-  const groupPresent = isGroupPresent(canvasRef);
+export const createJSON = (self, _canvas) => {
+  const groupPresent = isGroupPresent(_canvas);
   if (groupPresent) {
-    self.props.toast.error("Error", `Group object is not allowed to export`);
+    toast.error("Error", `Group object is not allowed to export`);
     return;
   }
-  const temp = canvasRef.toJSON(EXTRA_ELEMENT_PROPS);
+  const temp = _canvas.toJSON(EXTRA_ELEMENT_PROPS);
   return temp;
 };
 
@@ -2116,19 +2116,19 @@ export const onAddImageFromFile = (e, self, pageHeight, pageWidth) => {
           if (img.width > pageWidth || img.height > pageHeight) {
             if (imgRatio > 1) {
               //wider image
-              if (img.width > 1920) {
-                if (1920 / imgRatio > 1080) {
+              if (img.width > 1550) {
+                if (1550 / imgRatio > 870) {
                   dimensionChangeHandler(
                     "width",
-                    parseInt(1080 * imgRatio),
+                    parseInt(870 * imgRatio),
                     self
                   );
-                  dimensionChangeHandler("height", 1080, self);
+                  dimensionChangeHandler("height", 870, self);
                 } else {
-                  dimensionChangeHandler("width", 1920, self);
+                  dimensionChangeHandler("width", 1550, self);
                   dimensionChangeHandler(
                     "height",
-                    parseInt(1920 / imgRatio),
+                    parseInt(1550 / imgRatio),
                     self
                   );
                 }
@@ -2142,13 +2142,9 @@ export const onAddImageFromFile = (e, self, pageHeight, pageWidth) => {
               }
             } else {
               //longer image
-              if (img.height > 1080) {
-                dimensionChangeHandler(
-                  "width",
-                  parseInt(1080 * imgRatio),
-                  self
-                );
-                dimensionChangeHandler("height", 1080, self);
+              if (img.height > 870) {
+                dimensionChangeHandler("width", parseInt(870 * imgRatio), self);
+                dimensionChangeHandler("height", 870, self);
               } else if (img.height > pageHeight) {
                 dimensionChangeHandler(
                   "width",

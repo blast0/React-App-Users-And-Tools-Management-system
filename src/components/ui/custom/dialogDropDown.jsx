@@ -6,8 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Title } from "@/components/ui/title";
-import { Check } from "lucide-react";
-import { DialogDemo } from "../../DialogBox";
+import { DialogBox } from "../../DialogBox";
 
 export function DialogDropDown({
   title,
@@ -45,7 +44,7 @@ export function DialogDropDown({
                 );
               }
               return item.modalJsx ? (
-                <DialogDemo title="Download Image" trigger={item.modalJsx} />
+                <DialogBox title="Download Image" trigger={item.modalJsx} />
               ) : (
                 <DropdownMenuItem
                   key={i}

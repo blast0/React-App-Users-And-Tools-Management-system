@@ -7,21 +7,30 @@ import {
   Shapes,
   Trash,
   Undo,
+  ImageDown,
+  FileDown,
   Download,
 } from "lucide-react";
-import { ACTIONS, DELETE_OPTIONS } from "../Constants/designer-constants";
+
+import { ACTIONS } from "../Constants/designer-constants";
 import ActiveElementControls from "./ActiveElementControls/activeElementControls";
-import { getObjectTypeIcon } from "../helper-functions";
+import { createJSON, getObjectTypeIcon } from "../helper-functions";
 import { MenuButton } from "@/components/ui/custom/menu-button";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import { Input } from "@/components/ui/input";
 import Dropdown from "@/components/ui/custom/dropdown";
 import { Label } from "@/components/ui/label";
-import { DialogDemo } from "../../../components/DialogBox";
+import { DialogBox } from "../../../components/DialogBox";
 import SaveModalJsx from "../Templates/saveModal";
 import { DialogDropDown } from "../../../components/ui/custom/dialogDropDown";
-import { OPEN_OPTIONS, ADD_SHAPE_OPTIONS } from "../Constants/designer-icons";
+import {
+  OPEN_OPTIONS,
+  ADD_SHAPE_OPTIONS,
+  DELETE_OPTIONS,
+} from "../Constants/designer-icons";
+import SaveTemplateModal from "../Templates/saveTemplateModal";
+import { sha256 } from "crypto-hash";
 
 class Rightpanel extends Component {
   constructor(props) {
@@ -57,86 +66,67 @@ class Rightpanel extends Component {
     const SAVE_OPTIONS = [
       {
         name: "Save Image",
-        tooltip: "Save design as an image in Image Library",
-        icon: "icon-image",
         value: ACTIONS.SAVE_PAGE_TO_LIBRARY,
         modalJsx: (
-          <DialogDemo
+          <DialogBox
             title="Download Image"
             theme={theme}
             trigger={
               <div className="flex items-center cursor-pointer gap-2">
-                <Download />
+                <ImageDown />
                 Download Image
               </div>
             }
             modalJsx={
-              <>
-                <SaveModalJsx
-                  self={this}
-                  thumbnailUrl={null}
-                  canvas={canvas}
-                  theme={theme}
-                  defaultFileName={"canvas"}
-                  defaultFileType={"jpeg"}
-                  imageWidth={canvas?.width}
-                  ratio={canvas?.width / canvas?.height}
-                />
-              </>
+              <SaveModalJsx
+                self={this}
+                thumbnailUrl={null}
+                canvas={canvas}
+                theme={theme}
+                defaultFileName={"canvas"}
+                defaultFileType={"jpeg"}
+                imageWidth={canvas?.width}
+                ratio={canvas?.width / canvas?.height}
+              />
             }
           />
         ),
       },
       {
         name: "Save My Template",
-        tooltip: "Save Template design in my Library",
-        icon: "icon-image-library",
         value: ACTIONS.UPLOAD_JSON,
         modalJsx: (
-          <DialogDemo
+          <DialogBox
             title="Image"
             theme={theme}
             trigger={
-              <div className="flex items-center cursor-pointer gap-2">
-                <Download />
-                else
-              </div>
-            }
-            modalJsx={<>Something Else here</>}
-          />
-        ),
-      },
-      {
-        name: "Download Template",
-        tooltip: "Download Template file",
-        icon: "icon-fs-file",
-        value: ACTIONS.DOWNLOAD_JSON,
-        modalJsx: (
-          <DialogDemo
-            title="Image"
-            theme={theme}
-            trigger={
-              <div className="flex items-center cursor-pointer gap-2">
-                <Download />
-                Download Template
+              <div className="flex items-center h-[27px] cursor-pointer gap-2">
+                <FileDown />
+                Download Canvas JSON
               </div>
             }
             modalJsx={
               <>
-                <Label className={`${theme === "dark" ? "text-white" : ""}`}>
-                  Element Name:
-                </Label>
-                <Input
-                  placeholder="Element Name"
-                  value={selectedElementName ? selectedElementName : ""}
-                  onChange={(e) => {
-                    const elem = canvas.getActiveObject();
-                    if (elem) {
-                      elem.customName = true;
-                      elem.changeName = e.target.value;
-                      onChange(ACTIONS.ELEMENT_NAME, e);
-                    }
+                <SaveTemplateModal
+                  JsonNodes={{}}
+                  imgNodes={{}}
+                  allNames={[]}
+                  currImgDataUrl={null}
+                  onCancel={() => {}}
+                  onSave={async (fileName) => {
+                    const temp = createJSON(this, canvas);
+                    const hash = await sha256(JSON.stringify(temp));
+                    temp.hash = hash;
+                    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+                      JSON.stringify(temp)
+                    )}`;
+                    const link = document.createElement("a");
+                    link.href = jsonString;
+                    if (fileName === "") link.download = "sample.json";
+                    else link.download = fileName + ".json";
+                    link.click();
                   }}
+                  onOverWrite={() => {}}
                 />
               </>
             }

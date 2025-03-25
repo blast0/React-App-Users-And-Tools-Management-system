@@ -1,37 +1,52 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
-export function DialogDemo({
+export function DialogBox({
   title = "title",
-  trigger,
-  desc,
+  trigger = <></>,
+  desc = "",
   modalJsx = <></>,
-  theme = "dark",
+  open = false,
 }) {
+  const [isOpen, setIsopen] = useState(open);
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className={`sm:max-w-[425px] p-[10px]`}>
+    <Dialog open={isOpen} onOpenChange={setIsopen} close={true}>
+      <DialogTrigger
+        className={
+          "flex text-xs items-center cursor-pointer hover:bg-[#f9f3f4] "
+        }
+        onClick={() => {
+          setIsopen((isOpen) => !isOpen);
+        }}
+        asChild
+      >
+        {trigger}
+      </DialogTrigger>
+      <DialogContent
+        className={`sm:max-w-[425px] p-[10px] flex flex-wrap justify-center py-5`}
+      >
         <DialogHeader>
           <DialogTitle className={`flex justify-center`}>{title}</DialogTitle>
           {desc ? <DialogDescription>{desc}</DialogDescription> : null}
         </DialogHeader>
-        {/* <div className={theme === "dark" ? "bg-black" : "bg-white"}> */}
         {modalJsx}
-        {/* </div> */}
-        {/* <DialogFooter>
-          <Button variant="outline">Save changes</Button>
-        </DialogFooter> */}
+        <Button
+          variant="outline"
+          className="w-[100px] cursor-pointer h-[32px] hover:bg-red-400 hover:text-white  "
+          onClick={() => {
+            setIsopen(false);
+          }}
+        >
+          Cancel
+        </Button>
       </DialogContent>
     </Dialog>
   );
