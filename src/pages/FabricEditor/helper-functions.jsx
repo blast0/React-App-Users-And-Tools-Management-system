@@ -23,7 +23,6 @@ import {
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
-// import FileDialog from "@/components/file-dialog";
 
 export const handleDrop = (images, self) => {
   console.log(images);
@@ -232,6 +231,7 @@ export const addPattern = async (url, canvasRef, cb) => {
         { crossOrigin: "Anonymous" }
       );
       canvasRef.renderAll();
+      canvasRef.requestRenderAll();
       Spinner.hideSpinner();
     };
     img.onerror = function () {

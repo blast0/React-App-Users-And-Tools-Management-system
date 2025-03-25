@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-// import RangeSlider from "../range-slider";
-// import TextInput, {  } from "../Input/text-input";
-// import ComboButton from "../Buttons/ButtonGroup";
-// import RadioInput from "../radio-button";
-// import IconButton from "../Buttons/IconButton";
-// import { handleRightPanelUpdates } from "./helper-functions";
-// import { ACTIONS } from "./constants";
 import { saveAs } from "file-saver";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import { Label } from "@/components/ui/label";
-import RadioInput from "@/components/ui/custom/radio-input";
 import { Download } from "lucide-react";
-import { handleRightPanelUpdates } from "../../designer-helper-functions";
-import { ACTIONS } from "../../Constants/designer-constants";
 
 const SaveModalJsx = ({
   defaultFileName,
@@ -205,32 +195,6 @@ const SaveModalJsx = ({
               label="Height:"
             />
           </div>
-
-          {/* <IconButton
-            btnClick={() => {
-              handleRightPanelUpdates(
-                ACTIONS.DOWNLOAD_PAGE,
-                {
-                  fileName,
-                  chosenFileType,
-                  ImageWidth,
-                  ImageHeight,
-                  imgQuality,
-                  selection,
-                },
-                self
-              );
-            }}
-            btnText={"Download "}
-            rightIcon={"icon-download"}
-            variant="light"
-          />
-          <IconButton
-            // btnClick={handleShow}
-            btnText={"Save To Library "}
-            rightIcon={"icon-save"}
-            variant="light"
-          /> */}
         </div>
       </div>
       <div className="flex mt-8 justify-center mb-5 items-center gap-2">
@@ -238,13 +202,13 @@ const SaveModalJsx = ({
           variant="outline"
           onClick={() => {
             if (selection === "page") {
-              const fileSVGData = canvas.toDataURL({
+              const fileSVGData = canvas?.toDataURL({
                 format: chosenFileType,
                 quality: imgQuality / 100,
               });
               saveAs(fileSVGData, fileName + "." + chosenFileType);
             } else {
-              const fileSVGData = canvas.getActiveObject().toDataURL({
+              const fileSVGData = canvas.getActiveObject()?.toDataURL({
                 format: chosenFileType,
                 quality: imgQuality / 100,
               });

@@ -5,7 +5,7 @@ import {
 } from "../../Constants/designer-constants";
 // import { getDataUriFromBlobData, loadGoogleFont } from "../../../../helper";
 import { Spinner } from "@/components/spinner";
-import { loadGoogleFont } from "../../designer-helper-functions";
+import { loadGoogleFont } from "../../helper-functions";
 
 export const handleSelectedTool = (selectedTool, activeElement, self) => {
   if (!selectedTool) return;

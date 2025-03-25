@@ -341,7 +341,7 @@ export const EXTRA_ELEMENT_PROPS = [
   "pointsAdded",
 ];
 
-export const ArrowDirection = [
+export const ARROW_DIRECTION = [
   {
     name: "Top",
     value: "Top",
@@ -357,60 +357,6 @@ export const ArrowDirection = [
   {
     name: "Bottom",
     value: "Bottom",
-  },
-];
-
-export const FLIP_OPTIONS = [
-  {
-    title: "Flip Text Horizontally",
-    icon: "icon-flip-h",
-    bId: "x",
-  },
-  {
-    title: "Flip Text Vertically",
-    icon: "icon-flip-v",
-    bId: "y",
-  },
-];
-
-export const TEXT_ALIGNMENT = [
-  {
-    title: "Align Left",
-    icon: "icon-align-left",
-    bId: "left",
-  },
-  {
-    title: "Align Center",
-    icon: "icon-align-center",
-    bId: "center",
-  },
-  {
-    title: "Align Right",
-    icon: "icon-align-right",
-    bId: "right",
-  },
-];
-
-export const FONT_STYLES = [
-  {
-    title: "Bold Toggle",
-    icon: "icon-bold",
-    bId: "bold",
-  },
-  {
-    title: "Italic Toggle",
-    icon: "icon-italic",
-    bId: "italic",
-  },
-  {
-    title: "Strikethrough Toggle",
-    icon: "icon-strikethrough",
-    bId: "strikethrough",
-  },
-  {
-    title: "Underline Toggle",
-    icon: "icon-underline",
-    bId: "underline",
   },
 ];
 
@@ -540,76 +486,6 @@ export const DELETE_OPTIONS = [
     name: "Selected Item",
     icon: "icon-cancel-circle",
     value: ACTIONS.CLEAR_SELECTED_ITEM,
-  },
-];
-
-export const ADD_SHAPE_OPTIONS = [
-  {
-    name: "Add Image from library",
-    icon: "icon-image-library",
-    value: ACTIONS.ADD_FROM_LIBRARY,
-  },
-  {
-    name: "Upload and Add from Library",
-    tooltip: "Upload Image to Library and Add",
-    icon: "icon-fs-image",
-    value: ACTIONS.UPLOAD_IMAGE,
-  },
-  {
-    name: "Add Image",
-    tooltip: "Upload Image from Desktop",
-    icon: "icon-fs-image",
-    value: ACTIONS.UPLOAD_SVG,
-  },
-  {
-    name: "Add Triangle",
-    icon: "icon-triangle",
-    value: ACTIONS.ADD_TRIANGLE,
-  },
-  {
-    name: "Add Text",
-    icon: "icon-text",
-    value: ACTIONS.ADD_TEXT,
-  },
-  {
-    name: "Add Rectangle",
-    icon: "icon-rectangle",
-    value: ACTIONS.ADD_RECTANGLE,
-  },
-  {
-    name: "Add Circle",
-    icon: "icon-circle",
-    value: ACTIONS.ADD_CIRCLE,
-  },
-  {
-    name: "Add Solid Line",
-    icon: "icon-minus",
-    value: ACTIONS.ADD_LINE,
-  },
-  {
-    name: "Add Dashed Line",
-    icon: "icon-more-horizon",
-    value: ACTIONS.ADD_DASHED_LINE,
-  },
-  {
-    name: "Add Arrow",
-    icon: "icon-quad-arrow",
-    value: ACTIONS.ADD_QUADRATIC_CURVE,
-  },
-  {
-    name: "Add Speech Bubble",
-    icon: "icon-random-communication",
-    value: ACTIONS.ADD_SPEECH_BUBBLE,
-  },
-  {
-    name: "Add Label",
-    icon: "icon-engage",
-    value: ACTIONS.ADD_SPEECH_LABEL,
-  },
-  {
-    name: "Add Random Shape",
-    icon: "icon-blob",
-    value: ACTIONS.ADD_RANDOM_SHAPE,
   },
 ];
 
@@ -783,24 +659,26 @@ export const DefaultTemplate = {
   name: "Default Template",
   value: "default",
   pageStyles: {
-    width: 888,
-    height: 500,
+    // width: 888,
+    // height: 500,
+    width: 100,
+    height: 100,
   },
   elements: [
-    {
-      type: "Pattern",
-      name: "Background Image",
-      width: 888,
-      height: 500,
-      containerType: "rect", //triangle. circle, rect
-      url: "https://www.everwallpaper.co.uk/cdn/shop/collections/3D_Wallpaper.jpg?v=1660209305",
-      imageFit: "Fit Image",
-      BorderX: 5,
-      BorderY: 5,
-      BorderLock: true,
-      preselected: true,
-      stopContainerResize: true,
-    },
+    // {
+    //   type: "Pattern",
+    //   name: "Background Image",
+    //   width: 888,
+    //   height: 500,
+    //   containerType: "rect", //triangle. circle, rect
+    //   url: "https://www.everwallpaper.co.uk/cdn/shop/collections/3D_Wallpaper.jpg?v=1660209305",
+    //   imageFit: "Fit Image",
+    //   BorderX: 5,
+    //   BorderY: 5,
+    //   BorderLock: true,
+    //   preselected: true,
+    //   stopContainerResize: true,
+    // },
     {
       type: "rect",
       name: "Overlay Bottom",

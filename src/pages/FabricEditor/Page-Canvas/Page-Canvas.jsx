@@ -21,7 +21,7 @@ import {
   addPattern,
   getNewID,
   roundToDecimal,
-} from "../designer-helper-functions";
+} from "../helper-functions";
 // CONSTANTS
 import "../fabric-history";
 // STYLE

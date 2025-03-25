@@ -5,7 +5,7 @@ import {
   addPattern,
   getNewID,
   loadGoogleFont,
-} from "./designer-helper-functions";
+} from "./helper-functions";
 import { Spinner } from "@/components/spinner";
 
 class CanvasCore {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // LOCAL COMPONENTS / METHODS
 import Page from "./Page-Canvas/Page-Canvas";
-import RightPanel from "./RightPanel/rightpanel";
+import RightPanel from "./Controls/rightpanel";
 // import SaveDownloadModal from "../../components/save-download-modal";
 import VaulDrawer from "@/components/ui/drawer";
 // CONSTANTS
@@ -14,16 +14,16 @@ import {
   onSelectImage,
   initializeApp,
   handleJsonData,
-  setActiveObject,
+  // setActiveObject,
   handleOutsideClick,
   // updatePageBreadcrumb,
   handleRightPanelUpdates,
-  addSavedImageFromLibrary,
+  // addSavedImageFromLibrary,
   createCanvasElementsDropdownData,
   onAddImageFromFile,
   getCanvasElementNames,
   handleDrop,
-} from "./designer-helper-functions";
+} from "./helper-functions";
 
 // STYLE
 import "./googlefonts.css";

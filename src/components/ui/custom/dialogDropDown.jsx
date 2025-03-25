@@ -44,26 +44,21 @@ export function DialogDropDown({
                   </div>
                 );
               }
-              return (
-                <DialogDemo
-                  title="Download Image"
-                  //   theme={theme}
-                  //   trigger={
-                  //     <DropdownMenuItem
-                  //       key={i}
-                  //       onClick={() => onSelect(item)}
-                  //       className={`flex text-xs justify-between items-center cursor-pointer ${
-                  //         item?.value === value ? "bg-slate-100" : ""
-                  //       }`}
-                  //     >
-                  //       <div className="flex items-center h-[15px] gap-2">
-                  //         {item?.icon}
-                  //         {item.name}
-                  //       </div>
-                  //     </DropdownMenuItem>
-                  //   }
-                  trigger={item.modalJsx}
-                />
+              return item.modalJsx ? (
+                <DialogDemo title="Download Image" trigger={item.modalJsx} />
+              ) : (
+                <DropdownMenuItem
+                  key={i}
+                  onClick={() => onSelect(item)}
+                  className={`flex text-xs justify-between items-center cursor-pointer ${
+                    item?.value === value ? "bg-slate-100" : ""
+                  }`}
+                >
+                  <div className="flex items-center h-[15px] gap-2">
+                    {item?.icon}
+                    {item.name}
+                  </div>
+                </DropdownMenuItem>
               );
             })}
         </DropdownMenuGroup>

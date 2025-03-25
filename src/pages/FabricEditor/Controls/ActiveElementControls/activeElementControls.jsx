@@ -4,42 +4,33 @@ import { noop } from "lodash";
 
 import {
   ACTIONS,
-  RESET_ACTIVE_ELEM_PROPS,
-  SPACE_EVENLY_OPTIONS,
-  ArrowDirection,
-  // FONT_STYLES,
-  TEXT_ALIGNMENT,
-  // FLIP_OPTIONS,
-  SPEECH_TEXT_ALIGNMENT_OPTIONS,
+  ARROW_DIRECTION,
   ALIGNMENT_OPTIONS,
+  SPACE_EVENLY_OPTIONS,
+  RESET_ACTIVE_ELEM_PROPS,
+  SPEECH_TEXT_ALIGNMENT_OPTIONS,
 } from "../../Constants/designer-constants";
 import {
   createNewPoly,
   getNewID,
   handlePatternFit,
   scaleElementTofitCanvas,
-} from "../../designer-helper-functions";
+} from "../../helper-functions";
 import {
-  getFrontDropdownData,
-  getArrowHeadData,
-  updateActiveElement,
-  handlePatternSize,
-  handlePatternPosition,
-  handleShadow,
-  updateStyle,
-  handleSvgElem,
-  handleSelectedTool,
-  createConfiguratorData,
-  handleRectBorderRadius,
-  makeGradient,
   setArrowHead,
+  makeGradient,
+  handleShadow,
   setfontfamily,
   handleFontStyle,
+  getArrowHeadData,
+  handlePatternSize,
   setBubbleFontFamily,
+  updateActiveElement,
+  getFrontDropdownData,
+  handlePatternPosition,
+  handleRectBorderRadius,
   getStrokeColorControls,
 } from "./activeElementHandlers";
-// import ToolsConfiguration from "../../../blob-maker/tools-configuration";
-// import { BlobMakerContextProvider } from "../../../blob-maker/blob-maker-context";
 import Dropdown from "@/components/ui/custom/dropdown";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -47,28 +38,16 @@ import { Slider } from "@/components/ui/slider";
 import ColorInput from "@/components/ui/custom/color-input";
 import FileInput from "@/components/ui/custom/file-input";
 import BoxShadowWithInput from "@/components/ui/custom/box-shadow";
-// import { ConfiguratorCore } from "@/components/configurator/configurator";
 import GradientContainer from "@/components/ui/custom/gradient-container";
 import BorderRadius from "@/components/borderRadius";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import {
-  SquareSquare,
-  SquareArrowUp,
-  SquareArrowLeft,
-  SquareArrowDown,
-  SquareArrowRight,
-  SquareArrowUpLeft,
-  SquareArrowUpRight,
-  SquareArrowDownLeft,
-  SquareArrowDownRight,
-  Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  FlipVertical2,
-  FlipHorizontal2,
-} from "lucide-react";
+  ELEMENT_POSITION_OPTIONS,
+  FLIP_OPTIONS,
+  FONT_STYLES,
+  TEXT_ALIGNMENT,
+} from "../../Constants/designer-icons";
 
 class ActiveElementControls extends Component {
   constructor(props) {
@@ -98,54 +77,6 @@ class ActiveElementControls extends Component {
       theme,
     } = this.props;
     const activeElement = canvas.getActiveObject();
-
-    const ELEMENT_POSITION_OPTIONS = [
-      {
-        title: "Align Top Left",
-        icon: <SquareArrowUpLeft />,
-        bId: "Top-Left",
-      },
-      {
-        title: "Align Top Center",
-        icon: <SquareArrowUp />,
-        bId: "Top-Center",
-      },
-      {
-        title: "Align Top Right",
-        icon: <SquareArrowUpRight />,
-        bId: "Top-Right",
-      },
-      {
-        title: "Align Center Left",
-        icon: <SquareArrowLeft />,
-        bId: "Center-Left",
-      },
-      {
-        title: "Align Center Middle",
-        icon: <SquareSquare />,
-        bId: "Center",
-      },
-      {
-        title: "Align Center Right",
-        icon: <SquareArrowRight />,
-        bId: "Center-Right",
-      },
-      {
-        title: "Align Bottom Left",
-        icon: <SquareArrowDownLeft />,
-        bId: "Bottom-Left",
-      },
-      {
-        title: "Align Bottom Center",
-        icon: <SquareArrowDown />,
-        bId: "Bottom-Center",
-      },
-      {
-        title: "Align Bottom Right",
-        icon: <SquareArrowDownRight />,
-        bId: "Bottom-Right",
-      },
-    ];
 
     const ReplaceSpeechPolygon = (
       newPoints,
@@ -782,29 +713,6 @@ class ActiveElementControls extends Component {
       </div>
     );
 
-    const FONT_STYLES = [
-      {
-        title: "Bold Toggle",
-        value: "bold",
-        icon: <Bold />,
-      },
-      {
-        title: "Italic Toggle",
-        value: "italic",
-        icon: <Italic />,
-      },
-      {
-        title: "Strikethrough Toggle",
-        value: "strikethrough",
-        icon: <Strikethrough />,
-      },
-      {
-        title: "Underline Toggle",
-        value: "underline",
-        icon: <Underline />,
-      },
-    ];
-
     const TextStyles = (
       <div className="text-style">
         <Label className={`mb-1 ${theme === "dark" ? "text-white" : ""}`}>
@@ -828,19 +736,6 @@ class ActiveElementControls extends Component {
         </div>
       </div>
     );
-
-    const FLIP_OPTIONS = [
-      {
-        title: "Flip Text Horizontally",
-        icon: <FlipHorizontal2 />,
-        value: "x",
-      },
-      {
-        title: "Flip Text Vertically",
-        icon: <FlipVertical2 />,
-        value: "y",
-      },
-    ];
 
     const FlipElement = (
       <div className="Flip-Controls">
@@ -1066,7 +961,7 @@ class ActiveElementControls extends Component {
                 className={"bg-white"}
                 placeHolder={activeElement?.arrow}
                 value={activeElement?.arrow}
-                options={ArrowDirection}
+                options={ARROW_DIRECTION}
                 onValueChange={(value) => {
                   handleSpeechArrowChange(value);
                 }}
