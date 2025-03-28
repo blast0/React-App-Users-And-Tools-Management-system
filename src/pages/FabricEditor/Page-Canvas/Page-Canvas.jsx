@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { fabric } from "fabric";
 import _, { noop } from "lodash";
 // LOCAL COMPONENTS / METHODS
-import CanvasCore from "../canvas.core";
 import {
   ARROW_HEAD,
   ARROW_HEAD_POSITION,
@@ -11,6 +10,7 @@ import {
   INITIAL_PATH,
   RESET_ACTIVE_ELEM_PROPS,
 } from "../Constants/designer-constants";
+// CONSTANTS
 import {
   scaleElementTofitCanvas,
   alignElementToCenter,
@@ -22,10 +22,8 @@ import {
   getNewID,
   roundToDecimal,
 } from "../helper-functions";
-// CONSTANTS
 import "../fabric-history";
-// STYLE
-import "./page-canvas.css";
+import CanvasCore from "../canvas.core";
 import PopMenuPortal from "@/components/popup-menu-portal";
 import PopupContainer from "@/components/popup-container";
 

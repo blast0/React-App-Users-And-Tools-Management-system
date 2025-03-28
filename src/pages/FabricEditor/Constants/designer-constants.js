@@ -1,3 +1,94 @@
+export const FONT_PROPS_DEFAULT = Object.freeze({
+  type: "i-text",
+  value: "text",
+  name: "text",
+  fontFamily: "Ubuntu",
+  fontSize: 48,
+  backgroundColor: "rgba(255,255,255,0)",
+  fill: "#000",
+  stroke: "#000",
+  strokeWidth: 0,
+  paintFirst: "stroke",
+});
+
+export const DefaultTemplate = {
+  name: "Default Template",
+  value: "default",
+  pageStyles: {
+    width: 888,
+    height: 500,
+  },
+  elements: [
+    {
+      type: "Pattern",
+      name: "Background Image",
+      width: 888,
+      height: 500,
+      // radius: 250,
+      containerType: "rect", //triangle. circle, rect
+      url: "https://www.everwallpaper.co.uk/cdn/shop/collections/3D_Wallpaper.jpg?v=1660209305",
+      imageFit: "Fit Image",
+      BorderX: 5,
+      BorderY: 5,
+      BorderLock: true,
+      preselected: true,
+      stopContainerResize: true,
+    },
+    {
+      type: "rect",
+      name: "Overlay Bottom",
+      width: 888,
+      height: 500,
+      fill: "#00000020",
+      stroke: "rgba(0,0,0,0)",
+      strokeWidth: 0,
+      rx: 0,
+      ry: 0,
+      BorderLock: true,
+    },
+    {
+      type: "rect",
+      name: "Overlay Top",
+      left: 50,
+      top: 50,
+      width: 788,
+      height: 400,
+      fill: "#ffffff50",
+      stroke: "rgba(0,0,0,0)",
+      strokeWidth: 0,
+      rx: 5,
+      ry: 5,
+      BorderLock: true,
+    },
+    {
+      ...FONT_PROPS_DEFAULT,
+      value: "THE ULTIMATE",
+      left: 338,
+      top: 110,
+      fontSize: 32,
+      fill: "#660708",
+    },
+    {
+      ...FONT_PROPS_DEFAULT,
+      value: `Beginner's Guide`,
+      left: 262,
+      top: 208,
+      fontFamily: "Comforter Brush",
+      fontSize: 75,
+      fill: "#DB8200",
+      stroke: "#a52e2e",
+    },
+    {
+      ...FONT_PROPS_DEFAULT,
+      value: "TO BAKING",
+      left: 364,
+      top: 366,
+      fontSize: 32,
+      fill: "#660708",
+    },
+  ],
+};
+
 export const ACTIONS = {
   ADD_CIRCLE: "circle",
   ADD_DASHED_LINE: "dashed_line",
@@ -628,96 +719,6 @@ export const svg =
 
 export const Ok =
   "M738.133333 311.466667L448 601.6l-119.466667-119.466667-59.733333 59.733334 179.2 179.2 349.866667-349.866667z";
-
-export const FONT_PROPS_DEFAULT = Object.freeze({
-  type: "i-text",
-  value: "text",
-  name: "text",
-  fontFamily: "Ubuntu",
-  fontSize: 48,
-  backgroundColor: "rgba(255,255,255,0)",
-  fill: "#000",
-  stroke: "#000",
-  strokeWidth: 0,
-  paintFirst: "stroke",
-});
-
-export const DefaultTemplate = {
-  name: "Default Template",
-  value: "default",
-  pageStyles: {
-    width: 888,
-    height: 500,
-  },
-  elements: [
-    {
-      type: "Pattern",
-      name: "Background Image",
-      width: 888,
-      height: 500,
-      containerType: "rect", //triangle. circle, rect
-      url: "https://www.everwallpaper.co.uk/cdn/shop/collections/3D_Wallpaper.jpg?v=1660209305",
-      imageFit: "Fit Image",
-      BorderX: 5,
-      BorderY: 5,
-      BorderLock: true,
-      preselected: true,
-      stopContainerResize: true,
-    },
-    {
-      type: "rect",
-      name: "Overlay Bottom",
-      width: 888,
-      height: 500,
-      fill: "#00000020",
-      stroke: "rgba(0,0,0,0)",
-      strokeWidth: 0,
-      rx: 0,
-      ry: 0,
-      BorderLock: true,
-    },
-    {
-      type: "rect",
-      name: "Overlay Top",
-      left: 50,
-      top: 50,
-      width: 788,
-      height: 400,
-      fill: "#ffffff50",
-      stroke: "rgba(0,0,0,0)",
-      strokeWidth: 0,
-      rx: 5,
-      ry: 5,
-      BorderLock: true,
-    },
-    {
-      ...FONT_PROPS_DEFAULT,
-      value: "THE ULTIMATE",
-      left: 338,
-      top: 110,
-      fontSize: 32,
-      fill: "#660708",
-    },
-    {
-      ...FONT_PROPS_DEFAULT,
-      value: `Beginner's Guide`,
-      left: 262,
-      top: 208,
-      fontFamily: "Comforter Brush",
-      fontSize: 75,
-      fill: "#DB8200",
-      stroke: "#a52e2e",
-    },
-    {
-      ...FONT_PROPS_DEFAULT,
-      value: "TO BAKING",
-      left: 364,
-      top: 366,
-      fontSize: 32,
-      fill: "#660708",
-    },
-  ],
-};
 
 export const BlankTemplate = Object.freeze({
   name: "Blank Page",

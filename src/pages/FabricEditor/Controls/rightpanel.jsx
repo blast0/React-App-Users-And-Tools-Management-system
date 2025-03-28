@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 
 import { ACTIONS } from "../Constants/designer-constants";
-import ActiveElementControls from "./ActiveElementControls/activeElementControls";
+import ActiveElementControls from "./activeElementControls";
+import GradientContainer from "@/components/ui/custom/gradient-container";
 import { createJSON, getObjectTypeIcon } from "../helper-functions";
 import { MenuButton } from "@/components/ui/custom/menu-button";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,8 @@ import {
 } from "../Constants/designer-icons";
 import SaveTemplateModal from "../Templates/saveTemplateModal";
 import { sha256 } from "crypto-hash";
+import { fabric } from "fabric";
+import { makeGradient } from "./activeElementHandlers";
 
 class Rightpanel extends Component {
   constructor(props) {
@@ -60,9 +63,11 @@ class Rightpanel extends Component {
       onCanvasActive,
       siteColorsSettings,
       selectedElementId,
+      pageHeight,
+      pageWidth,
+      pageBgColor,
       theme,
     } = this.props;
-
     const SAVE_OPTIONS = [
       {
         name: "Save Image",
@@ -253,9 +258,73 @@ class Rightpanel extends Component {
             paddingRight: "10px",
           }}
         >
-          <div className="page-dimensions mt-2">
-            <div className="page-dimensions-control">
-              <></>
+          <div className="page-controls mt-2">
+            <div className="page-dimensions-control gap-2 flex flex-wrap">
+              <div className="w-[48%]">
+                <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+                  Canvas Width:
+                </Label>
+                <Input
+                  type={"number"}
+                  value={pageWidth}
+                  onChange={(e) => {
+                    onChange(
+                      ACTIONS.CHANGE_PAGE_DIMENSIONS,
+                      {
+                        name: "width",
+                        val: Number(e.target.value),
+                      },
+                      this
+                    );
+                  }}
+                />
+              </div>
+              <div className="w-[48%]">
+                <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+                  Canvas Height:
+                </Label>
+                <Input
+                  type={"number"}
+                  value={pageHeight}
+                  onChange={(e) => {
+                    onChange(
+                      ACTIONS.CHANGE_PAGE_DIMENSIONS,
+                      {
+                        name: "height",
+                        val: Number(e.target.value),
+                      },
+                      this
+                    );
+                  }}
+                />
+              </div>
+            </div>
+            <div className="w-[48%]">
+              <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+                Canvas Background:
+              </Label>
+              <GradientContainer
+                showSiteColorBtn={false}
+                canChooseGradientType={true}
+                value={pageBgColor}
+                previewWidth={200}
+                switchToColor={canvas?.fillGradient ? false : true}
+                showInPopup={false}
+                opt={{ showInput: true }}
+                isGradientAllowed={false}
+                containerClass={"gradient"}
+                onValueChange={(gradientText, configKey, rawConfig) => {
+                  console.log(rawConfig);
+                  if (rawConfig?.colorStops?.length > 1) {
+                    let grad = makeGradient(rawConfig, gradientText, canvas);
+                    const cangradient = new fabric.Gradient(grad);
+                    console.log(cangradient);
+                    // canvas.set("backgroundColor", new fabric.Gradient(grad));
+                  } else {
+                    onChange(ACTIONS.CHANGE_PAGE_BACKGROUND, gradientText);
+                  }
+                }}
+              />
             </div>
           </div>
           {activeElementType !== "activeSelection" &&

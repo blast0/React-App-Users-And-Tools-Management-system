@@ -9,7 +9,7 @@ import {
 } from "./pages";
 // import { Toaster } from "@/components/ui/sonner";
 import { ToastContainer, toast } from "react-toastify";
-import Spin from "./components/spinner";
+import Spin from "./components/ui/custom/spinner";
 import "./App.css";
 
 const router = createBrowserRouter([

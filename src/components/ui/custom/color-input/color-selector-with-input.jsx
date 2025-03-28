@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import { WEB_SAFE_COLORS } from "@/components/configurator/configurator.constant";
 import ColorSelector from "./color-selector-with-popup";
 import { Input } from "../../input";
-// import TextInput from "./text-input";
+import { WEB_SAFE_COLORS } from "../../../../helper";
 
 const ColorSelectorWithInput = ({
   label,

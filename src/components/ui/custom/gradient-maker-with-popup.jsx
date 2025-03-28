@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 
 import { convertGradientToConfig } from "./utilities";
 import withPopup from "@/components/hoc/withPopup";
-import GradientMaker from "../../gradient-component/index";
+import GradientMaker from "./gradient-component/index";
 
 const GradientPopup = withPopup(GradientMaker);
 

@@ -1,4 +1,4 @@
-import { Image, LoaderCircle } from "lucide-react";
+import { ImageUp, LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { noop } from "lodash";
 
@@ -10,11 +10,10 @@ import { isImageUrlValid } from "../../../helper";
 const FileInput = ({
   label = "",
   value = "",
-  placeholder = "",
+  placeholder = "Enter Image Url",
   showImagePreview = false,
   containerClassName = "",
   className = "",
-  mimeTypeExclusions = [],
   onFileIconClick = null,
   onChange = noop,
   onBlur = noop,
@@ -46,14 +45,13 @@ const FileInput = ({
         <Input
           containerClassName="pr-5 bg-white"
           className="border-none shadow-none"
-          value={value}
+          value={value.startsWith("data:image") ? value.slice(0, 50) : value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
         />
-        <Image
-          size={22}
-          className="absolute right-0 top-2 mr-2 cursor-pointer bg-white"
+        <ImageUp
+          className="absolute right-0 top-1.5 mr-2 cursor-pointer bg-white"
           onClick={onFileIconClick}
         />
         {showImagePreview && value && (

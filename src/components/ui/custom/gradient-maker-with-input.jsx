@@ -84,8 +84,8 @@ const GradientMakerWithInput = ({
             value={gradient}
             config={convertGradientToConfig(value)}
             controlStyle={{
-              width: "27px",
-              height: "27px",
+              width: "24px",
+              height: "24px",
               marginRight: "10px",
               border: "1px solid grey",
               borderRadius: "2px",

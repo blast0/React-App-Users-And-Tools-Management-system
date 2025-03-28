@@ -20,7 +20,7 @@ import {
   SPEECH_BUBBLE_DEFAULT_PROPS,
 } from "./Constants/designer-constants";
 // LOCAL COMPONENTS / METHODS
-import { Spinner } from "@/components/spinner";
+import { Spinner } from "@/components/ui/custom/spinner";
 import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
 import { toast } from "react-toastify";
@@ -489,7 +489,7 @@ export const getCanvasElementNames = (canvas) => {
         if (elem.customName === true) {
           return {
             name: (
-              <p style={{ margin: 0 }}>
+              <p>
                 {/* <i
                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
                 ></i> */}
@@ -507,7 +507,7 @@ export const getCanvasElementNames = (canvas) => {
         } else {
           return {
             name: (
-              <p style={{ margin: 0 }}>
+              <p>
                 {/* <i
                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
                 ></i> */}
@@ -523,7 +523,7 @@ export const getCanvasElementNames = (canvas) => {
         if (elem?.id) {
           return {
             name: (
-              <p style={{ margin: 0 }}>
+              <p>
                 <i
                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
                 ></i>{" "}
@@ -536,7 +536,7 @@ export const getCanvasElementNames = (canvas) => {
         } else {
           return {
             name: (
-              <p style={{ margin: 0 }}>
+              <p>
                 <i
                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
                 ></i>{" "}

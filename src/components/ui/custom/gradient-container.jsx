@@ -3,7 +3,7 @@ import { isEqual } from "lodash";
 
 import GradientMakerWithInput from "./gradient-maker-with-input";
 import GradientMakerWithPopup from "./gradient-maker-with-popup";
-import GradientMaker from "../../gradient-component/index";
+import GradientMaker from "./gradient-component/index";
 import { convertGradientToConfig } from "./utilities";
 
 const GradientContainer = ({ showInPopup, configKey, ...restProps }) => {

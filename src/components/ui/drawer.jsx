@@ -28,13 +28,12 @@ const VaulDrawer = ({ theme, headerChildren, bodyChildren }) => {
         <Drawer.Content
           className={`border-l-1 ${
             theme === "dark" ? "border-zinc-50 bg-black" : ""
-          } right-0 top-15 bottom-2 fixed z-10 outline-none w-[320px] flex`}
-          // The gap between the edge of the screen and the drawer is 8px in this case.
-          style={{ "--initial-transform": "calc(100% + 8px)" }}
+          } right-0 top-15  fixed z-10 outline-none w-[320px] flex`}
+          style={{ "--initial-transform": "100%" }}
         >
           <div
             className={`${
-              theme === "light" ? "bg-zinc-50" : ""
+              theme === "light" ? "bg-[#d4e3f9]" : ""
             } h-full w-full grow p-2 flex flex-col rounded-[5px]`}
           >
             <div className="max-w-md mx-auto">

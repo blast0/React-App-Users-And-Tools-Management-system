@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Slider } from "../ui/slider";
+import { Slider } from "../../slider";
 
 import "./borderRadius.css";
 import { Link2, Unlink } from "lucide-react";

@@ -2,10 +2,10 @@ import {
   ACTIONS,
   ARROW_HEAD,
   CANVAS_CUSTOM_FONTS,
-} from "../../Constants/designer-constants";
+} from "../Constants/designer-constants";
 // import { getDataUriFromBlobData, loadGoogleFont } from "../../../../helper";
-import { Spinner } from "@/components/spinner";
-import { loadGoogleFont } from "../../helper-functions";
+import { Spinner } from "@/components/ui/custom/spinner";
+import { loadGoogleFont } from "../helper-functions";
 
 export const handleSelectedTool = (selectedTool, activeElement, self) => {
   if (!selectedTool) return;
@@ -206,9 +206,9 @@ export const getStrokeColorControls = (self) => {
 };
 
 // convert gradient component value to fabric gradient configuration
-export const makeGradient = (config, gradientText, h, w, self) => {
-  const { canvas } = self.props;
-  const activeElement = canvas.getActiveObject();
+export const makeGradient = (config, gradientText, canvasElement) => {
+  const h = canvasElement.height;
+  const w = canvasElement.height;
   const { colorStops, type, angle } = config;
   let coords = {};
   let rad = -parseInt(angle, 10) * (Math.PI / 180);
@@ -239,8 +239,8 @@ export const makeGradient = (config, gradientText, h, w, self) => {
   let grad = "";
   if (colorStops.length === 1) {
     //do magic
-    activeElement.fillColor = colorStops[0].color;
-    activeElement.fillGradient = null;
+    canvasElement.fillColor = colorStops[0].color;
+    canvasElement.fillGradient = null;
     grad = colorStops[0].color;
   } else {
     grad = {
@@ -253,9 +253,9 @@ export const makeGradient = (config, gradientText, h, w, self) => {
         };
       }),
     };
-    activeElement.fillColor = null;
-    activeElement.fillGradient = gradientText;
-    activeElement.gradient = grad;
+    canvasElement.fillColor = null;
+    canvasElement.fillGradient = gradientText;
+    canvasElement.gradient = grad;
   }
   return grad;
 };

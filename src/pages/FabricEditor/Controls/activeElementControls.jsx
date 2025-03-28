@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { fabric } from "fabric";
-import { noop } from "lodash";
+import { cloneDeep, noop } from "lodash";
 import {
   ACTIONS,
   ARROW_DIRECTION,
@@ -8,13 +8,13 @@ import {
   SPACE_EVENLY_OPTIONS,
   RESET_ACTIVE_ELEM_PROPS,
   SPEECH_TEXT_ALIGNMENT_OPTIONS,
-} from "../../Constants/designer-constants";
+} from "../Constants/designer-constants";
 import {
   createNewPoly,
   getNewID,
   handlePatternFit,
   scaleElementTofitCanvas,
-} from "../../helper-functions";
+} from "../helper-functions";
 import {
   setArrowHead,
   makeGradient,
@@ -35,10 +35,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import ColorInput from "@/components/ui/custom/color-input";
+import ColorContainer from "@/components/ui/custom/color-input/color-container";
 import FileInput from "@/components/ui/custom/file-input";
 import BoxShadowWithInput from "@/components/ui/custom/box-shadow";
 import GradientContainer from "@/components/ui/custom/gradient-container";
-import BorderRadius from "@/components/borderRadius";
+import BorderRadius from "@/components/ui/custom/borderRadius";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import {
@@ -46,7 +47,7 @@ import {
   FLIP_OPTIONS,
   FONT_STYLES,
   TEXT_ALIGNMENT,
-} from "../../Constants/designer-icons";
+} from "../Constants/designer-icons";
 
 class ActiveElementControls extends Component {
   constructor(props) {
@@ -70,12 +71,20 @@ class ActiveElementControls extends Component {
     const {
       canvas,
       onChange,
-      siteColorsSettings,
       activeElementProps,
       elementsDropDownData,
       theme,
     } = this.props;
     const activeElement = canvas.getActiveObject();
+
+    const commonColors = [];
+    const _commonColors = [];
+    activeElementProps.colors?.forEach((item) => {
+      if (!commonColors.includes(item.fill?.toLowerCase())) {
+        commonColors.push(item.fill?.toLowerCase());
+        _commonColors.push(item);
+      }
+    });
 
     const ReplaceSpeechPolygon = (
       newPoints,
@@ -161,13 +170,7 @@ class ActiveElementControls extends Component {
         </Label>
         <FileInput
           containerClassName="w-full"
-          value={
-            !activeElementProps?.URL
-              ? ""
-              : activeElement?.URL.length > 1000
-              ? "pageurl"
-              : ""
-          }
+          value={activeElementProps?.URL}
           mimeTypeExclusions={["image/svg+xml"]}
           onChange={(url) => {
             onChange(ACTIONS.ADD_PATTERN, url);
@@ -348,7 +351,7 @@ class ActiveElementControls extends Component {
     const activePattern = (
       <>
         <div className="pattern-controls w-[100%] flex flex-wrap gap-2">
-          <div>
+          <div className="w-[48%]">
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Width:
             </Label>
@@ -364,7 +367,7 @@ class ActiveElementControls extends Component {
               }
             />
           </div>
-          <div>
+          <div className="w-[48%]">
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Height:
             </Label>
@@ -380,7 +383,7 @@ class ActiveElementControls extends Component {
               }}
             />
           </div>
-          <div>
+          <div className="w-[48%]">
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Left:
             </Label>
@@ -397,7 +400,7 @@ class ActiveElementControls extends Component {
               }
             />
           </div>
-          <div>
+          <div className="w-[48%]">
             <Label className={`${theme === "dark" ? "text-white" : ""}`}>
               Image Top:
             </Label>
@@ -457,13 +460,7 @@ class ActiveElementControls extends Component {
           containerClass={"gradient"}
           onValueChange={(gradientText, configKey, rawConfig) => {
             if (rawConfig) {
-              let grad = makeGradient(
-                rawConfig,
-                gradientText,
-                activeElement?.height,
-                activeElement?.width,
-                this
-              );
+              let grad = makeGradient(rawConfig, gradientText, activeElement);
               if (rawConfig.colorStops.length < 2) {
                 updateActiveElement({ colors: [grad] }, this);
                 activeElement.set("fill", grad);
@@ -560,34 +557,186 @@ class ActiveElementControls extends Component {
 
     const objectColors = (
       <div className="object-colors mt-2">
-        <div>
-          {activeElement && activeElement instanceof fabric.IText
-            ? "Text Color"
-            : "Color(s)"}
-        </div>
-        <div className="svg-colors-group">
-          {/* <ConfiguratorCore
-            containerClass="svg-colors-group-Configurator"
-            data={createConfiguratorData(this)}
-            onResponse={(data) => {
-              updateStyle(data, this);
-            }}
-          /> */}
-        </div>
-        <div>
+        {activeElementProps.showCommonColorsOnly ? (
+          <>
+            <div>All Color(s)</div>
+            <div className="svg-colors-group gap-1 flex">
+              <Title key={"ShowAllColors"} title={"Show Common Colors Only"}>
+                <div className="cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="ShowAllColors"
+                    className="cursor-pointer"
+                    onChange={() => {
+                      updateActiveElement(
+                        {
+                          showCommonColorsOnly:
+                            activeElementProps?.showCommonColorsOnly === true
+                              ? false
+                              : true,
+                        },
+                        this
+                      );
+                    }}
+                  />
+                </div>
+              </Title>
+              {activeElementProps.colors?.map((item) => {
+                return (
+                  <ColorContainer
+                    key={item.id}
+                    color={item.fill}
+                    showInPopup={true}
+                    onChange={(color) => {
+                      let currentObj = canvas
+                        ?.getActiveObject()
+                        ?._objects.find((obj) => obj.id === item.id);
+                      if (!currentObj) {
+                        const objs = canvas?.getActiveObject()?._objects;
+                        objs.forEach((object) => {
+                          object._objects.forEach((obj) => {
+                            if (object.id + "_" + obj.id === item.id) {
+                              currentObj = obj;
+                              currentObj.set({ fill: color });
+                              const newColors = cloneDeep(_commonColors);
+                              newColors.forEach((newColor) => {
+                                if (newColor.id === item.id) {
+                                  newColor.fill = color;
+                                }
+                              });
+                              updateActiveElement({ colors: newColors }, this);
+                            }
+                          });
+                        });
+                      } else {
+                        currentObj.set({ fill: color });
+                        canvas.renderAll();
+                        const newColors = [];
+                        activeElementProps.colors.forEach((item) => {
+                          if (item.id !== currentObj.id) {
+                            newColors.push(item);
+                          } else {
+                            newColors.push({ id: item.id, fill: color });
+                          }
+                        });
+                        updateActiveElement({ colors: newColors }, this);
+                      }
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <>
+            <div>Unique Color(s)</div>
+            <div className="svg-colors-group gap-1 flex">
+              <Title key={"Show Common Colors Only"} title={"Show All Colors"}>
+                <div className="cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="Show Common Colors Only"
+                    className="cursor-pointer"
+                    checked={!activeElementProps.showCommonColorsOnly}
+                    onChange={() => {
+                      updateActiveElement(
+                        {
+                          showCommonColorsOnly:
+                            activeElementProps?.showCommonColorsOnly === true
+                              ? false
+                              : true,
+                        },
+                        this
+                      );
+                    }}
+                  />
+                </div>
+              </Title>
+              {_commonColors?.map((item) => {
+                return (
+                  <ColorContainer
+                    key={item.id}
+                    color={item.fill}
+                    showInPopup={true}
+                    onChange={(color) => {
+                      let currentObj = canvas
+                        ?.getActiveObject()
+                        ?._objects.find((obj) => obj.id === item.id);
+                      if (!currentObj) {
+                        const objs = canvas?.getActiveObject()?._objects;
+                        objs.forEach((object) => {
+                          object._objects.forEach((obj) => {
+                            if (object.id + "_" + obj.id === item.id) {
+                              currentObj = obj;
+                              const commonColor = currentObj.fill;
+                              const newColors = cloneDeep(_commonColors);
+                              canvas.renderAll();
+                              canvas
+                                ?.getActiveObject()
+                                ?._objects.forEach((_object) => {
+                                  _object._objects.forEach((_obj) => {
+                                    if (
+                                      _obj.fill?.toLowerCase() ===
+                                      commonColor?.toLowerCase()
+                                    ) {
+                                      _obj.set({ fill: color });
+                                    }
+                                  });
+                                });
+                              newColors.forEach((newColor) => {
+                                if (newColor.id === item.id) {
+                                  newColor.fill = color;
+                                }
+                              });
+                              updateActiveElement({ colors: newColors }, this);
+                            }
+                          });
+                        });
+                      } else {
+                        const commonColor = currentObj.fill;
+                        const newColors = [];
+                        if (!currentObj) return;
+                        canvas.renderAll();
+                        canvas
+                          ?.getActiveObject()
+                          ?._objects.forEach((_object) => {
+                            if (
+                              _object.fill?.toLowerCase() ===
+                              commonColor?.toLowerCase()
+                            ) {
+                              _object.set({ fill: color });
+                              newColors.push({ id: _object.id, fill: color });
+                            } else {
+                              newColors.push({
+                                id: _object.id,
+                                fill: _object.fill,
+                              });
+                            }
+                          });
+                        updateActiveElement({ colors: newColors }, this);
+                      }
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {/* <div>
           {Object.keys(getStrokeColorControls(this)).length
             ? "StrokeColor(s)"
             : ""}
         </div>
         <div className="svg-colors-group">
-          {/* <ConfiguratorCore
+          <ConfiguratorCore
             containerClass="svg-stroke-colors-Configurator"
             data={getStrokeColorControls(this)}
             onResponse={(data) => {
               updateStyle(data, this);
             }}
-          /> */}
-        </div>
+          />
+        </div> */}
       </div>
     );
 
@@ -1074,11 +1223,12 @@ class ActiveElementControls extends Component {
         <div className="rect-controls flex-wrap flex gap-2">
           <div className="w-[48%] flex flex-col gap-3">{AlignElement}</div>
           <div className="w-[48%] flex flex-col gap-8">
-            {!activeElement?.patternActive ? activeElementColor : null}
+            {!activeElement?.patternActive
+              ? activeElementColor
+              : activeBorderThickness}
             {activeBorderColor}
           </div>
-          <div className="w-[48%]">{activeBorderThickness}</div>
-          {!activeElement?.patternActive ? boxShadow : null}
+          <div className="w-[100%]">{boxShadow}</div>
           {rectBorderRadius}
           {patternImgController}
           {activeElementProps?.patternActive ? activePattern : null}
@@ -1154,7 +1304,7 @@ class ActiveElementControls extends Component {
             {SpaceElementsEvenly}
           </>
         ) : null}
-        {SvgControls}
+        {activeElementProps.colors.length ? SvgControls : null}
         {TextControls}
         {LineControls}
         {ArrowControls}

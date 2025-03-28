@@ -3,7 +3,7 @@ import { Slider } from "../../slider";
 import ColorInput from "../color-input";
 import { Button } from "../../button";
 import { Title } from "../../title";
-import CopyToClipboard from "@/components/copy-to-clipboard";
+import CopyToClipboard from "@/components/ui/custom/copy-to-clipboard";
 
 import "./boxshadow.css";
 import { Input } from "../../input";

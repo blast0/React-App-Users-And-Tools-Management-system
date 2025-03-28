@@ -44,7 +44,11 @@ export function DialogDropDown({
                 );
               }
               return item.modalJsx ? (
-                <DialogBox title="Download Image" trigger={item.modalJsx} />
+                <DialogBox
+                  key={i}
+                  title="Download Image"
+                  trigger={item.modalJsx}
+                />
               ) : (
                 <DropdownMenuItem
                   key={i}

@@ -6,7 +6,7 @@ import {
   getNewID,
   loadGoogleFont,
 } from "./helper-functions";
-import { Spinner } from "@/components/spinner";
+import { Spinner } from "@/components/ui/custom/spinner";
 
 class CanvasCore {
   constructor() {
@@ -333,7 +333,9 @@ class CanvasCore {
         containerElem.sendToBack();
       }
       addPattern(url, canvas, () => {
-        canvas.requestRenderAll();
+        setTimeout(() => {
+          canvas.requestRenderAll();
+        }, 100);
         if (options.preselected) {
           containerElem.preselected = options.preselected;
         }
