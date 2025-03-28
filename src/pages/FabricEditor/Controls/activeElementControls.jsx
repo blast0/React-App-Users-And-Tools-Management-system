@@ -28,7 +28,7 @@ import {
   getFrontDropdownData,
   handlePatternPosition,
   handleRectBorderRadius,
-  getStrokeColorControls,
+  // getStrokeColorControls,
 } from "./activeElementHandlers";
 import Dropdown from "@/components/ui/custom/dropdown";
 import { Label } from "@/components/ui/label";
@@ -538,10 +538,12 @@ class ActiveElementControls extends Component {
     );
 
     const activeRadius = (
-      <div className="border-control">
+      <div className="radius-control">
+        <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+          Radius:
+        </Label>
         <Input
           type={"number"}
-          label={"Radius"}
           value={activeElementProps?.radius}
           onChange={(e) => {
             updateActiveElement(
@@ -929,7 +931,7 @@ class ActiveElementControls extends Component {
                   canvas.renderAll();
                 }}
               >
-                <i className={item.icon} />
+                {item.icon}
               </Button>
             </Title>
           ))}
@@ -970,38 +972,42 @@ class ActiveElementControls extends Component {
         <div className="font-controls flex flex-wrap gap-2">
           <div className="w-[48%] flex flex-col gap-3">{AlignElement}</div>
           <div className="w-[48%] flex flex-col gap-8">
-            {!activeElement?.patternActive ? activeElementColor : null}
+            {!activeElement?.patternActive
+              ? activeElementColor
+              : activeBorderColor}
             {activeBgColor}
           </div>
           <div className="w-[48%]">{activeBorderThickness}</div>
-          {!activeElement?.patternActive ? boxShadow : null}
-          <div className="w-[48%]">{activeBorderColor}</div>
-          {AlignText}
+          <div className="w-[48%]">
+            {!activeElement?.patternActive ? activeBorderColor : imageFit}
+          </div>
+          <div className="w-[100%]">{boxShadow}</div>
+          <div className="w-[48%]">{AlignText}</div>
+          <div className="w-[48%]">{activeFontFamily}</div>
           {TextStyles}
           {FlipElement}
-          {activeFontFamily}
           {patternImgController}
           {activeElement?.patternActive ? activePattern : null}
-          {activeElementProps?.patternActive ? imageFit : null}
         </div>
       ) : null;
 
     const CircleControls =
       activeElement?.type === "circle" ? (
-        <div className="cirlce-controls">
-          {AlignElement}
-          <div className="w-[48%] flex flex-col gap-3">
-            {activeRadius}
-            {activeBorderThickness}
+        <div className="cirlce-controls flex-wrap flex gap-2">
+          <div className="w-[48%] flex flex-col gap-3">{AlignElement}</div>
+          <div className="w-[48%] flex flex-col gap-8">
+            {!activeElement?.patternActive
+              ? activeElementColor
+              : activeBorderThickness}
+            {activeBorderColor}
           </div>
-          {!activeElement?.patternActive ? activeElementColor : null}
-          {activeBorderColor}
-          {activeBgColor}
+          <div className="w-[48%]">{activeRadius}</div>
+          <div className="w-[48%]">{FlipElement}</div>
           {activeElementProps?.patternActive ? imageFit : null}
-          {!activeElement?.patternActive ? boxShadow : null}
-          {FlipElement}
+          <div className="w-[100%]">{boxShadow}</div>
           {patternImgController}
-          {activeElement?.patternActive ? activePattern : null}
+          {activeElementProps?.patternActive ? activePattern : null}
+          {activeElementProps?.patternActive ? imageFit : null}
         </div>
       ) : null;
 

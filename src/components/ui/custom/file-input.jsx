@@ -43,7 +43,9 @@ const FileInput = ({
       <Label>{label}</Label>
       <div className={`relative border rounded-sm shadow-sm ${className}`}>
         <Input
-          containerClassName="pr-5 bg-white"
+          containerClassName={`pr-5 bg-white ${
+            showImagePreview && value ? "border-b border-black" : ""
+          }`}
           className="border-none shadow-none"
           value={value.startsWith("data:image") ? value.slice(0, 50) : value}
           placeholder={placeholder}

@@ -28,23 +28,26 @@ import {
   TypeOutline,
   Underline,
   LaptopMinimal,
+  AlignRight,
+  AlignLeft,
+  AlignCenter,
 } from "lucide-react";
 import { ACTIONS } from "./designer-constants";
 
 export const TEXT_ALIGNMENT = [
   {
     title: "Align Left",
-    icon: "icon-align-left",
+    icon: <AlignLeft />,
     bId: "left",
   },
   {
     title: "Align Center",
-    icon: "icon-align-center",
+    icon: <AlignCenter />,
     bId: "center",
   },
   {
     title: "Align Right",
-    icon: "icon-align-right",
+    icon: <AlignRight />,
     bId: "right",
   },
 ];

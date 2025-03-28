@@ -22,7 +22,7 @@ const SaveModalJsx = ({
   const [ImageHeight, set_ImageHeight] = useState(parseInt(imageWidth / ratio));
   const [imgQuality, set_jpegQuality] = useState(90);
   const [selection, setSelection] = useState("page");
-  console.log(chosenFileType);
+  console.log(theme);
   const btns = [
     {
       btnText: "PNG",
@@ -149,6 +149,9 @@ const SaveModalJsx = ({
                 marginTop: "10px",
               }}
             >
+              <Label className={`${theme === "dark" ? "text-white" : ""}`}>
+                Quality:
+              </Label>
               <Slider
                 min={0}
                 max={100}

@@ -2117,13 +2117,13 @@ export const onAddImageFromFile = (e, self, pageHeight, pageWidth) => {
             if (imgRatio > 1) {
               //wider image
               if (img.width > 1550) {
-                if (1550 / imgRatio > 870) {
+                if (1550 / imgRatio > 835) {
                   dimensionChangeHandler(
                     "width",
-                    parseInt(870 * imgRatio),
+                    parseInt(835 * imgRatio),
                     self
                   );
-                  dimensionChangeHandler("height", 870, self);
+                  dimensionChangeHandler("height", 835, self);
                 } else {
                   dimensionChangeHandler("width", 1550, self);
                   dimensionChangeHandler(
@@ -2142,9 +2142,9 @@ export const onAddImageFromFile = (e, self, pageHeight, pageWidth) => {
               }
             } else {
               //longer image
-              if (img.height > 870) {
-                dimensionChangeHandler("width", parseInt(870 * imgRatio), self);
-                dimensionChangeHandler("height", 870, self);
+              if (img.height > 835) {
+                dimensionChangeHandler("width", parseInt(835 * imgRatio), self);
+                dimensionChangeHandler("height", 835, self);
               } else if (img.height > pageHeight) {
                 dimensionChangeHandler(
                   "width",
