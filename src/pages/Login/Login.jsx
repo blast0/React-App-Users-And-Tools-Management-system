@@ -25,21 +25,24 @@ const Login = () => {
       const formData = {
         email,
         password,
+        otp: 180998,
       };
       try {
         const response = await axios.post(
           "http://localhost:3000/api/v1/login",
           formData
         );
-        // const res2 = await axios.post(
-        //   "http://localhost:3000/api/v1/verify",
-        //   formData
-        // );
-        // console.log(res2);
-        localStorage.setItem("auth", JSON.stringify(response.data.token));
-        console.log(response.data);
-        toast.success("Login successfull");
-        navigate("/dashboard");
+        if (response.data.user.isVerified) {
+          localStorage.setItem("auth", JSON.stringify(response.data.token));
+          toast.success("Login successfull");
+          navigate("/dashboard");
+        } else {
+          localStorage.setItem("auth", JSON.stringify(response.data.token));
+          // toast.success("Login successfull");
+          navigate("/verifyEmail", {
+            state: { email: response.data.user.email },
+          });
+        }
       } catch (err) {
         console.log(err);
         toast.error(err.message);

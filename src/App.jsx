@@ -7,9 +7,9 @@ import {
   Logout,
   Register,
 } from "./pages";
-// import { Toaster } from "@/components/ui/sonner";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Spin from "./components/ui/custom/spinner";
+import VerifyEmail from "./pages/Register/VerifyEmail";
 import "./App.css";
 
 const router = createBrowserRouter([
@@ -37,6 +37,10 @@ const router = createBrowserRouter([
         path: "logout",
         element: <Logout />,
       },
+      {
+        path: "verifyEmail",
+        element: <VerifyEmail />,
+      },
     ],
   },
 ]);
@@ -44,7 +48,6 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div id="popmenu-container" className="w-[100%] h-[100%]">
-      {/* <Toaster position="top-center" /> */}
       <ToastContainer position="top-center" />
       <Spin id="root" overlayProps={{ position: "fixed" }} />
       <RouterProvider router={router} />

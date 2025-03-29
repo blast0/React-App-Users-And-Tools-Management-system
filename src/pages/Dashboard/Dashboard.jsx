@@ -8,9 +8,10 @@ import Navbar from "../../components/ui/custom/nav-bar/Navbar";
 import Designer from "../FabricEditor/designer";
 
 const Dashboard = () => {
-  const [token, setToken] = useState(
-    JSON.parse(localStorage.getItem("auth")) || ""
-  );
+  const auth = localStorage.getItem("auth")
+    ? JSON.parse(localStorage.getItem("auth"))
+    : "";
+  const [token, setToken] = useState(auth);
   const [data, setData] = useState({});
   const [theme, setTheme] = useState("dark");
   const navigate = useNavigate();

@@ -21,12 +21,12 @@ import {
   // addSavedImageFromLibrary,
   createCanvasElementsDropdownData,
   onAddImageFromFile,
-  getCanvasElementNames,
   handleDrop,
 } from "./helper-functions";
 
 // STYLE
 import "./googlefonts.css";
+import { getCanvasElementNames } from "./Constants/designer-icons";
 
 class Designer extends Component {
   constructor(props) {

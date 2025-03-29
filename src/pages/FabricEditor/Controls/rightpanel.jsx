@@ -10,12 +10,13 @@ import {
   ImageDown,
   FileDown,
   Download,
+  Pointer,
 } from "lucide-react";
 
 import { ACTIONS } from "../Constants/designer-constants";
 import ActiveElementControls from "./activeElementControls";
 import GradientContainer from "@/components/ui/custom/gradient-container";
-import { createJSON, getObjectTypeIcon } from "../helper-functions";
+import { createJSON } from "../helper-functions";
 import { MenuButton } from "@/components/ui/custom/menu-button";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
@@ -29,6 +30,7 @@ import {
   OPEN_OPTIONS,
   ADD_SHAPE_OPTIONS,
   DELETE_OPTIONS,
+  getObjectTypeIcon,
 } from "../Constants/designer-icons";
 import SaveTemplateModal from "../Templates/saveTemplateModal";
 import { sha256 } from "crypto-hash";
@@ -357,17 +359,11 @@ class Rightpanel extends Component {
               className={"bg-white"}
               placeholder={
                 selectedElementName ? (
-                  <p
-                    style={{ margin: 0, display: "flex", alignItems: "center" }}
-                  >
-                    <i
-                      className={
-                        "icon-common mr-2 " +
-                        getObjectTypeIcon(canvas?.getActiveObject())
-                      }
-                    ></i>{" "}
+                  <div className="flex gap-2 items-center">
+                    {getObjectTypeIcon(canvas?.getActiveObject())}
+                    <Pointer />
                     {selectedElementName}
-                  </p>
+                  </div>
                 ) : (
                   canvas?.getActiveObject()?.name
                 )

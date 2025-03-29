@@ -10,7 +10,7 @@ import axios from "axios";
 // import { toast } from "sonner";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [token, setToken] = useState(
@@ -148,7 +148,7 @@ const Login = () => {
           </div>
 
           <p className="login-bottom-p">
-            Already have an account? <Link to="/login">Login</Link>
+            Already have an account? <Link to="/login">Register</Link>
           </p>
         </div>
       </div>
@@ -156,4 +156,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

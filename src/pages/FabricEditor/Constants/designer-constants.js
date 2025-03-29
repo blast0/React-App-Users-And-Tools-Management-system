@@ -38,7 +38,6 @@ export const DefaultTemplate = {
       fill: "#372875",
       scaleX: 0.75,
       scaleY: 0.75,
-      angle: 0,
       fontFamily: "Patua One",
       text: "Technical Skills",
       underline: true,
@@ -67,8 +66,8 @@ export const DefaultTemplate = {
     {
       type: "rect",
       left: 0,
-      top: 198,
-      width: 1200,
+      top: 199,
+      width: 1199,
       height: 120,
       fill: "#0a324d",
       selectable: true,

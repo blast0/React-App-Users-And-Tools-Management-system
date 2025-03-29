@@ -24,6 +24,7 @@ import { Spinner } from "@/components/ui/custom/spinner";
 import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
 import { toast } from "react-toastify";
+import { getCanvasElementNames } from "./Constants/designer-icons";
 
 export const handleDrop = (images, self) => {
   console.log(images);
@@ -439,121 +440,84 @@ export const getBottommostCoord = (elem) => {
   );
 };
 
-export const getObjectTypeIcon = (elem) => {
-  if (elem?.customType) {
-    switch (elem?.customType) {
-      case "svg":
-        return "icon-svg";
-      case "Quadratic":
-        return "icon-quad-arrow";
-      case "customGroup":
-        return "icon-group";
-      case "SpeechBubble":
-        return elem?.isLabel ? "icon-engage" : "icon-random-communication";
-      default:
-        return "";
-    }
-  } else
-    switch (elem?.type) {
-      case "i-text":
-        return "icon-text";
-      case "rect":
-        return elem?.patternActive ? "icon-image" : "icon-rectangle";
-      case "triangle":
-        return elem?.patternActive ? "icon-image" : "icon-triangle";
-      case "circle":
-        return elem?.patternActive ? "icon-image" : "icon-circle";
-      case "line":
-        return elem.strokeDashArray.length === 0
-          ? "icon-minus"
-          : "icon-more-horizon";
-      case "group":
-        return "icon-group";
-      case "Image":
-        return elem?.selectedTool ? "icon-blob" : "icon-image";
-      default:
-        return "";
-    }
-};
+// export const getCanvasElementNames = (canvas) => {
+//   if (!canvas) return [];
 
-export const getCanvasElementNames = (canvas) => {
-  if (!canvas) return [];
-
-  let data = [];
-  const elements = canvas?.getObjects().filter((i) => {
-    return i.name !== "Speechtext";
-  });
-  if (elements?.length) {
-    data = elements.map((elem) => {
-      if (elem.type === "i-text") {
-        if (elem.customName === true) {
-          return {
-            name: (
-              <p>
-                {/* <i
-                  className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-                ></i> */}
-                {elem.name === undefined || elem.name === ""
-                  ? elem.text
-                  : elem.name}
-              </p>
-            ),
-            value: elem.id,
-            nameValue:
-              elem.name === undefined || elem.name === ""
-                ? elem.text
-                : elem.name,
-          };
-        } else {
-          return {
-            name: (
-              <p>
-                {/* <i
-                  className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-                ></i> */}
-                {elem.text.length > 20 ? elem.text.slice(0, 20) : elem.name}
-              </p>
-            ),
-            value: elem.id,
-            nameValue:
-              elem.text.length > 20 ? elem.text.slice(0, 20) : elem.name,
-          };
-        }
-      } else {
-        if (elem?.id) {
-          return {
-            name: (
-              <p>
-                <i
-                  className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-                ></i>{" "}
-                {elem.name}
-              </p>
-            ),
-            nameValue: elem.name,
-            value: elem.id,
-          };
-        } else {
-          return {
-            name: (
-              <p>
-                <i
-                  className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-                ></i>{" "}
-                {elem.name}
-              </p>
-            ),
-            value: elem.bubbleId,
-            nameValue: elem.name,
-          };
-        }
-      }
-    });
-    return data;
-  } else {
-    return [];
-  }
-};
+//   let data = [];
+//   const elements = canvas?.getObjects().filter((i) => {
+//     return i.name !== "Speechtext";
+//   });
+//   if (elements?.length) {
+//     data = elements.map((elem) => {
+//       if (elem.type === "i-text") {
+//         if (elem.customName === true) {
+//           return {
+//             name: (
+//               <p>
+//                 {/* <i
+//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
+//                 ></i> */}
+//                 {elem.name === undefined || elem.name === ""
+//                   ? elem.text
+//                   : elem.name}
+//               </p>
+//             ),
+//             value: elem.id,
+//             nameValue:
+//               elem.name === undefined || elem.name === ""
+//                 ? elem.text
+//                 : elem.name,
+//           };
+//         } else {
+//           return {
+//             name: (
+//               <p>
+//                 {/* <i
+//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
+//                 ></i> */}
+//                 {elem.text.length > 20 ? elem.text.slice(0, 20) : elem.text}
+//               </p>
+//             ),
+//             value: elem.id,
+//             nameValue:
+//               elem.text.length > 20 ? elem.text.slice(0, 20) : elem.name,
+//           };
+//         }
+//       } else {
+//         if (elem?.id) {
+//           return {
+//             name: (
+//               <p>
+//                 <i
+//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
+//                 ></i>{" "}
+//                 {elem.name}
+//               </p>
+//             ),
+//             nameValue: elem.name,
+//             value: elem.id,
+//           };
+//         } else {
+//           return {
+//             name: (
+//               <p>
+//                 <i
+//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
+//                 ></i>{" "}
+//                 {elem.name}
+//               </p>
+//             ),
+//             value: elem.bubbleId,
+//             nameValue: elem.name,
+//           };
+//         }
+//       }
+//     });
+//     return data;
+//   } else {
+//     return [];
+//   }
+// };
 
 export const getLeftmostCoord = (elem) => {
   return Math.min(
@@ -2173,7 +2137,7 @@ export const applyJsonToCanvas = async (jsonData, self) => {
   canvasRef.clear();
   self.setState({
     showStyleEditor: false,
-    selectedElementName: "No Element(s)",
+    selectedElementName: "Please select",
   });
   const textObjects = jsonData.objects.filter((item) => {
     return item.type === "i-text";
@@ -2357,7 +2321,7 @@ export const resetPage = (self) => {
     showStyleEditor: false,
     pageBgColor: "#ffffff",
     elementsDropDownData: [],
-    selectedElementName: "No Element(s)",
+    selectedElementName: "Please select",
   });
 };
 
