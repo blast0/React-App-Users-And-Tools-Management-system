@@ -120,7 +120,7 @@ class Designer extends Component {
     const _canvas = Object.values(this.state.canvases)[0];
     return (
       <div
-        className={`designer p-[10px] h-[100%] ${
+        className={`designer overflow-y-auto p-[10px] h-[100%] ${
           theme === "dark" ? "bg-[#333232] " : "bg-[#ffffff]"
         }`}
         ref={this.designer}

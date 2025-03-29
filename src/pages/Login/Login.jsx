@@ -31,7 +31,13 @@ const Login = () => {
           "http://localhost:3000/api/v1/login",
           formData
         );
+        // const res2 = await axios.post(
+        //   "http://localhost:3000/api/v1/verify",
+        //   formData
+        // );
+        // console.log(res2);
         localStorage.setItem("auth", JSON.stringify(response.data.token));
+        console.log(response.data);
         toast.success("Login successfull");
         navigate("/dashboard");
       } catch (err) {

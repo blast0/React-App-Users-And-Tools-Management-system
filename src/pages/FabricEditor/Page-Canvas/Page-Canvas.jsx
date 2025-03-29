@@ -1418,8 +1418,8 @@ class Page extends Component {
       elem.url,
       elem
     );
-    patternImage.left = (_canvas.width - patternImage.width) / 2;
-    patternImage.top = (_canvas.height - patternImage.height) / 2;
+    // patternImage.left = (_canvas.width - patternImage.width) / 2;
+    // patternImage.top = (_canvas.height - patternImage.height) / 2;
     _canvas.requestRenderAll();
     if (elem.selectable) {
       patternImage.on("mousedown", this.handlePageItemClick);

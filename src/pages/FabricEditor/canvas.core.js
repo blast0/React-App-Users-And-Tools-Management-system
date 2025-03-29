@@ -81,6 +81,7 @@ class CanvasCore {
     if (!options?.fontFamily) return textElement;
 
     // try to load google font
+    console.log(options?.fontFamily);
     try {
       Spinner.showSpinner(`Loading Font: ${options?.fontFamily}`);
       await loadGoogleFont(options?.fontFamily);
@@ -282,8 +283,12 @@ class CanvasCore {
           id: getNewID(),
           BorderLock: true,
           fill: "rgba(0 0 0 0)",
-          left: (canvas.width - restOptions?.width) / 2,
-          top: (canvas.height - restOptions?.height) / 2,
+          left: restOptions.left
+            ? restOptions.left
+            : (canvas.width - restOptions?.width) / 2,
+          top: restOptions.top
+            ? restOptions.top
+            : (canvas.height - restOptions?.height) / 2,
           stroke: "#000",
           strokeWidth: 0,
           strokeUniform: true,
@@ -300,8 +305,12 @@ class CanvasCore {
           BorderLock: true,
           fill: "rgba(0 0 0 0)",
           backgroundColor: "rgba(255,255,255,0)",
-          left: (canvas.width - restOptions?.width) / 2,
-          top: (canvas.height - restOptions?.height) / 2,
+          left: restOptions.left
+            ? restOptions.left
+            : (canvas.width - restOptions?.width) / 2,
+          top: restOptions.top
+            ? restOptions.top
+            : (canvas.height - restOptions?.height) / 2,
           stroke: "#000",
           strokeWidth: 0,
           strokeUniform: true,
@@ -319,8 +328,12 @@ class CanvasCore {
           id: getNewID(),
           BorderLock: true,
           fill: "rgba(0 0 0 0)",
-          left: 0,
-          top: 0,
+          left: restOptions.left
+            ? restOptions.left
+            : (canvas.width - restOptions?.width) / 2,
+          top: restOptions.top
+            ? restOptions.top
+            : (canvas.height - restOptions?.height) / 2,
           stroke: "#000",
           strokeWidth: 0,
           strokeUniform: true,
