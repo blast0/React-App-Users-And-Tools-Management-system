@@ -2,8 +2,8 @@ export const DefaultTemplate = {
   name: "Default Template",
   value: "default",
   pageStyles: {
-    width: 120,
-    height: 64,
+    width: 1200,
+    height: 640,
   },
   elements: [
     {
@@ -165,23 +165,23 @@ export const DefaultTemplate = {
       text: "Continuous fixes, improvements and features development to promote \nbetter component life-cycle and a linear and bug free product.\nImproved front-end performance by eliminating performance bottlenecks.\nCreated front-end modules with maximum code re-usability and efficiency. \nWorked with native modules as and when required.\nUsed native APIs for tight integrations.\nCreated embeddable script for any web application.\nMaintained software products including programs, webpages, and databases\nLanguages used: HTML | CSS | SCSS | LESS | JAVASCRIPT",
       name: "job summary",
     },
-    // {
-    //   type: "Pattern",
-    //   name: "Background Image",
-    //   left: 1030,
-    //   top: 22,
-    //   width: 150,
-    //   height: 150,
-    //   // radius: 250,
-    //   containerType: "rect", //triangle. circle, rect
-    //   url: "https://www.bakemyweb.com/files/public/39/2c/677288c7c6f859001dc6392c/i/f9/67/6798d660f4957e001e97f967/original?name=canvas.png-200x200.png&mimetype=image/png&cd=inline",
-    //   imageFit: "Fit Image",
-    //   BorderX: 5,
-    //   BorderY: 5,
-    //   BorderLock: true,
-    //   preselected: true,
-    //   stopContainerResize: true,
-    // },
+    {
+      type: "Pattern",
+      name: "Background Image",
+      left: 1030,
+      top: 22,
+      width: 150,
+      height: 150,
+      // radius: 250,
+      containerType: "rect", //triangle. circle, rect
+      url: "https://www.bakemyweb.com/files/public/39/2c/677288c7c6f859001dc6392c/i/f9/67/6798d660f4957e001e97f967/original?name=canvas.png-200x200.png&mimetype=image/png&cd=inline",
+      imageFit: "Fit Image",
+      BorderX: 5,
+      BorderY: 5,
+      BorderLock: true,
+      preselected: true,
+      stopContainerResize: true,
+    },
   ],
 };
 
