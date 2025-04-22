@@ -33,7 +33,6 @@ export const SketchPresetColors = ({
         source: "hex",
       },
       e
-      // console.log("new color", hex)
     );
   };
 

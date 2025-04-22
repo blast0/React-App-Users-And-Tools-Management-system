@@ -8,23 +8,24 @@ import { cloneDeep, uniqueId } from "lodash";
 
 // CONSTANTS
 import {
-  ACTIONS,
   PAGE_CONFIG,
   PAGE_TEMPLATES,
   LINE_PROPS_DEFAULT,
-  FONT_PROPS_DEFAULT,
   CANVAS_PAGE_GUTTER,
-  EXTRA_ELEMENT_PROPS,
   SHAPES_PROPS_DEFAULT,
   QUADRATIC_PROPS_DEFAULT,
   SPEECH_BUBBLE_DEFAULT_PROPS,
 } from "./Constants/designer-constants";
+import { ACTIONS } from "./Constants/actions";
+import { FONT_PROPS_DEFAULT } from "./Constants/font";
 // LOCAL COMPONENTS / METHODS
 import { Spinner } from "@/components/ui/custom/spinner";
 import { Button } from "@/components/ui/button";
 import FontFaceObserver from "fontfaceobserver";
 import { toast } from "react-toastify";
 import { getCanvasElementNames } from "./Constants/designer-icons";
+import { EXTRA_ELEMENT_PROPS } from "./Constants/historyProps";
+// import axios from "axios";
 
 export const handleDrop = (images, self) => {
   console.log(images);
@@ -32,12 +33,16 @@ export const handleDrop = (images, self) => {
   const elements = cloneDeep(pages[0].elements);
   if (!activePageID) return;
   let imagesCount = countElementTypes("Image", self);
-  let svgCount = countElementTypes("Image", self);
+  let svgCount = countElementTypes("Svg", self);
   images.forEach(async (image, index) => {
+    let _width = null;
+    let _height = null;
+    const name = image.name;
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       if (reader.result.includes("svg+xml")) {
         if (!activePageID) return;
+        ({ _width, _height } = svgSize(name, _width, _height));
         let zoomX = getSVGSize("300px", pageWidth, pageHeight);
         let zoomY = getSVGSize("300px", pageWidth, pageHeight);
         let zoom = zoomX > zoomY ? zoomY : zoomX;
@@ -49,6 +54,8 @@ export const handleDrop = (images, self) => {
           scaleX: zoom,
           scaleY: zoom,
           name: "Svg " + svgCount,
+          _height: _height > 0 ? _height : null,
+          _width: _width > 0 ? _width : null,
           imageFit: "Show full Svg", //contain= Show full Svg, cover=Fit Svg to boundary
         };
         svgCount++;
@@ -74,6 +81,7 @@ export const handleDrop = (images, self) => {
             BorderY: 5,
           };
           imagesCount++;
+          console.log(imgElementSchema);
           elements.push(imgElementSchema);
           if (index + 1 === images.length) {
             self.setState({ pages: [{ ...pages[0], elements }] });
@@ -440,85 +448,6 @@ export const getBottommostCoord = (elem) => {
   );
 };
 
-// export const getCanvasElementNames = (canvas) => {
-//   if (!canvas) return [];
-
-//   let data = [];
-//   const elements = canvas?.getObjects().filter((i) => {
-//     return i.name !== "Speechtext";
-//   });
-//   if (elements?.length) {
-//     data = elements.map((elem) => {
-//       if (elem.type === "i-text") {
-//         if (elem.customName === true) {
-//           return {
-//             name: (
-//               <p>
-//                 {/* <i
-//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-//                 ></i> */}
-//                 {elem.name === undefined || elem.name === ""
-//                   ? elem.text
-//                   : elem.name}
-//               </p>
-//             ),
-//             value: elem.id,
-//             nameValue:
-//               elem.name === undefined || elem.name === ""
-//                 ? elem.text
-//                 : elem.name,
-//           };
-//         } else {
-//           return {
-//             name: (
-//               <p>
-//                 {/* <i
-//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-//                 ></i> */}
-//                 {elem.text.length > 20 ? elem.text.slice(0, 20) : elem.text}
-//               </p>
-//             ),
-//             value: elem.id,
-//             nameValue:
-//               elem.text.length > 20 ? elem.text.slice(0, 20) : elem.name,
-//           };
-//         }
-//       } else {
-//         if (elem?.id) {
-//           return {
-//             name: (
-//               <p>
-//                 <i
-//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-//                 ></i>{" "}
-//                 {elem.name}
-//               </p>
-//             ),
-//             nameValue: elem.name,
-//             value: elem.id,
-//           };
-//         } else {
-//           return {
-//             name: (
-//               <p>
-//                 <i
-//                   className={"icon-common mr-2 " + getObjectTypeIcon(elem)}
-//                 ></i>{" "}
-//                 {elem.name}
-//               </p>
-//             ),
-//             value: elem.bubbleId,
-//             nameValue: elem.name,
-//           };
-//         }
-//       }
-//     });
-//     return data;
-//   } else {
-//     return [];
-//   }
-// };
-
 export const getLeftmostCoord = (elem) => {
   return Math.min(
     elem.aCoords.bl.x,
@@ -552,7 +481,6 @@ export const scaleElementTofitCanvas = (
   canvasWidth,
   elem
 ) => {
-  console.log(imageFit);
   const xscale = canvasWidth / elem.width;
   const yscale = canvasHeight / elem.height;
 
@@ -602,17 +530,13 @@ export const scaleElementTofitCanvas = (
 
 export const handleOutsideClick = (event, self) => {
   const canvasRef = Object.values(self.state.canvases)[0];
-  console.log(event.target.className);
   if (!event.target.className.includes("canvas")) {
-    console.log("inside");
     canvasRef.discardActiveObject().renderAll();
     self.setState({
       showStyleEditor: false,
       selectedElementName: "Please select",
       selectedElementId: null,
     });
-  } else {
-    console.log("outside");
   }
 };
 
@@ -1060,7 +984,7 @@ export const handleVerticalSpace = (activeObjects, bounding) => {
 };
 
 // UPDATE PAGE DIMENSIONS
-export const resizePage = (self) => {
+export const resizePage = (self, cb = () => {}) => {
   const { pages, pageHeight, pageWidth } = self.state;
   const page = pages[0];
   const newPage = {
@@ -1071,11 +995,16 @@ export const resizePage = (self) => {
       width: pageWidth,
     },
   };
-  self.setState({
-    // to add page
-    pages: [newPage],
-    activePageID: newPage.id,
-  });
+  self.setState(
+    {
+      // to add page
+      pages: [newPage],
+      activePageID: newPage.id,
+    },
+    () => {
+      cb();
+    }
+  );
 };
 
 // ADD IMAGE TO CANVAS HANDLER
@@ -1922,7 +1851,6 @@ export const uploadTemplateModal = async (self) => {
 };
 
 export const updateTemplate = async (imageNode, JsonNode, self) => {
-  console.log("aD");
   const { asset, toast } = self.props;
   const canvasRef = Object.values(self.state.canvases)[0];
   const temp = createJSON(self);
@@ -2002,22 +1930,14 @@ export const upload = async (file, templateName, self) => {
   }
 };
 
-export const onSelectSvg = (e, self) => {
+export const onSelectFile = (e, self) => {
+  console.log("onSelectFile");
   if (e.target.files && e.target.files.length > 0) {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => {
-      // TODO: handle svg and image separately
-      if (reader.result.includes("svg+xml")) {
-        addSVGToPage(reader.result, "300px", "300px", self);
-      } else if (reader.result.includes("data:image")) {
-        let img = new Image();
-        img.src = reader.result;
-        img.onload = function () {
-          addImage(reader.result, self);
-        };
-      }
+    const files = [];
+    Object.keys(e.target.files).forEach((key) => {
+      files.push(e.target.files[key]);
     });
-    reader.readAsDataURL(e.target.files[0]);
+    handleDrop(files, self);
   }
   //clear filereader to detect same file again if not changed on mutliple attempts
   e.target.value = "";
@@ -2027,7 +1947,6 @@ export const onSelectSvg = (e, self) => {
 export const onSelectImage = (e, self) => {
   if (e.target.files && e.target.files.length > 0) {
     const [name, isValid] = validateString(e.target.files[0].name);
-    console.log(isValid);
     const reader = new FileReader();
     let fType = e.target.files[0].type.split("/")[1];
     let img = new Image();
@@ -2062,69 +1981,135 @@ export const onSelectImage = (e, self) => {
   e.target.value = "";
 };
 
+function svgSize(name) {
+  const match = name.match(/\b(\d{1,4})x(\d{1,4})\b/);
+  if (match) {
+    const width = parseInt(match[1], 10);
+    const height = parseInt(match[2], 10);
+    return {
+      _width: width > 2000 ? 2000 : width,
+      _height: height > 2000 ? 2000 : height,
+    };
+  } else {
+    return { _width: null, _height: null };
+  }
+}
+
 export const onAddImageFromFile = (e, self, pageHeight, pageWidth) => {
+  console.log(e, self, pageHeight, pageWidth);
+  const canvasRef = Object.values(self.state.canvases)[0];
   if (e.target.files && e.target.files.length > 0) {
     const reader = new FileReader();
-    // let fType = e.target.files[0].type.split("/")[1];
     let img = new Image();
+    let fileName = "";
+    let _width = null;
+    let _height = null;
+    const files = [];
+    Object.keys(e.target.files).forEach((key) => {
+      fileName = e.target.files[key].name;
+      files.push(e.target.files[key]);
+    });
+    ({ _width, _height } = svgSize(fileName, _width, _height));
+
     reader.addEventListener("load", () => {
-      // TODO: handle svg and image separately
-      if (
-        reader.result.includes("data:image") &&
-        !reader.result.includes("svg+xml")
-      ) {
-        img.src = reader.result;
-        resetPage(self);
-        img.onload = function () {
-          const imgRatio = img.width / img.height;
-          if (img.width > pageWidth || img.height > pageHeight) {
-            if (imgRatio > 1) {
-              //wider image
-              if (img.width > 1550) {
-                if (1550 / imgRatio > 835) {
-                  dimensionChangeHandler(
-                    "width",
-                    parseInt(835 * imgRatio),
-                    self
-                  );
-                  dimensionChangeHandler("height", 835, self);
-                } else {
-                  dimensionChangeHandler("width", 1550, self);
-                  dimensionChangeHandler(
-                    "height",
-                    parseInt(1550 / imgRatio),
-                    self
-                  );
+      img.src = reader.result;
+      img.onload = function () {
+        canvasRef.clear();
+        canvasRef.backgroundColor = "#ffffff";
+        canvasRef.renderAll();
+        const styles = window.getComputedStyle(self.designer?.current);
+        const widthLimit = parseInt(styles?.width) - 20;
+        const heightLimit = parseInt(styles?.height) - 20;
+        const imgRatio = img.width / img.height;
+        console.log(imgRatio);
+        if (
+          img.width > parseInt(styles?.width) - 20 ||
+          img.height > parseInt(styles?.height) - 20
+        ) {
+          console.log("here");
+          if (imgRatio > widthLimit / heightLimit) {
+            //wider image
+            if (img.width > widthLimit) {
+              if (widthLimit / imgRatio > heightLimit) {
+                self.setState(
+                  {
+                    pageHeight: parseInt(heightLimit * imgRatio),
+                  },
+                  () => {
+                    resizePage(self, () => {
+                      handleDrop(files, self);
+                    });
+                  }
+                );
+              } else {
+                self.setState(
+                  {
+                    pageWidth: widthLimit,
+                    pageHeight: parseInt(widthLimit / imgRatio),
+                  },
+                  () => {
+                    resizePage(self, () => {
+                      handleDrop(files, self);
+                    });
+                  }
+                );
+              }
+            } else if (img.width > pageWidth) {
+              self.setState(
+                {
+                  pageWidth: img.width,
+                  pageHeight: parseInt(img.width / imgRatio),
+                },
+                () => {
+                  resizePage(self, () => {
+                    handleDrop(files, self);
+                  });
                 }
-              } else if (img.width > pageWidth) {
-                dimensionChangeHandler("width", img.width, self);
-                dimensionChangeHandler(
-                  "height",
-                  parseInt(img.width / imgRatio),
-                  self
-                );
-              }
-            } else {
-              //longer image
-              if (img.height > 835) {
-                dimensionChangeHandler("width", parseInt(835 * imgRatio), self);
-                dimensionChangeHandler("height", 835, self);
-              } else if (img.height > pageHeight) {
-                dimensionChangeHandler(
-                  "width",
-                  parseInt(img.height * imgRatio),
-                  self
-                );
-                dimensionChangeHandler("height", img.height, self);
-              }
+              );
             }
           } else {
-            dimensionChangeHandler("width", img.width, self);
-            dimensionChangeHandler("height", img.height, self);
+            //longer image
+            if (img.height > heightLimit) {
+              self.setState(
+                {
+                  pageWidth: parseInt(heightLimit * imgRatio),
+                  pageHeight: heightLimit,
+                },
+                () => {
+                  resizePage(self, () => {
+                    handleDrop(files, self);
+                  });
+                }
+              );
+            } else if (img.height > pageHeight) {
+              self.setState(
+                {
+                  pageWidth: parseInt(img.height * imgRatio),
+                  pageHeight: img.height,
+                },
+                () => {
+                  resizePage(self, () => {
+                    handleDrop(files, self);
+                  });
+                }
+              );
+            }
           }
-          addImage(reader.result, self);
-        };
-      }
+        } else {
+          console.log("here", files);
+          self.setState(
+            {
+              pageWidth: _width ? _width : parseInt(img.height * imgRatio),
+              pageHeight: _height ? _height : img.height,
+            },
+            () => {
+              resizePage(self, () => {
+                handleDrop(files, self);
+              });
+            }
+          );
+        }
+      };
     });
     reader.readAsDataURL(e.target.files[0]);
   }
@@ -2145,7 +2130,6 @@ export const applyJsonToCanvas = async (jsonData, self) => {
   for (const obj of textObjects) {
     await loadGoogleFont(obj?.fontFamily);
   }
-  console.log("sad");
   if (jsonData?.hasOwnProperty("background")) {
     self.setState({ pageBgColor: jsonData?.background });
   }
@@ -2155,7 +2139,6 @@ export const applyJsonToCanvas = async (jsonData, self) => {
   if (jsonData?.hasOwnProperty("width")) {
     dimensionChangeHandler("width", jsonData?.width, self);
   }
-  console.log("here");
   canvasRef.loadFromJSON(jsonData, () => {
     canvasRef.renderAll.bind(canvasRef);
     canvasRef.getObjects().forEach((obj, index) => {
@@ -2327,19 +2310,6 @@ export const resetPage = (self) => {
 
 export const updateActiveElement = (id, name, self) => {
   const canvasRef = Object.values(self.state.canvases)[0];
-  if (canvasRef.getActiveObject()?.customName === true) {
-    self.setState({
-      selectedElementId: id,
-      selectedElementName: canvasRef.getActiveObject().changeName,
-      isCanvasActive: true,
-    });
-  } else {
-    self.setState({
-      selectedElementId: id,
-      selectedElementName: name,
-      isCanvasActive: true,
-    });
-  }
   const elem = canvasRef.getObjects().find((i) => {
     return i.id === id;
   });
@@ -2352,6 +2322,19 @@ export const updateActiveElement = (id, name, self) => {
     if (bubble !== undefined) {
       canvasRef.setActiveObject(bubble);
     }
+  }
+  if (canvasRef.getActiveObject()?.changedName === true) {
+    self.setState({
+      selectedElementId: id,
+      selectedElementName: canvasRef.getActiveObject().customName,
+      isCanvasActive: true,
+    });
+  } else {
+    self.setState({
+      selectedElementId: id,
+      selectedElementName: name,
+      isCanvasActive: true,
+    });
   }
   canvasRef.requestRenderAll();
 };
@@ -2371,21 +2354,13 @@ export const deleteSelection = (self) => {
 
 export const handleNameElement = (val, self) => {
   const _canvas = Object.values(self.state.canvases)[0];
-  if (_canvas.getActiveObject()?.customName === true) {
-    _canvas.getActiveObject().name =
-      _canvas.getActiveObject().changeName !== ""
-        ? _canvas.getActiveObject().changeName
-        : _canvas.getActiveObject()?.text;
-  }
-  if (_canvas.getActiveObject())
-    _canvas.getActiveObject().name = val
-      ? val
-      : _canvas.getActiveObject()?.text;
-  if (_canvas.getActiveObject()?.customName === true) {
+  if (_canvas.getActiveObject()?.changedName === true) {
+    _canvas.getActiveObject().customName = _canvas.getActiveObject().customName;
     self.setState({
-      selectedElementName: _canvas?.getActiveObject()?.changeName,
+      selectedElementName: _canvas?.getActiveObject()?.customName,
     });
   } else {
+    _canvas.getActiveObject().name = _canvas.getActiveObject().val;
     self.setState({
       selectedElementName: val,
     });
@@ -2612,7 +2587,6 @@ export const openSizeTemplates = async (self) => {
 
 // HANDLE EVENTS ON RIGHT PANEL AND PERFORM ACTIONS ACCORDINGLY
 export const handleRightPanelUpdates = (action, data, self) => {
-  console.log(action, data, self);
   const canvasRef = Object.values(self.state.canvases)[0];
   const alignment = data;
   const { pageHeight, pageWidth, loadingImage } = self.state;

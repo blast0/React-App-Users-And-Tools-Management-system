@@ -69,7 +69,6 @@ const GradientMakerWithInput = ({
             className="border-none shadow-none"
             value={gradient}
             onChange={(e) => {
-              console.log(e);
               setGradient(e.target.value);
               onValueChange({ gradient: e.target.value, config: null });
             }}

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { fabric } from "fabric";
 import { cloneDeep, noop } from "lodash";
 import {
-  ACTIONS,
   ARROW_DIRECTION,
   ALIGNMENT_OPTIONS,
   SPACE_EVENLY_OPTIONS,
   RESET_ACTIVE_ELEM_PROPS,
   SPEECH_TEXT_ALIGNMENT_OPTIONS,
 } from "../Constants/designer-constants";
+import { ACTIONS } from "../Constants/actions";
 import {
   createNewPoly,
   getNewID,
@@ -982,7 +982,9 @@ class ActiveElementControls extends Component {
             {!activeElement?.patternActive ? activeBorderColor : imageFit}
           </div>
           <div className="w-[100%]">{boxShadow}</div>
-          <div className="w-[48%]">{AlignText}</div>
+          <div className="w-[48%]">
+            {activeElement.textLines.length > 1 ? AlignText : null}
+          </div>
           <div className="w-[48%]">{activeFontFamily}</div>
           {TextStyles}
           {FlipElement}
@@ -1198,32 +1200,6 @@ class ActiveElementControls extends Component {
       </div>
     );
 
-    const RandomBlobControls = (
-      // <BlobMakerContextProvider>
-      //   {activeElement?.type === "Image" &&
-      //   activeElement?.subType === "RandomShape" ? (
-      //     <ToolsConfiguration
-      //       defaultTool={activeElement?.selectedTool}
-      //       showDropdown={true}
-      //       hideHeightWidth={true}
-      //       shouldCreateSvgOnMount={false}
-      //       getSvgElem={(svg, randomShapePath, states) =>
-      //         handleSvgElem(svg, randomShapePath, states, this)
-      //       }
-      //       getSelectedTool={(selectedTool) =>
-      //         handleSelectedTool(selectedTool, activeElement, this)
-      //       }
-      //       setSvgProps={{
-      //         selectedTool: activeElement?.selectedTool,
-      //         states: activeElement?.states,
-      //         svgPath: activeElement?.randomShapePath,
-      //       }}
-      //     />
-      //   ) : null}
-      // </BlobMakerContextProvider>
-      <></>
-    );
-
     const RectangleControls =
       activeElement?.type === "rect" ? (
         <div className="rect-controls flex-wrap flex gap-2">
@@ -1318,7 +1294,6 @@ class ActiveElementControls extends Component {
         {TriangleControls}
         {RectangleControls}
         {AnnotationControls}
-        {RandomBlobControls}
         {QuadraticArrowControls}
       </>
     );

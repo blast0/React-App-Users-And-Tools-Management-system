@@ -1,32 +1,28 @@
 import React, { Component } from "react";
-
-// LOCAL COMPONENTS / METHODS
 import Page from "./Page-Canvas/Page-Canvas";
 import RightPanel from "./Controls/rightpanel";
-// import SaveDownloadModal from "../../components/save-download-modal";
-import VaulDrawer from "@/components/ui/drawer";
+
 // CONSTANTS
-import { FONT_PROPS_DEFAULT } from "./Constants/designer-constants";
-import Dropzone from "react-dropzone";
+import { ACCEPTED_FILES } from "./Constants/designer-constants";
+import { FONT_PROPS_DEFAULT } from "./Constants/font";
+import { getCanvasElementNames } from "./Constants/designer-icons";
+
 // HELPERS
 import {
-  onSelectSvg,
+  handleDrop,
+  onSelectFile,
   onSelectImage,
   initializeApp,
   handleJsonData,
-  // setActiveObject,
   handleOutsideClick,
-  // updatePageBreadcrumb,
-  handleRightPanelUpdates,
-  // addSavedImageFromLibrary,
-  createCanvasElementsDropdownData,
   onAddImageFromFile,
-  handleDrop,
+  handleRightPanelUpdates,
+  createCanvasElementsDropdownData,
 } from "./helper-functions";
+import Dropzone from "react-dropzone";
 
 // STYLE
 import "./googlefonts.css";
-import { getCanvasElementNames } from "./Constants/designer-icons";
 
 class Designer extends Component {
   constructor(props) {
@@ -93,107 +89,33 @@ class Designer extends Component {
 
   render() {
     const {
-      // blob,
       pages,
       error,
       pageWidth,
       pageHeight,
-      // shouldSave,
       pageBgColor,
       modalActive,
-      // thumbnailUrl,
       activePageID,
-      // fileDimensions,
       isCanvasActive,
-      // defaultFileType,
-      // showDownloadBtn,
       showStyleEditor,
       isTemplateLoaded,
       selectedElementId,
       activeElementProps,
       selectedElementName,
       elementsDropDownData,
-      // returnNodeId,
-      // defaultFileName,
     } = this.state;
     const { theme } = this.props;
     const _canvas = Object.values(this.state.canvases)[0];
     return (
       <div
-        className={`designer overflow-y-auto p-[10px] h-[100%] ${
+        className={`designer relative flex ${
           theme === "dark" ? "bg-[#333232] " : "bg-[#ffffff]"
         }`}
         ref={this.designer}
+        style={{
+          height: "100%",
+        }}
       >
-        <VaulDrawer
-          theme={theme}
-          headerChildren={<></>}
-          bodyChildren={
-            <div>
-              <input
-                ref={this.imagetoLibInputRef}
-                className="hidden"
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  onSelectImage(e, this);
-                }}
-                onClick={(e) => {
-                  onSelectImage(e, this);
-                }}
-              />
-              <input
-                ref={this.imagetoCanvasRef}
-                className="hidden"
-                type="file"
-                accept=".png, .jpg, .jpeg, .webp"
-                onChange={(e) => {
-                  onAddImageFromFile(e, this, pageHeight, pageWidth);
-                }}
-                onClick={(e) => {
-                  onAddImageFromFile(e, this, pageHeight, pageWidth);
-                }}
-              />
-              <input
-                ref={this.svgInputRef}
-                className="hidden"
-                type="file"
-                accept=".svg, .png, .jpg, .jpeg, .webp, .gif"
-                onChange={(e) => onSelectSvg(e, this)}
-              />
-              <RightPanel
-                theme={theme}
-                canvas={_canvas}
-                elementsDropDownData={elementsDropDownData}
-                onCanvasActive={(isActive) => {
-                  if (modalActive) {
-                    this.setState({
-                      isCanvasActive: false,
-                    });
-                  } else {
-                    this.setState({
-                      isCanvasActive: isActive,
-                    });
-                  }
-                }}
-                error={error}
-                pageWidth={pageWidth}
-                pageHeight={pageHeight}
-                pageBgColor={pageBgColor}
-                showStyleEditor={showStyleEditor}
-                selectedElementName={selectedElementName}
-                selectedElementId={selectedElementId}
-                activeElementProps={activeElementProps}
-                onChange={(action, data) => {
-                  handleRightPanelUpdates(action, data, this);
-                }}
-                handleJsonData={(e) => handleJsonData(e, this)}
-                jsonRef={this.jsonRef}
-                siteColorsSettings={this.props.siteColorsSettings}
-              />
-            </div>
-          }
-        />
         <Dropzone
           ref={this.dropzoneRef}
           accept={".jpg, .png, .webp, .jpeg, .svg"}
@@ -208,7 +130,7 @@ class Designer extends Component {
                   <div className={isDragActive ? "drag-active" : ""}>
                     <React.Fragment>
                       <div
-                        className="flex slim-scroll"
+                        className="flex p-2 slim-scroll"
                         style={{
                           width: pageWidth,
                         }}
@@ -322,6 +244,80 @@ class Designer extends Component {
             </section>
           )}
         </Dropzone>
+        <div
+          style={{
+            backgroundColor: theme === "light" ? "white" : "black",
+            border: "1px solid #989898",
+            height: "100%",
+            position: "absolute",
+            right: 0,
+          }}
+        >
+          <div>
+            <input
+              ref={this.imagetoLibInputRef}
+              className="hidden"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                onSelectImage(e, this);
+              }}
+              onClick={(e) => {
+                onSelectImage(e, this);
+              }}
+            />
+            <input
+              ref={this.imagetoCanvasRef}
+              className="hidden"
+              type="file"
+              accept={ACCEPTED_FILES}
+              onChange={(e) => {
+                onAddImageFromFile(e, this, pageHeight, pageWidth);
+              }}
+              onClick={(e) => {
+                onAddImageFromFile(e, this, pageHeight, pageWidth);
+              }}
+            />
+            <input
+              ref={this.svgInputRef}
+              className="hidden"
+              type="file"
+              accept=".svg, .png, .jpg, .jpeg, .webp, .gif"
+              onChange={(e) => onSelectFile(e, this)}
+            />
+            <RightPanel
+              theme={theme}
+              canvas={_canvas}
+              elementsDropDownData={elementsDropDownData}
+              onCanvasActive={(isActive) => {
+                if (modalActive) {
+                  this.setState({
+                    isCanvasActive: false,
+                  });
+                } else {
+                  this.setState({
+                    isCanvasActive: isActive,
+                  });
+                }
+              }}
+              error={error}
+              pageWidth={pageWidth}
+              pageHeight={pageHeight}
+              pageBgColor={pageBgColor}
+              showStyleEditor={showStyleEditor}
+              selectedElementName={selectedElementName}
+              selectedElementId={selectedElementId}
+              activeElementProps={activeElementProps}
+              onChange={(action, data) => {
+                console.log(action);
+                handleRightPanelUpdates(action, data, this);
+              }}
+              handleJsonData={(e) => handleJsonData(e, this)}
+              jsonRef={this.jsonRef}
+              siteColorsSettings={this.props.siteColorsSettings}
+            />
+          </div>
+        </div>
       </div>
     );
   }

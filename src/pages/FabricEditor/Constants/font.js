@@ -1,0 +1,33 @@
+export const FONT_PROPS_DEFAULT = Object.freeze({
+  type: "i-text",
+  value: "text",
+  name: "text",
+  fontFamily: "Ubuntu",
+  fontSize: 48,
+  backgroundColor: "rgba(255,255,255,0)",
+  fill: "#000",
+  stroke: "#000",
+  strokeWidth: 0,
+  paintFirst: "stroke",
+});
+
+export const CANVAS_CUSTOM_FONTS = {
+  Abril_Fatface: "Abril Fatface",
+  Barlow: "Barlow Condensed",
+  Bebas_Neue: "Bebas Neue",
+  Caprasimo: "Caprasimo",
+  comforter: "Comforter Brush",
+  Fasthand: "Fasthand",
+  Holtwood_One_SC: "Holtwood One SC",
+  Josefin_Slab: "Josefin Slab",
+  Libre_Baskerville: "Libre Baskerville",
+  Montserrat: "Montserrat",
+  Patua_One: "Patua One",
+  Playfair_Display: "Playfair Display",
+  quicksand: "Quicksand",
+  Raleway: "Raleway",
+  RobotoSlab: "Roboto Slab",
+  Rubik: "Rubik",
+  Titillium_Web: "Titillium Web",
+  Ubuntu: "Ubuntu",
+};

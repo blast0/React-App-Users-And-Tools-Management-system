@@ -1,5 +1,5 @@
 import { fabric } from "fabric";
-import { EXTRA_ELEMENT_PROPS } from "./Constants/designer-constants";
+import { EXTRA_ELEMENT_PROPS } from "./Constants/historyProps";
 /**
  * Override the initialize function for the _historyInit();
  */

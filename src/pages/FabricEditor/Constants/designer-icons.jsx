@@ -35,7 +35,7 @@ import {
   Component,
   RectangleHorizontal,
 } from "lucide-react";
-import { ACTIONS } from "./designer-constants";
+import { ACTIONS } from "./actions";
 
 export const TEXT_ALIGNMENT = [
   {
@@ -326,20 +326,18 @@ export const getCanvasElementNames = (canvas) => {
   if (!canvas) return [];
 
   let data = [];
-  const elements = canvas?.getObjects().filter((i) => {
-    return i.name !== "Speechtext";
-  });
+  const elements = canvas?.getObjects();
   if (elements?.length) {
     data = elements.map((elem) => {
       if (elem.type === "i-text") {
-        if (elem.customName === true) {
+        if (elem.changedName === true) {
           return {
             name: (
               <div className="flex gap-2 items-center">
                 {getObjectTypeIcon(elem)}
-                {elem.name === undefined || elem.name === ""
+                {elem.customName === undefined || elem.customName === ""
                   ? elem.text
-                  : elem.name}
+                  : elem.customName}
               </div>
             ),
             value: elem.id,
@@ -357,8 +355,11 @@ export const getCanvasElementNames = (canvas) => {
               </div>
             ),
             value: elem.id,
-            nameValue:
-              elem.text.length > 30 ? elem.text.slice(0, 30) : elem.name,
+            nameValue: elem.name
+              ? elem.name
+              : elem.text.length > 30
+              ? elem.text.slice(0, 30)
+              : elem.text,
           };
         }
       } else {
@@ -387,7 +388,6 @@ export const getCanvasElementNames = (canvas) => {
         }
       }
     });
-    console.log(data);
     return data;
   } else {
     return [];

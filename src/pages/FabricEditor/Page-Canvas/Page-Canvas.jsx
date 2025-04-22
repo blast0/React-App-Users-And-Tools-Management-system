@@ -386,8 +386,8 @@ class Page extends Component {
 
     _canvas.on("object:modified", (e) => {
       if (e.target?.type === "text" || e.target?.type === "i-text") {
-        if (e.target.customName === true) {
-          this.props.setSelectedName(e.target.changeName);
+        if (e.target.changedName === true) {
+          this.props.setSelectedName(e.target.customName);
         } else {
           this.props.setSelectedName(e.target.text);
         }
@@ -655,8 +655,8 @@ class Page extends Component {
       cloned.left += 10;
       cloned.top += 10;
       if (cloned.type === "i-text") {
-        cloned.customName = true;
-        cloned.changeName = activeObject.name + " 2";
+        cloned.changedName = true;
+        cloned.customName = activeObject.name + " 2";
       }
       cloned.name = activeObject.name + " 2";
       canvas.add(cloned);

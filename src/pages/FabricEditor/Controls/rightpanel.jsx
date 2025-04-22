@@ -9,11 +9,10 @@ import {
   Undo,
   ImageDown,
   FileDown,
-  Download,
   Pointer,
 } from "lucide-react";
 
-import { ACTIONS } from "../Constants/designer-constants";
+import { ACTIONS } from "../Constants/actions";
 import ActiveElementControls from "./activeElementControls";
 import GradientContainer from "@/components/ui/custom/gradient-container";
 import { createJSON } from "../helper-functions";
@@ -70,7 +69,7 @@ class Rightpanel extends Component {
       pageBgColor,
       theme,
     } = this.props;
-    const SAVE_OPTIONS = [
+    const CANVAS_OPTIONS = [
       {
         name: "Save Image",
         value: ACTIONS.SAVE_PAGE_TO_LIBRARY,
@@ -142,7 +141,8 @@ class Rightpanel extends Component {
       },
     ];
 
-    const activeElementType = canvas?.getActiveObject()?.type;
+    const activeElement = canvas?.getActiveObject();
+    const activeElementType = activeElement?.type;
     return (
       <div
         className="DesignerConfigPanel w-[310px] pr-2"
@@ -187,7 +187,7 @@ class Rightpanel extends Component {
 
           <DialogDropDown
             title="Save to cloud"
-            options={SAVE_OPTIONS}
+            options={CANVAS_OPTIONS}
             onSelect={(option) => onChange(option.value)}
           >
             <Button
@@ -254,10 +254,10 @@ class Rightpanel extends Component {
         <div
           className="designer-style-container slim-scroll"
           style={{
-            height: "calc(100vh - 100px)",
+            height: "calc(100vh - 112px)",
             paddingBottom: "100px",
             overflowY: "auto",
-            paddingRight: "10px",
+            padding: "10px",
           }}
         >
           <div className="page-controls mt-2">
@@ -316,7 +316,6 @@ class Rightpanel extends Component {
                 isGradientAllowed={false}
                 containerClass={"gradient"}
                 onValueChange={(gradientText, configKey, rawConfig) => {
-                  console.log(rawConfig);
                   if (rawConfig?.colorStops?.length > 1) {
                     let grad = makeGradient(rawConfig, gradientText, canvas);
                     const cangradient = new fabric.Gradient(grad);
@@ -332,7 +331,7 @@ class Rightpanel extends Component {
           {activeElementType !== "activeSelection" &&
           activeElementType !== "polygon" &&
           activeElementType !== "textbox" &&
-          canvas?.getActiveObject() ? (
+          activeElement ? (
             <div className="elementName">
               <Label className={`${theme === "dark" ? "text-white" : ""}`}>
                 Element Name:
@@ -360,18 +359,16 @@ class Rightpanel extends Component {
               placeholder={
                 selectedElementName ? (
                   <div className="flex gap-2 items-center">
-                    {getObjectTypeIcon(canvas?.getActiveObject())}
+                    {getObjectTypeIcon(activeElement)}
                     <Pointer />
                     {selectedElementName}
                   </div>
                 ) : (
-                  canvas?.getActiveObject()?.name
+                  activeElement?.name
                 )
               }
               value={
-                selectedElementId
-                  ? selectedElementId
-                  : canvas?.getActiveObject()?.name
+                selectedElementId ? selectedElementId : activeElement?.name
               }
               options={elementsDropDownData}
               onValueChange={(value) => {

@@ -1,39 +1,49 @@
 import React from "react";
-import { House, UserRound, ChevronDown, Sun, Moon } from "lucide-react";
+import {
+  House,
+  UserRound,
+  ChevronDown,
+  Sun,
+  Moon,
+  UserRoundPen,
+  UserRoundX,
+  UserRoundPlus,
+  UsersRound,
+} from "lucide-react";
 import { MenuButton } from "@/components/ui/custom/menu-button";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  // Link, useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const ACCOUNT = [
   {
     name: "Edit Profile",
-    tooltip: "Account Setting",
-    icon: "icon-setting",
-    value: "",
-    checked: false,
+    icon: <UserRoundPen />,
+    value: "EditAccount",
   },
   {
     name: "Logout",
-    tooltip: "Upload Image from Desktop",
-    icon: "icon-fs-image",
+    icon: <UserRoundX />,
     value: "Logout",
   },
   {
     name: "Switch Account",
-    tooltip: "Upload Image from Desktop",
-    icon: "icon-fs-image",
-    value: "",
+    icon: <UsersRound />,
+    value: "SwitchAccount",
   },
   {
     name: "Add another Account",
-    tooltip: "Upload Image from Desktop",
-    icon: "icon-fs-image",
-    value: "",
+    icon: <UserRoundPlus />,
+    value: "AddAccount",
   },
 ];
 
-const Navbar = ({ data, theme, setTheme }) => {
+const Navbar = ({ theme, setTheme }) => {
   const navigate = useNavigate();
+  // const location = useLocation();
+  // console.log(location);
   return (
     <div
       className="NavBar"

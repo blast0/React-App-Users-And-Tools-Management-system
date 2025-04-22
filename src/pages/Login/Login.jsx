@@ -5,6 +5,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa6";
+import { verifyToken } from "../../helper";
 import Image from "../../assets/image.png";
 import Logo from "../../assets/logo.png";
 import "./Login.css";
@@ -38,14 +39,12 @@ const Login = () => {
           navigate("/dashboard");
         } else {
           localStorage.setItem("auth", JSON.stringify(response.data.token));
-          // toast.success("Login successfull");
           navigate("/verifyEmail", {
             state: { email: response.data.user.email },
           });
         }
       } catch (err) {
-        console.log(err);
-        toast.error(err.message);
+        toast.error(err);
       }
     } else {
       toast.error("Please fill all inputs");
@@ -63,7 +62,9 @@ const Login = () => {
     if (response.status === 200) {
       localStorage.setItem("auth", JSON.stringify(response.data.token));
       toast.success("Login successfull");
-      navigate("/dashboard");
+      navigate("/dashboard", {
+        state: { user: response.data.user },
+      });
     } else {
       localStorage.removeItem("auth");
       toast.success("Login Failed");
@@ -71,9 +72,16 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (token !== "") {
-      toast.success("You already logged in");
-      navigate("/dashboard");
+    if (token) {
+      const { isTokenValid, error } = verifyToken(token);
+      if (isTokenValid && !error) {
+        toast.success("You already logged in");
+        navigate("/dashboard");
+      } else if (error !== null) {
+        toast.error(error);
+      } else {
+        toast.error("Token Expired");
+      }
     }
   }, []);
 
@@ -134,7 +142,7 @@ const Login = () => {
                   handleGoogleLogin(credentialResponse);
                 }}
                 onError={() => {
-                  console.log("Login Failed");
+                  toast.error("Login Failed");
                 }}
               />
             </div>

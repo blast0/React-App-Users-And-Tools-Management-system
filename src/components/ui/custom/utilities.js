@@ -1,4 +1,22 @@
+const DEFAULT_CONFIG = {
+  colorStops: [
+    {
+      color: "rgba(252, 165, 241, 1)",
+      offset: 10,
+    },
+    {
+      color: "rgba(181, 255, 255, 1)",
+      offset: 70,
+    },
+  ],
+  type: "linear",
+  angle: 45,
+};
+
 export function convertGradientToConfig(str) {
+  if (typeof str !== "string") {
+    return DEFAULT_CONFIG;
+  }
   const regex = /(?<color>rgba\([0-9,\. ]+\)|#[\d\w]+)\s*(?<offset>[0-9]*)%?/gi;
   let angleStartPosition = str?.indexOf("(") ? str.indexOf("(") : -1;
   let angleEndPosition = str?.indexOf("deg") ? str.indexOf("deg") : -1;
@@ -40,17 +58,9 @@ export function convertGradientToConfig(str) {
         offset: 100,
       },
     ];
-  } else if (colorStops.length < 2)
-    colorStops = [
-      {
-        color: "rgba(252, 165, 241, 1)",
-        offset: 10,
-      },
-      {
-        color: "rgba(181, 255, 255, 1)",
-        offset: 70,
-      },
-    ];
+  } else if (colorStops.length < 2) {
+    colorStops = DEFAULT_CONFIG.colorStops;
+  }
   let angleValue = parseInt(angleText);
   let config = {
     colorStops: colorStops,
@@ -58,28 +68,4 @@ export function convertGradientToConfig(str) {
     angle: isNaN(angleValue) ? 45 : angleValue,
   };
   return config;
-}
-
-/**
- * create color text from react-color CustomPicker value
- * @param {string|object} color color value supplied by react-color CustomPicker
- * @returns
- */
-export function createColorText(color) {
-  let _color;
-  const isStr = typeof color === "string" ? true : false;
-  if (isStr) {
-    _color = color;
-  } else if (typeof color === "object") {
-    // we will use rgb from color object only if, alpha is used
-    if (color.rgb.a === 1) {
-      //  no alpha used, used hex value instead
-      _color = color.hex;
-    } else {
-      // alpha is present
-      // create rgba text
-      _color = "rgba(" + Object.values(color.rgb).join(",") + ")";
-    }
-  }
-  return _color;
 }

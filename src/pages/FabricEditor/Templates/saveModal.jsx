@@ -22,7 +22,6 @@ const SaveModalJsx = ({
   const [ImageHeight, set_ImageHeight] = useState(parseInt(imageWidth / ratio));
   const [imgQuality, set_jpegQuality] = useState(90);
   const [selection, setSelection] = useState("page");
-  console.log(theme);
   const btns = [
     {
       btnText: "PNG",
@@ -159,7 +158,6 @@ const SaveModalJsx = ({
                 value={[imgQuality]}
                 unit={"%"}
                 onValueChange={(value) => {
-                  console.log(value);
                   set_jpegQuality(value[0]);
                 }}
                 theme={theme}
@@ -207,7 +205,7 @@ const SaveModalJsx = ({
         variant="outline"
         className="w-[100px]"
         onClick={() => {
-          onSave();
+          // onSave();
           if (selection === "page") {
             const fileSVGData = canvas?.toDataURL({
               format: chosenFileType,

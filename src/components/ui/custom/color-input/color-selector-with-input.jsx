@@ -89,8 +89,8 @@ const ColorSelectorWithInput = ({
         <Input
           className={"border-none"}
           value={restProps?.color}
-          onChange={(value) => {
-            colorChangeHandler(value);
+          onChange={(e) => {
+            colorChangeHandler(e.target.value);
           }}
         />
         <ColorSelector

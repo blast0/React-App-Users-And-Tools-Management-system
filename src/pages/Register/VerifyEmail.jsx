@@ -9,18 +9,16 @@ import axios from "axios";
 
 const VerifyEmail = () => {
   const location = useLocation();
-  console.log(location.state.email);
   const fetchOtp = async () => {
     try {
-      const res2 = await axios.post("http://localhost:3000/api/v1/getOtp", {
+      await axios.post("http://localhost:3000/api/v1/getOtp", {
         email: location.state.email,
       });
-      console.log(res2);
     } catch (err) {
-      console.log(err);
       toast.error(err.message);
     }
   };
+
   useEffect(() => {
     fetchOtp();
   }, []);
@@ -33,21 +31,20 @@ const VerifyEmail = () => {
       otp,
     };
     try {
-      const res2 = await axios.post(
+      const verifyEmailViaOtp = await axios.post(
         "http://localhost:3000/api/v1/verify",
         formData
       );
-      console.log(res2);
-      if (res2.data.user.isVerified) {
-        localStorage.setItem("auth", JSON.stringify(res2.data.token));
-        console.log(res2.data);
+      if (verifyEmailViaOtp.data.user.isVerified) {
+        localStorage.setItem(
+          "auth",
+          JSON.stringify(verifyEmailViaOtp.data.token)
+        );
         toast.success("Verification successfull");
         navigate("/dashboard");
-      } else {
-        console.log(res2.data);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err.message);
     }
   };

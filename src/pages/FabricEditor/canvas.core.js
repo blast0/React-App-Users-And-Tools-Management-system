@@ -1,17 +1,17 @@
 import { fabric } from "fabric";
 import { INITIAL_PATH, svg } from "./Constants/designer-constants";
 import {
-  scaleElementTofitCanvas,
-  addPattern,
   getNewID,
+  addPattern,
   loadGoogleFont,
+  scaleElementTofitCanvas,
 } from "./helper-functions";
 import { Spinner } from "@/components/ui/custom/spinner";
 
 class CanvasCore {
   constructor() {
     // ref to fabric canvas element
-    this.__canvas = null;
+    this._canvas = null;
   }
 
   resolveImageURL(imgURL, imgWidth, imgHeight) {
@@ -33,14 +33,14 @@ class CanvasCore {
 
   createCanvas(cid, cProps) {
     // Make a New Canvas
-    this.__canvas = new fabric.Canvas(`canvas-${cid}`, {
+    this._canvas = new fabric.Canvas(`canvas-${cid}`, {
       // Indicates whether objects should remain in current stack position when selected.
       // When false objects are brought to top and rendered as part of the selection group
-      preserveObjectStacking: true,
       ...cProps,
+      preserveObjectStacking: true,
       backgroundColor: "#ffffff",
     });
-    return this.__canvas;
+    return this._canvas;
   }
 
   async _init(config) {
@@ -56,32 +56,29 @@ class CanvasCore {
         canvasProps?.height
       );
     }
-
     // finally create the canvas
     const _canvas = this.createCanvas(canvasId, _canvasProps);
     return _canvas;
   }
 
   getRef() {
-    return this.__canvas;
+    return this._canvas;
   }
 
   getJSON() {
-    return JSON.stringify(this.__canvas);
+    return JSON.stringify(this._canvas);
   }
 
   async addText(text, options) {
     fabric.charWidthsCache = {};
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const textElement = new fabric.IText(text, {
       ...options,
       strokeUniform: true,
       id: getNewID(),
     });
     if (!options?.fontFamily) return textElement;
-
     // try to load google font
-    console.log(options?.fontFamily);
     try {
       Spinner.showSpinner(`Loading Font: ${options?.fontFamily}`);
       await loadGoogleFont(options?.fontFamily);
@@ -89,7 +86,7 @@ class CanvasCore {
       console.log("error loading google font ", error);
       Spinner.hideSpinner();
     } finally {
-      this.__canvas.add(textElement);
+      this._canvas.add(textElement);
       if (options.preselected) {
         textElement.preselected = options.preselected;
       }
@@ -99,18 +96,18 @@ class CanvasCore {
   }
 
   addTriangle(options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const triangleElement = new fabric.Triangle({
       ...options,
       strokeUniform: true,
       id: getNewID(),
     });
-    this.__canvas.add(triangleElement);
+    this._canvas.add(triangleElement);
     return triangleElement;
   }
 
   makeQuadGroup(ObjectsArray) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const group = new fabric.Group(ObjectsArray);
     group.name = "QuadraticArrow";
     group.setControlsVisibility({
@@ -129,7 +126,7 @@ class CanvasCore {
   }
 
   makeEndTriangle(options, left, top, line1, line2, line3) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const triangle = new fabric.Triangle({
       id: getNewID(),
       left: left,
@@ -146,7 +143,6 @@ class CanvasCore {
 
   getAngle(line1, line3) {
     let x1, y1, x2, y2;
-
     if (line1) {
       // If line1 is provided (for left arrow)
       x1 = line1.path[0][1]; // Get the x-coordinate of the start point
@@ -162,13 +158,10 @@ class CanvasCore {
     } else {
       return 0; // Return 0 if no line is provided
     }
-
     // Calculate the angle in radians
     const angleRadians = Math.atan2(y2 - y1, x2 - x1);
-
     // Convert the angle from radians to degrees
     const angleDegrees = fabric.util.radiansToDegrees(angleRadians);
-
     // Adjust the angle by subtracting 90 degrees
     return angleDegrees - 90;
   }
@@ -179,31 +172,31 @@ class CanvasCore {
       name: `${idType}` + getNewID(),
       customType: "arrow",
     });
-    this.__canvas.add(groupObject);
+    this._canvas.add(groupObject);
     groupArray.forEach((e) => {
       this.removeElement(e);
     });
-    this.__canvas.setActiveObject(groupObject);
+    this._canvas.setActiveObject(groupObject);
     return groupObject;
   }
 
   removeElement(element) {
-    this.__canvas.remove(element);
+    this._canvas.remove(element);
   }
 
   addCircle(options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const circleElement = new fabric.Circle({
       ...options,
       strokeUniform: true,
       id: getNewID(),
     });
-    this.__canvas.add(circleElement);
+    this._canvas.add(circleElement);
     return circleElement;
   }
 
   drawQuadratic(options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const curve = new fabric.Path(
       `M ${INITIAL_PATH.p0}, Q ${INITIAL_PATH.p1} ${INITIAL_PATH.p2}`,
       {
@@ -214,7 +207,7 @@ class CanvasCore {
   }
 
   makeControlPoint(options, left, top) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const points = new fabric.Path(svg, {
       left: left,
       top: top,
@@ -224,25 +217,29 @@ class CanvasCore {
   }
 
   addLine(options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const lineElement = new fabric.Line(options.points, {
       ...options,
       id: getNewID(),
     });
-    this.__canvas.add(lineElement);
+    this._canvas.add(lineElement);
     return lineElement;
   }
 
   addImgFromURL(url, options) {
+    console.log("era");
     return new Promise((resolve) => {
-      if (!this.__canvas) return;
+      console.log("era");
+
+      if (!this._canvas) return;
       const { ...restOptions } = options;
-      let canvas = this.__canvas;
+      let canvas = this._canvas;
       let img = new Image();
       let imageFit = options?.imageFit;
       img.crossOrigin = "anonymous";
       img.src = url;
       Spinner.showSpinner("Loading Image");
+      console.log("anonymous");
       img.onload = function () {
         Spinner.hideSpinner();
         let image = new fabric.Image(img, {
@@ -253,6 +250,7 @@ class CanvasCore {
           isUrlValid: true,
           strokeUniform: true,
         });
+        console.log(image);
         if (imageFit) {
           scaleElementTofitCanvas(imageFit, canvas.height, canvas.width, image);
         }
@@ -270,9 +268,9 @@ class CanvasCore {
 
   addImgAsPatternFromURL(url, options) {
     return new Promise((resolve) => {
-      if (!this.__canvas) return;
+      if (!this._canvas) return;
       const { ...restOptions } = options;
-      let canvas = this.__canvas;
+      let canvas = this._canvas;
       let containerElem = null;
       if (restOptions?.containerType === "circle") {
         containerElem = new fabric.Circle({
@@ -328,12 +326,8 @@ class CanvasCore {
           id: getNewID(),
           BorderLock: true,
           fill: "rgba(0 0 0 0)",
-          left: restOptions.left
-            ? restOptions.left
-            : (canvas.width - restOptions?.width) / 2,
-          top: restOptions.top
-            ? restOptions.top
-            : (canvas.height - restOptions?.height) / 2,
+          left: restOptions.left ? restOptions.left : 0,
+          top: restOptions.top ? restOptions.top : 0,
           stroke: "#000",
           strokeWidth: 0,
           strokeUniform: true,
@@ -358,7 +352,7 @@ class CanvasCore {
   }
 
   addRect(options, position) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const _rect = new fabric.Rect({
       ...options,
       strokeUniform: true,
@@ -368,13 +362,13 @@ class CanvasCore {
       _rect.top = position.top / 2 + 70;
       _rect.left = position.left / 2 - 70;
     }
-    this.__canvas.add(_rect);
-    this.__canvas.bringToFront(_rect);
+    this._canvas.add(_rect);
+    this._canvas.bringToFront(_rect);
     return _rect;
   }
 
   addSpeechRect(options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const _rect = new fabric.Rect({
       ...options,
       strokeUniform: true,
@@ -384,7 +378,7 @@ class CanvasCore {
   }
 
   async addTextBox(text, options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     if (options?.fontFamily) {
       await loadGoogleFont(options?.fontFamily);
     }
@@ -397,7 +391,7 @@ class CanvasCore {
   }
 
   addPolygon(points, options) {
-    if (!this.__canvas) return;
+    if (!this._canvas) return;
     const polyElement = new fabric.Polygon(points, {
       ...options,
       strokeUniform: true,
@@ -408,8 +402,8 @@ class CanvasCore {
 
   addSVGFromURL(url, options) {
     const promise = new Promise((resolve, reject) => {
-      if (!this.__canvas) reject();
-      let canvas = this.__canvas;
+      if (!this._canvas) reject();
+      let canvas = this._canvas;
       let imageFit = options?.imageFit;
       const { ...restOptions } = options;
       fabric.loadSVGFromURL(url, (objects, svgOptions) => {
@@ -422,7 +416,7 @@ class CanvasCore {
         if (imageFit) {
           scaleElementTofitCanvas(imageFit, canvas.height, canvas.width, svg);
         }
-        this.__canvas.add(svg);
+        this._canvas.add(svg);
         resolve(svg);
       });
     });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { pageSizes } from "../../Constants/designer-constants";
+import { pageSizes } from "../../Constants/sizes";
 import "./templatesmodal.css";
 import { Button } from "@/components/ui/button";
 // import DropdownWithSearch from "@/components/ui/custom/dropdown-with-search";

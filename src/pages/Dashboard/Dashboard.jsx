@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
-// import { toast } from "sonner";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Navbar from "../../components/ui/custom/nav-bar/Navbar";
 import Designer from "../FabricEditor/designer";
+import { verifyToken } from "../../helper";
 
 const Dashboard = () => {
   const auth = localStorage.getItem("auth")
@@ -22,7 +22,6 @@ const Dashboard = () => {
         Authorization: `Bearer ${token}`,
       },
     };
-
     try {
       const response = await axios.get(
         "http://localhost:3000/api/v1/dashboard",
@@ -35,10 +34,17 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchLuckyNumber();
-    if (token === "") {
+    // fetchLuckyNumber();
+    const { isTokenValid, error } = verifyToken(token);
+    if (isTokenValid && !error) {
+      // toast.success("You already logged in");
+      navigate("/dashboard");
+    } else if (error !== null) {
+      toast.error(error);
       navigate("/login");
-      toast.warn("Please login first to access dashboard");
+    } else {
+      toast.error("Token Expired");
+      navigate("/login");
     }
   }, [token]);
 

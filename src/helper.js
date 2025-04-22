@@ -1,3 +1,6 @@
+import { jwtDecode } from "jwt-decode";
+// import { useNavigate } from "react-router-dom";
+
 export const isImageUrlValid = (url) => {
   const img = new Image();
   img.src = url;
@@ -7,11 +10,6 @@ export const isImageUrlValid = (url) => {
   });
 };
 
-/**
- * create color text from react-color CustomPicker value
- * @param {string|object} color color value supplied by react-color CustomPicker
- * @returns
- */
 export function createColorText(color) {
   let _color;
   const isStr = typeof color === "string" ? true : false;
@@ -180,4 +178,23 @@ export const WEB_SAFE_COLORS = {
   whitesmoke: "#f5f5f5",
   yellow: "#ffff00",
   yellowgreen: "#9acd32",
+};
+
+export const verifyToken = (token) => {
+  // let isTokenValid = false;
+  try {
+    if (token) {
+      const expiry = new Date().getTime() / 1000;
+      const { exp } = jwtDecode(token);
+      if (expiry < exp) {
+        return { isTokenValid: true, error: null };
+      } else {
+        return { isTokenValid: false, error: null };
+      }
+    } else {
+      return { isTokenValid: false, error: null };
+    }
+  } catch (err) {
+    return { isTokenValid: false, error: err };
+  }
 };

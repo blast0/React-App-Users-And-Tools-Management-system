@@ -1,11 +1,9 @@
-import {
-  ACTIONS,
-  ARROW_HEAD,
-  CANVAS_CUSTOM_FONTS,
-} from "../Constants/designer-constants";
+import { ARROW_HEAD } from "../Constants/designer-constants";
+import { ACTIONS } from "../Constants/actions";
 // import { getDataUriFromBlobData, loadGoogleFont } from "../../../../helper";
 import { Spinner } from "@/components/ui/custom/spinner";
 import { loadGoogleFont } from "../helper-functions";
+import { CANVAS_CUSTOM_FONTS } from "../Constants/font";
 
 export const handleSelectedTool = (selectedTool, activeElement, self) => {
   if (!selectedTool) return;
