@@ -11,6 +11,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { MenuButton } from "@/components/ui/custom/menu-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   // Link, useLocation,
   useNavigate,
@@ -53,13 +54,13 @@ const Navbar = ({ theme, setTheme }) => {
         backgroundColor: theme === "light" ? "#0078d4" : "#212121",
         display: "flex",
         gap: "30px",
-        justifyContent: "space-between",
+        justifyContent: "flex-end",
         alignItems: "center",
       }}
     >
-      <div className="cursor-pointer ml-5">
+      {/* <div className="cursor-pointer ml-5">
         <House color="white" />
-      </div>
+      </div> */}
 
       <div className="flex mr-5 gap-5 justify-center items-center">
         <div
@@ -80,14 +81,15 @@ const Navbar = ({ theme, setTheme }) => {
             }
           }}
         >
-          <Button
-            size="icon-xs"
-            variant="outline"
-            className="flex items-center gap-0 cursor-pointer"
-          >
-            <UserRound />
-            <ChevronDown />
-          </Button>
+          <div className="flex items-end">
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>
+                <UserRound />
+              </AvatarFallback>
+            </Avatar>
+            <ChevronDown color="white" />
+          </div>
         </MenuButton>
       </div>
     </div>

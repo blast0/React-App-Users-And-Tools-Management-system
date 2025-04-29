@@ -181,7 +181,6 @@ export const WEB_SAFE_COLORS = {
 };
 
 export const verifyToken = (token) => {
-  // let isTokenValid = false;
   try {
     if (token) {
       const expiry = new Date().getTime() / 1000;

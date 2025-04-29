@@ -529,6 +529,7 @@ export const scaleElementTofitCanvas = (
 };
 
 export const handleOutsideClick = (event, self) => {
+  console.log("handleOutsideClick");
   const canvasRef = Object.values(self.state.canvases)[0];
   if (!event.target.className.includes("canvas")) {
     canvasRef.discardActiveObject().renderAll();
@@ -540,26 +541,10 @@ export const handleOutsideClick = (event, self) => {
   }
 };
 
-// export const updatePageBreadcrumb = (self) => {
-//   const { assetName } = self.props.match.params;
-//   self.props.updatePageBreadcrumb([
-//     {
-//       name: assetName,
-//       routeFn: () => Navigation.goTo(AppRoutes.assetDashboard),
-//     },
-//     {
-//       name: "Cover Image",
-//       routeFn: () => Navigation.goTo(AppRoutes.designer + "?template=default"),
-//     },
-//   ]);
-// };
-
 export const initializeApp = async (self) => {
   // if query param contains a template, load it on page init
-
   // if template is not defined in query parameter, use default template
   const tmpl = PAGE_TEMPLATES[1];
-
   // get svg image properties from query params
   const svgURL = self.queryParams.url;
   const svgSizes = {

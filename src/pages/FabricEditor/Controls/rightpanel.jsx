@@ -1,40 +1,18 @@
+import { fabric } from "fabric";
 import { Component } from "react";
-import {
-  ChevronDown,
-  Image,
-  Redo,
-  Save,
-  Shapes,
-  Trash,
-  Undo,
-  ImageDown,
-  FileDown,
-  Pointer,
-} from "lucide-react";
+import { Pointer } from "lucide-react";
 
 import { ACTIONS } from "../Constants/actions";
-import ActiveElementControls from "./activeElementControls";
-import GradientContainer from "@/components/ui/custom/gradient-container";
-import { createJSON } from "../helper-functions";
-import { MenuButton } from "@/components/ui/custom/menu-button";
-import { Button } from "@/components/ui/button";
-import { Title } from "@/components/ui/title";
+import { getObjectTypeIcon } from "../Constants/designer-icons";
+
 import { Input } from "@/components/ui/input";
-import Dropdown from "@/components/ui/custom/dropdown";
 import { Label } from "@/components/ui/label";
-import { DialogBox } from "../../../components/DialogBox";
-import SaveModalJsx from "../Templates/saveModal";
-import { DialogDropDown } from "../../../components/ui/custom/dialogDropDown";
-import {
-  OPEN_OPTIONS,
-  ADD_SHAPE_OPTIONS,
-  DELETE_OPTIONS,
-  getObjectTypeIcon,
-} from "../Constants/designer-icons";
-import SaveTemplateModal from "../Templates/saveTemplateModal";
-import { sha256 } from "crypto-hash";
-import { fabric } from "fabric";
+import Dropdown from "@/components/ui/custom/dropdown";
+import GradientContainer from "@/components/ui/custom/gradient-container";
+
+import CanvasControls from "./canvasControls";
 import { makeGradient } from "./activeElementHandlers";
+import ActiveElementControls from "./activeElementControls";
 
 class Rightpanel extends Component {
   constructor(props) {
@@ -69,83 +47,13 @@ class Rightpanel extends Component {
       pageBgColor,
       theme,
     } = this.props;
-    const CANVAS_OPTIONS = [
-      {
-        name: "Save Image",
-        value: ACTIONS.SAVE_PAGE_TO_LIBRARY,
-        modalJsx: (
-          <DialogBox
-            title="Download Image"
-            theme={theme}
-            trigger={
-              <div className="flex items-center cursor-pointer gap-2">
-                <ImageDown />
-                Download Image
-              </div>
-            }
-            modalJsx={
-              <SaveModalJsx
-                self={this}
-                thumbnailUrl={null}
-                canvas={canvas}
-                theme={theme}
-                defaultFileName={"canvas"}
-                defaultFileType={"jpeg"}
-                imageWidth={canvas?.width}
-                ratio={canvas?.width / canvas?.height}
-              />
-            }
-          />
-        ),
-      },
-      {
-        name: "Save My Template",
-        value: ACTIONS.UPLOAD_JSON,
-        modalJsx: (
-          <DialogBox
-            title="Image"
-            theme={theme}
-            trigger={
-              <div className="flex items-center h-[27px] cursor-pointer gap-2">
-                <FileDown />
-                Download Canvas JSON
-              </div>
-            }
-            modalJsx={
-              <>
-                <SaveTemplateModal
-                  JsonNodes={{}}
-                  imgNodes={{}}
-                  allNames={[]}
-                  currImgDataUrl={null}
-                  onCancel={() => {}}
-                  onSave={async (fileName) => {
-                    const temp = createJSON(this, canvas);
-                    const hash = await sha256(JSON.stringify(temp));
-                    temp.hash = hash;
-                    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-                      JSON.stringify(temp)
-                    )}`;
-                    const link = document.createElement("a");
-                    link.href = jsonString;
-                    if (fileName === "") link.download = "sample.json";
-                    else link.download = fileName + ".json";
-                    link.click();
-                  }}
-                  onOverWrite={() => {}}
-                />
-              </>
-            }
-          />
-        ),
-      },
-    ];
 
     const activeElement = canvas?.getActiveObject();
     const activeElementType = activeElement?.type;
+    console.log(showStyleEditor);
     return (
       <div
-        className="DesignerConfigPanel w-[310px] pr-2"
+        className="DesignerConfigPanel w-[310px]"
         onClick={() => {
           var activeElement = document.activeElement;
           if (activeElement === document.body) {
@@ -155,111 +63,14 @@ class Rightpanel extends Component {
           }
         }}
       >
-        <div
-          className={`flex flex-start gap-2 px-2 py-2 border-b-2 ${
-            theme === "dark" ? "border-amber-50" : "border-b-fuchsia-500"
-          } `}
-        >
-          <MenuButton
-            title="Add Image"
-            options={OPEN_OPTIONS}
-            onSelect={(option) => {
-              onChange(option.value);
-            }}
-          >
-            <Button
-              size="icon-xs"
-              variant="outline"
-              className="flex items-center gap-0"
-            >
-              <Image />
-              <ChevronDown />
-            </Button>
-          </MenuButton>
-
-          <input
-            ref={jsonRef}
-            className="hidden"
-            type="file"
-            accept="application/json"
-            onChange={this.handleJsonData}
-          />
-
-          <DialogDropDown
-            title="Save to cloud"
-            options={CANVAS_OPTIONS}
-            onSelect={(option) => onChange(option.value)}
-          >
-            <Button
-              size="icon-xs"
-              variant="outline"
-              className="flex items-center gap-0"
-            >
-              <Save />
-              <ChevronDown />
-            </Button>
-          </DialogDropDown>
-          <MenuButton
-            title="Add shapes"
-            options={ADD_SHAPE_OPTIONS}
-            onSelect={(option) => onChange(option.value)}
-          >
-            <Button
-              size="icon-xs"
-              variant="outline"
-              className="flex items-center gap-0"
-            >
-              <Shapes />
-              <ChevronDown />
-            </Button>
-          </MenuButton>
-
-          <Title title={"Undo last action"}>
-            <Button
-              className="cursor-pointer"
-              size="icon-xs"
-              variant="outline"
-              onClick={() => onChange(ACTIONS.UNDO_ACTION)}
-            >
-              <Undo />
-            </Button>
-          </Title>
-
-          <Title title={"Redo last action"}>
-            <Button
-              className="cursor-pointer"
-              size="icon-xs"
-              variant="outline"
-              onClick={() => onChange(ACTIONS.REDO_ACTION)}
-            >
-              <Redo />
-            </Button>
-          </Title>
-
-          <MenuButton
-            title="Reset page"
-            options={DELETE_OPTIONS}
-            onSelect={(option) => this.deleteHandler(option.value)}
-          >
-            <Button
-              size="icon-xs"
-              variant="outline"
-              className="flex items-center gap-0"
-            >
-              <Trash />
-              <ChevronDown />
-            </Button>
-          </MenuButton>
-        </div>
-        <div
-          className="designer-style-container slim-scroll"
-          style={{
-            height: "calc(100vh - 112px)",
-            paddingBottom: "100px",
-            overflowY: "auto",
-            padding: "10px",
-          }}
-        >
+        <CanvasControls
+          theme={theme}
+          onChange={onChange}
+          jsonRef={jsonRef}
+          canvas={canvas}
+          handleJsonData={this.handleJsonData}
+        />
+        <div className="designer-style-container slim-scroll h-[calc(100vh-112px)] pb-[100px] overflow-y-auto p-[10px]">
           <div className="page-controls mt-2">
             <div className="page-dimensions-control gap-2 flex flex-wrap">
               <div className="w-[48%]">

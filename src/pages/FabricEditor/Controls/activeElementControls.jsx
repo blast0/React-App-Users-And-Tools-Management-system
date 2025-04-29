@@ -724,21 +724,6 @@ class ActiveElementControls extends Component {
             </div>
           </>
         )}
-
-        {/* <div>
-          {Object.keys(getStrokeColorControls(this)).length
-            ? "StrokeColor(s)"
-            : ""}
-        </div>
-        <div className="svg-colors-group">
-          <ConfiguratorCore
-            containerClass="svg-stroke-colors-Configurator"
-            data={getStrokeColorControls(this)}
-            onResponse={(data) => {
-              updateStyle(data, this);
-            }}
-          />
-        </div> */}
       </div>
     );
 
@@ -752,8 +737,7 @@ class ActiveElementControls extends Component {
             <div className="mb-1 flex-1 basis-[30%]" key={item.title}>
               <Title key={item.bId} title={item.title}>
                 <div
-                  className="cursor-pointer gap-2 flex bg-white justify-center items-center m-0 p-0 w-[42px] h-[40px]"
-                  style={{ borderRadius: "4px" }}
+                  className="cursor-pointer rounded-[4px] gap-2 flex bg-white justify-center items-center m-0 p-0 w-[42px] h-[40px]"
                   onClick={() => {
                     if (item.bId === "Top-Left") {
                       onChange(ACTIONS.ALIGN_ELEMENT_VERTICALLY, "top");

@@ -69,6 +69,17 @@ export const DELETE_OPTIONS = [
 ];
 
 export const OPEN_OPTIONS = [
+  // {
+  //   name: "Add Image from library",
+  //   icon: <Images />,
+  //   value: ACTIONS.ADD_FROM_LIBRARY,
+  // },
+  {
+    name: "Add Image",
+    tooltip: "Upload Image from Desktop",
+    icon: <ImageUp />,
+    value: ACTIONS.UPLOAD_SVG,
+  },
   {
     name: "Open Image",
     icon: <ImageUp />,
@@ -79,34 +90,23 @@ export const OPEN_OPTIONS = [
     icon: <FileUp />,
     value: ACTIONS.RAW_DATA,
   },
-  {
-    name: "Custom Size",
-    icon: <Proportions />,
-    value: ACTIONS.OTHERS,
-  },
+  // {
+  //   name: "Custom Size",
+  //   icon: <Proportions />,
+  //   value: ACTIONS.OTHERS,
+  // },
 ];
 
 export const ADD_SHAPE_OPTIONS = [
   {
-    name: "Add Image from library",
-    icon: <Images />,
-    value: ACTIONS.ADD_FROM_LIBRARY,
-  },
-  {
-    name: "Add Image",
-    tooltip: "Upload Image from Desktop",
-    icon: <ImageUp />,
-    value: ACTIONS.UPLOAD_SVG,
+    name: "Add Text",
+    icon: <TypeOutline />,
+    value: ACTIONS.ADD_TEXT,
   },
   {
     name: "Add Triangle",
     icon: <Triangle />,
     value: ACTIONS.ADD_TRIANGLE,
-  },
-  {
-    name: "Add Text",
-    icon: <TypeOutline />,
-    value: ACTIONS.ADD_TEXT,
   },
   {
     name: "Add Rectangle",

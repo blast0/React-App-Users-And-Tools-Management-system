@@ -69,11 +69,9 @@ class Designer extends Component {
   }
 
   componentDidMount() {
-    // Adding EventListener to handle outside click.
     this.designer.current.addEventListener("click", (e) =>
       handleOutsideClick(e, this)
     );
-    // updatePageBreadcrumb(this);
     initializeApp(this);
   }
 
@@ -108,150 +106,129 @@ class Designer extends Component {
     const _canvas = Object.values(this.state.canvases)[0];
     return (
       <div
-        className={`designer relative flex ${
+        className={`flex justify-between h-full w-full ${
           theme === "dark" ? "bg-[#333232] " : "bg-[#ffffff]"
         }`}
-        ref={this.designer}
-        style={{
-          height: "100%",
-        }}
       >
-        <Dropzone
-          ref={this.dropzoneRef}
-          accept={".jpg, .png, .webp, .jpeg, .svg"}
-          multiple={true}
-          noClick={true}
-          onDrop={(acceptedFiles) => handleDrop(acceptedFiles, this)}
-        >
-          {({ getRootProps, isDragActive }) => (
-            <section className={`dropzone-container`}>
-              <div {...getRootProps({ className: "dropzone" })}>
-                <React.Fragment>
-                  <div className={isDragActive ? "drag-active" : ""}>
-                    <React.Fragment>
-                      <div
-                        className="flex p-2 slim-scroll"
-                        style={{
-                          width: pageWidth,
-                        }}
-                        onClick={() => {
-                          if (
-                            _canvas?.getActiveObject() === null ||
-                            modalActive
-                          ) {
-                            this.setState({
-                              isCanvasActive: false,
-                            });
-                          } else {
-                            this.setState({
-                              isCanvasActive: true,
-                            });
-                          }
-                        }}
-                      >
-                        {pages.map((page) => {
-                          return (
-                            <Page
-                              isCanvasActive={isCanvasActive && !modalActive}
-                              selectedElementId={selectedElementId}
-                              key={`page-${page.id}`}
-                              activePageID={activePageID}
-                              _canvas={_canvas}
-                              config={page}
-                              activeElementProps={activeElementProps}
-                              isTemplateLoaded={isTemplateLoaded}
-                              ontemplateLoaded={(elem, __canvas) => {
-                                this.setState(
-                                  {
-                                    isTemplateLoaded: true,
-                                  },
-                                  () => {
-                                    __canvas.clearHistory();
-                                    __canvas.requestRenderAll();
-                                    if (elem) {
-                                      __canvas.setActiveObject(elem);
-                                      __canvas.renderAll();
-                                    }
-                                  }
-                                );
-                              }}
-                              onCanvasPostInit={(id, canvas) => {
-                                canvas.renderAll();
-                                this.setState({
-                                  canvases: {
-                                    ...this.state.canvases,
-                                    [id]: canvas,
-                                  },
-                                });
-                              }}
-                              pageBgColor={pageBgColor}
-                              onElementsRendered={() => {
-                                createCanvasElementsDropdownData(this);
-                              }}
-                              onElementDeleteRequested={(action) =>
-                                handleRightPanelUpdates(action, null, this)
-                              }
-                              onElemSelect={(
-                                showStyleEditor,
-                                activeElementProps,
-                                __canvas
-                              ) => {
-                                let canva = null;
-                                if (
-                                  activeElementProps.id !== selectedElementId
-                                ) {
-                                  canva = __canvas ? __canvas : _canvas;
-                                  canva.getObjects().forEach(function (item) {
-                                    if (item.id === activeElementProps.id) {
-                                      canva.setActiveObject(item);
-                                      canva.renderAll();
-                                    }
-                                  });
-                                  const canvasElementNames =
-                                    getCanvasElementNames(canva);
-                                  this.setState({
-                                    showStyleEditor,
-                                    activeElementProps,
-                                    selectedElementName:
-                                      activeElementProps.name,
-                                    selectedElementId: activeElementProps.id,
-                                    elementsDropDownData: canvasElementNames,
-                                  });
-                                } else {
-                                  this.setState({
-                                    showStyleEditor,
-                                    activeElementProps,
-                                    selectedElementName:
-                                      activeElementProps.name,
-                                    selectedElementId: activeElementProps.id,
-                                  });
-                                }
-                              }}
-                              setSelectedName={(name) => {
-                                _canvas.getActiveObject().name = name;
-                                this.setState({
-                                  selectedElementName: name,
-                                });
-                              }}
-                            />
-                          );
-                        })}
-                      </div>
-                    </React.Fragment>
-                  </div>
-                </React.Fragment>
-              </div>
-            </section>
-          )}
-        </Dropzone>
         <div
-          style={{
-            backgroundColor: theme === "light" ? "white" : "black",
-            border: "1px solid #989898",
-            height: "100%",
-            position: "absolute",
-            right: 0,
-          }}
+          className={`designer relative flex slim-scroll overflow-auto`}
+          ref={this.designer}
+        >
+          <Dropzone
+            ref={this.dropzoneRef}
+            accept={".jpg, .png, .webp, .jpeg, .svg"}
+            multiple={true}
+            noClick={true}
+            onDrop={(acceptedFiles) => handleDrop(acceptedFiles, this)}
+          >
+            {({ getRootProps, isDragActive }) => (
+              <section className={`dropzone-container`}>
+                <div {...getRootProps({ className: "dropzone" })}>
+                  <React.Fragment>
+                    <div className={isDragActive ? "drag-active" : ""}>
+                      <React.Fragment>
+                        <div className="flex p-2 slim-scroll">
+                          {pages.map((page) => {
+                            return (
+                              <Page
+                                isCanvasActive={isCanvasActive && !modalActive}
+                                selectedElementId={selectedElementId}
+                                key={`page-${page.id}`}
+                                activePageID={activePageID}
+                                _canvas={_canvas}
+                                config={page}
+                                activeElementProps={activeElementProps}
+                                isTemplateLoaded={isTemplateLoaded}
+                                ontemplateLoaded={(elem, __canvas) => {
+                                  this.setState(
+                                    {
+                                      isTemplateLoaded: true,
+                                    },
+                                    () => {
+                                      __canvas.clearHistory();
+                                      __canvas.requestRenderAll();
+                                      if (elem) {
+                                        __canvas.setActiveObject(elem);
+                                        __canvas.renderAll();
+                                      }
+                                    }
+                                  );
+                                }}
+                                onCanvasPostInit={(id, canvas) => {
+                                  canvas.renderAll();
+                                  this.setState({
+                                    canvases: {
+                                      ...this.state.canvases,
+                                      [id]: canvas,
+                                    },
+                                  });
+                                }}
+                                pageBgColor={pageBgColor}
+                                onElementsRendered={() => {
+                                  createCanvasElementsDropdownData(this);
+                                }}
+                                onElementDeleteRequested={(action) =>
+                                  handleRightPanelUpdates(action, null, this)
+                                }
+                                onElemSelect={(
+                                  showStyleEditor,
+                                  activeElementProps,
+                                  __canvas
+                                ) => {
+                                  let canva = null;
+                                  if (
+                                    activeElementProps.id !== selectedElementId
+                                  ) {
+                                    canva = __canvas ? __canvas : _canvas;
+                                    canva.getObjects().forEach(function (item) {
+                                      if (item.id === activeElementProps.id) {
+                                        canva.setActiveObject(item);
+                                        canva.renderAll();
+                                      }
+                                    });
+                                    const canvasElementNames =
+                                      getCanvasElementNames(canva);
+                                    this.setState({
+                                      showStyleEditor,
+                                      activeElementProps,
+                                      selectedElementName:
+                                        activeElementProps.name,
+                                      selectedElementId: activeElementProps.id,
+                                      elementsDropDownData: canvasElementNames,
+                                    });
+                                  } else {
+                                    this.setState({
+                                      showStyleEditor,
+                                      activeElementProps,
+                                      selectedElementName:
+                                        activeElementProps.name,
+                                      selectedElementId: activeElementProps.id,
+                                    });
+                                  }
+                                }}
+                                setSelectedName={(name) => {
+                                  _canvas.getActiveObject().name = name;
+                                  this.setState({
+                                    selectedElementName: name,
+                                  });
+                                }}
+                              />
+                            );
+                          })}
+                        </div>
+                      </React.Fragment>
+                    </div>
+                  </React.Fragment>
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </div>
+
+        <div
+          className={`border h-full ${
+            theme === "light" ? "bg-white" : "bg-black"
+          } border-[#989898]`}
         >
           <div>
             <input

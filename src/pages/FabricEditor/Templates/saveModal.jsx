@@ -52,37 +52,23 @@ const SaveModalJsx = ({
           }}
           label="File Name:"
         />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "column",
-            marginTop: "10px",
-          }}
-        >
+        <div className="flex justify-between flex-col mt-[10px]">
           <span
-            className="fileName"
-            style={{
-              color: theme !== "dark" ? "black" : "white",
-            }}
+            className={`fileName ${
+              theme !== "dark" ? "text-black" : "text-white"
+            }`}
           >
             {fileName}.{chosenFileType}
           </span>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="flex gap-[10px]">
             <div
+              className="h-[120px] w-[200px] bg-white bg-contain bg-center bg-no-repeat border border-[#eee]"
               style={{
-                height: "120px",
-                width: "200px",
                 backgroundImage: `url(${
                   selection === "page"
                     ? canvas.toDataURL()
                     : canvas.getActiveObject().toDataURL()
                 })`,
-                backgroundColor: "#fff",
-                backgroundSize: "contain",
-                backgroundPosition: "50%",
-                backgroundRepeat: "no-repeat",
-                border: "1px solid #eee",
               }}
             ></div>
             <div className="flex flex-col gap-2">

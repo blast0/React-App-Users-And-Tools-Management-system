@@ -16,28 +16,28 @@ const Dashboard = () => {
   const [theme, setTheme] = useState("dark");
   const navigate = useNavigate();
 
-  const fetchLuckyNumber = async () => {
-    let axiosConfig = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/v1/dashboard",
-        axiosConfig
-      );
-      setData({ msg: response.data.msg, luckyNumber: response.data.secret });
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+  // const fetchLuckyNumber = async () => {
+  //   let axiosConfig = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //   try {
+  //     const response = await axios.get(
+  //       "http://localhost:3000/api/v1/dashboard",
+  //       axiosConfig
+  //     );
+  //     setData({ msg: response.data.msg, luckyNumber: response.data.secret });
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
 
   useEffect(() => {
     // fetchLuckyNumber();
     const { isTokenValid, error } = verifyToken(token);
+    console.log(isTokenValid, error);
     if (isTokenValid && !error) {
-      // toast.success("You already logged in");
       navigate("/dashboard");
     } else if (error !== null) {
       toast.error(error);
@@ -46,7 +46,7 @@ const Dashboard = () => {
       toast.error("Token Expired");
       navigate("/login");
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <>
